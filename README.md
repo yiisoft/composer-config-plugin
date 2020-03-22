@@ -8,10 +8,9 @@ Composer plugin for config assembling.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/composer-config-plugin/v/stable)](https://packagist.org/packages/yiisoft/composer-config-plugin)
 [![Total Downloads](https://poser.pugx.org/yiisoft/composer-config-plugin/downloads)](https://packagist.org/packages/yiisoft/composer-config-plugin)
-[![Build Status](https://img.shields.io/travis/yiisoft/composer-config-plugin.svg)](https://travis-ci.org/yiisoft/composer-config-plugin)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/yiisoft/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/yiisoft/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/)
-[![Dependency Status](https://www.versioneye.com/php/yiisoft:composer-config-plugin/dev-master/badge.svg)](https://www.versioneye.com/php/yiisoft:composer-config-plugin/dev-master)
+[![Build Status](https://travis-ci.com/yiisoft/composer-config-plugin.svg?branch=master)](https://travis-ci.com/yiisoft/composer-config-plugin)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/?branch=master)
 
 This [Composer] plugin provides assembling
 of configurations distributed with composer packages.
