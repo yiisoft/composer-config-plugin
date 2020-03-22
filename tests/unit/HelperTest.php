@@ -27,7 +27,7 @@ class HelperTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public function testFixRemoveArrayKeys()
+    public function testFixRemoveArrayKeys(): void
     {
         $config = [
             'a' => '1',

@@ -4,40 +4,36 @@ namespace Yiisoft\Composer\Config\Tests\Unit;
 
 use Composer\Composer;
 use Composer\Config;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Composer\Config\Plugin;
+use Composer\IO\IOInterface;
 
 /**
  * Class PluginTest.
  */
-class PluginTest extends \PHPUnit\Framework\TestCase
+class PluginTest extends TestCase
 {
     private $object;
-    private $io;
-    private $composer;
-    private $event;
     private $packages = [];
 
     public function setUp()
     {
         parent::setUp();
-        $this->composer = new Composer();
-        $this->composer->setConfig(new Config(true, getcwd()));
-        $this->io = $this->createMock('Composer\IO\IOInterface');
-        $this->event = $this->getMockBuilder('Composer\Script\Event')
-            ->setConstructorArgs(['test', $this->composer, $this->io])
-            ->getMock();
+        $composer = new Composer();
+        $composer->setConfig(new Config(true, getcwd()));
+        $io = $this->createMock(IOInterface::class);
 
         $this->object = new Plugin();
         $this->object->setPackages($this->packages);
-        $this->object->activate($this->composer, $this->io);
+        $this->object->activate($composer, $io);
     }
 
-    public function testGetPackages()
+    public function testGetPackages(): void
     {
         $this->assertSame($this->packages, $this->object->getPackages());
     }
 
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $this->assertInternalType('array', $this->object->getSubscribedEvents());
     }

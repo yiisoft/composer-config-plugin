@@ -16,7 +16,7 @@ class ReaderFactoryTest extends \PHPUnit\Framework\TestCase
 {
     protected $builder;
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $this->builder = new Builder();
 
