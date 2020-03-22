@@ -20,8 +20,8 @@ class ReaderFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->builder = new Builder();
 
-        $env    = $this->checkGet('.env', EnvReader::class);
-        $json   = $this->checkGet('.json', JsonReader::class);
+        $this->checkGet('.env', EnvReader::class);
+        $this->checkGet('.json', JsonReader::class);
         $yml    = $this->checkGet('.yml', YamlReader::class);
         $yaml   = $this->checkGet('.yaml', YamlReader::class);
         $php    = $this->checkGet('.php', PhpReader::class);

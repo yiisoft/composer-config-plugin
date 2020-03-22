@@ -13,12 +13,10 @@ use Composer\Util\Filesystem;
  */
 class Package
 {
-    public const EXTRA_FILES_OPTION_NAME           = 'config-plugin';
-    public const EXTRA_DEV_FILES_OPTION_NAME       = 'config-plugin-dev';
-    public const EXTRA_OUTPUT_DIR_OPTION_NAME      = 'config-plugin-output-dir';
-    public const EXTRA_ALTERNATIVES_OPTION_NAME    = 'config-plugin-alternatives';
-
-    private $options = ['output-dir', 'alternatives'];
+    public const EXTRA_FILES_OPTION_NAME = 'config-plugin';
+    public const EXTRA_DEV_FILES_OPTION_NAME = 'config-plugin-dev';
+    public const EXTRA_OUTPUT_DIR_OPTION_NAME = 'config-plugin-output-dir';
+    public const EXTRA_ALTERNATIVES_OPTION_NAME = 'config-plugin-alternatives';
 
     protected $package;
 
@@ -73,7 +71,7 @@ class Package
 
     /**
      * Prepare aliases.
-     * @param string 'psr-0' or 'psr-4'
+     * @param string $psr 'psr-0' or 'psr-4'
      * @param bool $dev
      * @return array
      */

@@ -18,6 +18,8 @@ class Resolver
 
     protected $following = [];
 
+    private $files;
+
     public function __construct(array $files)
     {
         $this->files = $files;
@@ -28,7 +30,7 @@ class Resolver
         }
     }
 
-    public function get()
+    public function get(): array
     {
         $result = [];
         foreach ($this->order as $name) {
@@ -38,7 +40,7 @@ class Resolver
         return $result;
     }
 
-    protected function resolveDeps(array $paths)
+    protected function resolveDeps(array $paths): array
     {
         foreach ($paths as &$path) {
             $dep = $this->isDep($path);
@@ -50,7 +52,7 @@ class Resolver
         return $paths;
     }
 
-    protected function followDeps($name)
+    protected function followDeps(string $name): void
     {
         if (isset($this->order[$name])) {
             return;
@@ -68,7 +70,7 @@ class Resolver
         unset($this->following[$name]);
     }
 
-    protected function collectDeps()
+    protected function collectDeps(): void
     {
         foreach ($this->files as $name => $paths) {
             foreach ($paths as $path) {

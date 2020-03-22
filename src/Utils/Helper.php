@@ -94,11 +94,11 @@ class Helper
 
     private static function getEncoder()
     {
-        if (static::$encoder === null) {
-            static::$encoder = static::createEncoder();
+        if (self::$encoder === null) {
+            self::$encoder = static::createEncoder();
         }
 
-        return static::$encoder;
+        return self::$encoder;
     }
 
     private static function createEncoder()

@@ -35,6 +35,6 @@ class PluginTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertInternalType('array', $this->object->getSubscribedEvents());
+        $this->assertIsArray($this->object->getSubscribedEvents());
     }
 }

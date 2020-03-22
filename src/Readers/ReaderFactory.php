@@ -28,11 +28,11 @@ class ReaderFactory
         #return static::create($builder, $type);
 
         $uniqid = $class . ':' . spl_object_hash($builder);
-        if (empty(static::$loaders[$uniqid])) {
-            static::$loaders[$uniqid] = static::create($builder, $type);
+        if (empty(self::$loaders[$uniqid])) {
+            self::$loaders[$uniqid] = static::create($builder, $type);
         }
 
-        return static::$loaders[$uniqid];
+        return self::$loaders[$uniqid];
     }
 
     public static function detectType($path): string

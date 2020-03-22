@@ -85,9 +85,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * This is the main function.
-     * @param Event $event
      */
-    public function onPostAutoloadDump(Event $event): void
+    public function onPostAutoloadDump(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
@@ -198,7 +197,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             } elseif (is_array($alternatives)) {
                 $this->alternatives = $alternatives;
             } elseif (!empty($alternatives)) {
-                throw new BadConfigurationException('alternatives must be array or path to configuration file');
+                throw new BadConfigurationException('Alternatives must be array or path to configuration file.');
             }
         }
 
@@ -224,7 +223,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return $reader->read($path);
     }
 
-    protected function loadDotEnv(Package $package)
+    protected function loadDotEnv(Package $package): void
     {
         $path = $package->preparePath('.env');
         if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
@@ -239,7 +238,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Package $package
      * @param array $files
      */
-    protected function addFiles(Package $package, array $files)
+    protected function addFiles(Package $package, array $files): void
     {
         foreach ($files as $name => $paths) {
             $paths = (array) $paths;
@@ -254,7 +253,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     protected $orderedFiles = [];
 
-    protected function addFile(Package $package, string $name, string $path)
+    protected function addFile(Package $package, string $name, string $path): void
     {
         $path = $package->preparePath($path);
         if (!isset($this->files[$name])) {
@@ -267,8 +266,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             array_unshift($this->orderedFiles, $path);
             array_unshift($this->files[$name], $path);
         } else {
-            array_push($this->orderedFiles, $path);
-            array_push($this->files[$name], $path);
+            $this->orderedFiles[] = $path;
+            $this->files[$name][] = $path;
         }
     }
 
@@ -276,7 +275,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Sets [[packages]].
      * @param Package[] $packages
      */
-    public function setPackages(array $packages)
+    public function setPackages(array $packages): void
     {
         $this->packages = $packages;
     }
@@ -285,7 +284,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Gets [[packages]].
      * @return Package[]
      */
-    public function getPackages()
+    public function getPackages(): array
     {
         if (null === $this->packages) {
             $this->packages = $this->findPackages();
@@ -312,7 +311,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * - childs before parents.
      * @return Package[]
      */
-    public function findPackages()
+    public function findPackages(): array
     {
         $root = new Package($this->composer->getPackage(), $this->composer);
         $this->plainList[$root->getPrettyName()] = $root;
@@ -335,7 +334,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Package $package to iterate
      * @param bool $includingDev process development dependencies, defaults to not process
      */
-    protected function iteratePackage(Package $package, $includingDev = false)
+    protected function iteratePackage(Package $package, bool $includingDev = false): void
     {
         $name = $package->getPrettyName();
 
@@ -343,9 +342,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         static $processed = [];
         if (isset($processed[$name])) {
             return;
-        } else {
-            $processed[$name] = 1;
         }
+
+        $processed[$name] = 1;
 
         /// package depth in dependency hierarchy
         static $depth = 0;
@@ -367,7 +366,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Package $package
      * @param bool $dev which dependencies to iterate: true - dev, default - general
      */
-    protected function iterateDependencies(Package $package, $dev = false)
+    protected function iterateDependencies(Package $package, bool $dev = false): void
     {
         $deps = $dev ? $package->getDevRequires() : $package->getRequires();
         foreach (array_keys($deps) as $target) {
@@ -377,7 +376,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function showDepsTree()
+    protected function showDepsTree(): void
     {
         if (!$this->io->isVerbose()) {
             return;

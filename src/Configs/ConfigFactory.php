@@ -10,14 +10,14 @@ use Yiisoft\Composer\Config\Builder;
  */
 class ConfigFactory
 {
-    private static $knownTypes = [
-        '__rebuild'     => Rebuild::class,
-        '__files'       => System::class,
-        'aliases'       => System::class,
-        'packages'      => System::class,
-        'dotenv'        => DotEnv::class,
-        'params'        => Params::class,
-        'defines'       => Defines::class,
+    private const KNOWN_TYPES = [
+        '__rebuild' => Rebuild::class,
+        '__files' => System::class,
+        'aliases' => System::class,
+        'packages' => System::class,
+        'dotenv' => DotEnv::class,
+        'params' => Params::class,
+        'defines' => Defines::class,
     ];
 
     /**
@@ -27,7 +27,7 @@ class ConfigFactory
      */
     public static function create(Builder $builder, string $name): Config
     {
-        $class = static::$knownTypes[$name] ?? Config::class;
+        $class = self::KNOWN_TYPES[$name] ?? Config::class;
 
         return new $class($builder, $name);
     }
