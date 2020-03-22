@@ -206,9 +206,9 @@ class Config
 
     protected function replaceMarkers(string $content): string
     {
-        $content = str_replace("'" . static::BASE_DIR_MARKER, "\$baseDir . '", $content);
+        $content = str_replace("'" . self::BASE_DIR_MARKER, "\$baseDir . '", $content);
 
-        return str_replace("'?" . static::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
+        return str_replace("'?" . self::BASE_DIR_MARKER, "'?' . \$baseDir . '", $content);
     }
 
     /**
@@ -240,7 +240,7 @@ class Config
     {
         $dir = static::normalizePath($this->getBaseDir());
 
-        return static::substitutePaths($data, $dir, static::BASE_DIR_MARKER);
+        return static::substitutePaths($data, $dir, self::BASE_DIR_MARKER);
     }
 
     /**
