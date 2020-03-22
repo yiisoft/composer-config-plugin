@@ -1,14 +1,5 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
-
-namespace hiqdev\composer\config\utils;
+namespace Yiisoft\Composer\Config\Utils;
 
 use Closure;
 use Riimu\Kit\PHPEncoder\Encoder\Encoder;
@@ -16,7 +7,6 @@ use Opis\Closure\ReflectionClosure;
 
 /**
  * Closure encoder for Riimu Kit-PHPEncoder.
- * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class ClosureEncoder implements Encoder
 {

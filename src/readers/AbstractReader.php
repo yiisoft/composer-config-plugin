@@ -1,22 +1,11 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Readers;
 
-namespace hiqdev\composer\config\readers;
-
-use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\exceptions\FailedReadException;
+use Yiisoft\Composer\Config\Builder;
+use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 
 /**
  * Reader - helper to read data from files of different types.
- *
- * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 abstract class AbstractReader
 {

@@ -3,10 +3,11 @@
 $header = <<<EOF
 Composer plugin for config assembling
 
-@link      https://github.com/hiqdev/composer-config-plugin
+@link      https://github.com/yiisoft/composer-config-plugin
 @package   composer-config-plugin
 @license   BSD-3-Clause
-@copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
+@copyright Copyright (c) 2016-2020, HiQDev (http://hiqdev.com/)
+@copyright Copyright (c) 2020, Yiisoft (https://www.yiiframework.com/)
 EOF;
 
 return PhpCsFixer\Config::create()

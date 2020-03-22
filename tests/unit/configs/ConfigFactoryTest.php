@@ -1,21 +1,12 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Tests\Unit\Configs;
 
-namespace hiqdev\composer\config\tests\unit\configs;
-
-use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\configs\Config;
-use hiqdev\composer\config\configs\ConfigFactory;
-use hiqdev\composer\config\configs\Defines;
-use hiqdev\composer\config\configs\Params;
-use hiqdev\composer\config\configs\System;
+use Yiisoft\Composer\Config\Builder;
+use Yiisoft\Composer\Config\Configs\Config;
+use Yiisoft\Composer\Config\Configs\ConfigFactory;
+use Yiisoft\Composer\Config\Configs\Defines;
+use Yiisoft\Composer\Config\Configs\Params;
+use Yiisoft\Composer\Config\Configs\System;
 
 /**
  * ConfigFactoryTest.

@@ -1,18 +1,9 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
-
-namespace hiqdev\composer\config\tests\unit;
+namespace Yiisoft\Composer\Config\Tests\Unit;
 
 use Composer\Composer;
 use Composer\Config;
-use hiqdev\composer\config\Plugin;
+use Yiisoft\Composer\Config\Plugin;
 
 /**
  * Class PluginTest.

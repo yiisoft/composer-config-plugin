@@ -1,22 +1,12 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Utils;
 
-namespace hiqdev\composer\config\utils;
-
-use hiqdev\composer\config\exceptions\CircularDependencyException;
+use Yiisoft\Composer\Config\Rxceptions\CircularDependencyException;
 
 /**
  * Resolver class.
  * Reorders files according to their cross dependencies
- * and resolves `$name` pathes.
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * and resolves `$name` paths.
  */
 class Resolver
 {

@@ -1,14 +1,5 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
-
-namespace hiqdev\composer\config;
+namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
@@ -16,14 +7,12 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use hiqdev\composer\config\exceptions\BadConfigurationException;
-use hiqdev\composer\config\exceptions\FailedReadException;
-use hiqdev\composer\config\readers\ReaderFactory;
+use Yiisoft\Composer\Config\exceptions\BadConfigurationException;
+use Yiisoft\Composer\Config\exceptions\FailedReadException;
+use Yiisoft\Composer\Config\readers\ReaderFactory;
 
 /**
  * Plugin class.
- *
- * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {

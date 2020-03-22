@@ -1,25 +1,14 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Configs;
 
-namespace hiqdev\composer\config\configs;
-
-use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\exceptions\FailedWriteException;
-use hiqdev\composer\config\utils\Helper;
-use hiqdev\composer\config\readers\ReaderFactory;
+use Yiisoft\Composer\Config\Builder;
+use Yiisoft\Composer\Config\Exceptions\FailedWriteException;
+use Yiisoft\Composer\Config\Utils\Helper;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use ReflectionException;
 
 /**
  * Config class represents output configuration file.
- *
- * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class Config
 {

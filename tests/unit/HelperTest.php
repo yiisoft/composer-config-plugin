@@ -1,9 +1,9 @@
 <?php
 
-namespace hiqdev\composer\config\tests\unit;
+namespace Yiisoft\Composer\Config\Tests\Unit;
 
-use hiqdev\composer\config\utils\Helper;
-use hiqdev\composer\config\utils\RemoveArrayKeys;
+use Yiisoft\Composer\Config\Utils\Helper;
+use Yiisoft\Composer\Config\Utils\RemoveArrayKeys;
 use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase

@@ -1,5 +1,5 @@
 {
-    "name": "hiqdev/composer-config-plugin",
+    "name": "yiisoft/composer-config-plugin",
     "type": "composer-plugin",
     "description": "Composer plugin for config assembling",
     "keywords": [
@@ -8,41 +8,15 @@
         "assembling",
         "plugin"
     ],
-    "homepage": "https://github.com/hiqdev/composer-config-plugin",
+    "homepage": "https://github.com/yiisoft/composer-config-plugin",
     "license": "BSD-3-Clause",
     "support": {
-        "email": "support@hiqdev.com",
-        "source": "https://github.com/hiqdev/composer-config-plugin",
-        "issues": "https://github.com/hiqdev/composer-config-plugin/issues",
-        "wiki": "https://github.com/hiqdev/composer-config-plugin/wiki",
-        "forum": "http://forum.hiqdev.com/"
+        "issues": "https://github.com/yiisoft/composer-config-plugin/issues?state=open",
+        "forum": "https://www.yiiframework.com/forum/",
+        "wiki": "https://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/composer-config-plugin"
     },
-    "authors": [
-        {
-            "name": "Andrii Vasyliev",
-            "role": "Project lead",
-            "email": "sol@hiqdev.com",
-            "homepage": "http://hipanel.com/"
-        },
-        {
-            "name": "Dmitry Naumenko",
-            "role": "Lead backend developer",
-            "email": "d.naumenko.a@gmail.com",
-            "homepage": "http://silverfire.me/"
-        },
-        {
-            "name": "Andrey Klochok",
-            "role": "Lead frontend developer",
-            "email": "andreyklochok@gmail.com",
-            "homepage": "http://hiqdev.com/"
-        },
-        {
-            "name": "Yuriy Myronchuk",
-            "role": "QA Lead",
-            "email": "bladeroot@gmail.com",
-            "homepage": "http://hiqdev.com/"
-        }
-    ],
     "require": {
         "php": ">=7.1",
         "composer-plugin-api": "^1.0",
@@ -59,11 +33,11 @@
     },
     "autoload": {
         "psr-4": {
-            "hiqdev\\composer\\config\\": "src"
+            "Yiisoft\\Composer\\Config\\": "src"
         }
     },
     "extra": {
-        "class": "hiqdev\\composer\\config\\Plugin",
+        "class": "Yiisoft\\Composer\\Config\\Plugin",
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }

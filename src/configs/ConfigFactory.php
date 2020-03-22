@@ -1,22 +1,11 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Configs;
 
-namespace hiqdev\composer\config\configs;
-
-use hiqdev\composer\config\Builder;
+use Yiisoft\Composer\Config\Builder;
 
 /**
  * Config factory creates Config object of proper class
- * according to config name (and mayby other options later).
- *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * according to config name (and maybe other options later).
  */
 class ConfigFactory
 {

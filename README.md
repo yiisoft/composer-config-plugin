@@ -6,12 +6,12 @@
 
 Composer plugin for config assembling.
 
-[![Latest Stable Version](https://poser.pugx.org/hiqdev/composer-config-plugin/v/stable)](https://packagist.org/packages/hiqdev/composer-config-plugin)
-[![Total Downloads](https://poser.pugx.org/hiqdev/composer-config-plugin/downloads)](https://packagist.org/packages/hiqdev/composer-config-plugin)
-[![Build Status](https://img.shields.io/travis/hiqdev/composer-config-plugin.svg)](https://travis-ci.org/hiqdev/composer-config-plugin)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/hiqdev/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/hiqdev/composer-config-plugin/)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hiqdev/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/hiqdev/composer-config-plugin/)
-[![Dependency Status](https://www.versioneye.com/php/hiqdev:composer-config-plugin/dev-master/badge.svg)](https://www.versioneye.com/php/hiqdev:composer-config-plugin/dev-master)
+[![Latest Stable Version](https://poser.pugx.org/yiisoft/composer-config-plugin/v/stable)](https://packagist.org/packages/yiisoft/composer-config-plugin)
+[![Total Downloads](https://poser.pugx.org/yiisoft/composer-config-plugin/downloads)](https://packagist.org/packages/yiisoft/composer-config-plugin)
+[![Build Status](https://img.shields.io/travis/yiisoft/composer-config-plugin.svg)](https://travis-ci.org/yiisoft/composer-config-plugin)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/yiisoft/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/yiisoft/composer-config-plugin.svg)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/)
+[![Dependency Status](https://www.versioneye.com/php/yiisoft:composer-config-plugin/dev-master/badge.svg)](https://www.versioneye.com/php/yiisoft:composer-config-plugin/dev-master)
 
 This [Composer] plugin provides assembling
 of configurations distributed with composer packages.
@@ -34,7 +34,7 @@ How it works?
   in root package have priority over options from included packages. It is described
   below in **File processing order** section.
 - Collected configs are written as PHP files in
-  `vendor/hiqdev/composer-config-plugin-output`
+  `vendor/yiisoft/composer-config-plugin-output`
   directory along with information needed to rebuild configs on demand
 - Then assembled configs are ready to be loaded into application using `require`
 
@@ -48,7 +48,7 @@ How it works?
 ## Installation
 
 ```sh
-composer require "hiqdev/composer-config-plugin"
+composer require "yiisoft/composer-config-plugin"
 ```
 
 Out of the box this plugin supports configs in PHP and JSON formats.
@@ -104,7 +104,7 @@ return [
 To load assembled configs in your application use `require`:
 
 ```php
-$config = require hiqdev\composer\config\Builder::path('web');
+$config = require Yiisoft\Composer\Config\Builder::path('web');
 ```
 
 ### Refreshing config
@@ -125,7 +125,7 @@ If you need to force config rebuildign from your application, you can do it like
 ```php
 // Don't do it in production, assembling takes it's time
 if (ENVIRONMENT === 'dev') {
-    hiqdev\composer\config\Builder::rebuild();
+    Yiisoft\Composer\Config\Builder::rebuild();
 }
 ```
 
@@ -155,10 +155,10 @@ composer dump-autoload --verbose
 Above can be shortened to `composer du -v`.
 
 - You can see the list of configs and files that plugin has detected and uses
-to build configs. It is located in `vendor/hiqdev/composer-config-plugin-output/__files.php`.
+to build configs. It is located in `vendor/yiisoft/composer-config-plugin-output/__files.php`.
 
 - You can see the assembled configs in the output directory which is
-`vendor/hiqdev/composer-config-plugin-output` by default and can be configured
+`vendor/yiisoft/composer-config-plugin-output` by default and can be configured
 with `config-plugin-output-dir` extra option in `composer.json`.
 
 ## Known issues
@@ -187,4 +187,5 @@ return [
 This project is released under the terms of the BSD-3-Clause [license](LICENSE).
 Read more [here](http://choosealicense.com/licenses/bsd-3-clause).
 
-Copyright © 2016-2018, HiQDev (http://hiqdev.com/)
+Copyright © 2016-2020, HiQDev (http://hiqdev.com/)
+Copyright © 2020, Yiisoft (https://www.yiiframework.com/)

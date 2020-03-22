@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use hiqdev\composer\config\Builder;
+use Yiisoft\Composer\Config\Builder;
 
 require_once dirname(dirname(__DIR__)) . '/autoload.php';
 

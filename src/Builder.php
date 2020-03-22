@@ -1,22 +1,11 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config;
 
-namespace hiqdev\composer\config;
-
-use hiqdev\composer\config\configs\ConfigFactory;
-use hiqdev\composer\config\utils\Resolver;
+use Yiisoft\Composer\Config\Configs\ConfigFactory;
+use Yiisoft\Composer\Config\Utils\Resolver;
 
 /**
  * Builder assembles config files.
- *
- * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class Builder
 {
@@ -110,7 +99,7 @@ class Builder
     public static function defaultOutputDir($baseDir = null): string
     {
         if ($baseDir) {
-            $dir = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'hiqdev' . DIRECTORY_SEPARATOR . basename(dirname(__DIR__));
+            $dir = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . basename(dirname(__DIR__));
         } else {
             $dir = \dirname(__DIR__);
         }

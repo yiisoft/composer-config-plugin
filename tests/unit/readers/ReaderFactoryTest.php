@@ -1,21 +1,12 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Tests\Unit\Configs;
 
-namespace hiqdev\composer\config\tests\unit\configs;
-
-use hiqdev\composer\config\Builder;
-use hiqdev\composer\config\readers\EnvReader;
-use hiqdev\composer\config\readers\JsonReader;
-use hiqdev\composer\config\readers\PhpReader;
-use hiqdev\composer\config\readers\ReaderFactory;
-use hiqdev\composer\config\readers\YamlReader;
+use Yiisoft\Composer\Config\Builder;
+use Yiisoft\Composer\Config\readers\EnvReader;
+use Yiisoft\Composer\Config\readers\JsonReader;
+use Yiisoft\Composer\Config\readers\PhpReader;
+use Yiisoft\Composer\Config\readers\ReaderFactory;
+use Yiisoft\Composer\Config\readers\YamlReader;
 
 /**
  * ReaderFactoryTest.

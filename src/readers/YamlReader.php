@@ -1,22 +1,11 @@
 <?php
-/**
- * Composer plugin for config assembling
- *
- * @link      https://github.com/hiqdev/composer-config-plugin
- * @package   composer-config-plugin
- * @license   BSD-3-Clause
- * @copyright Copyright (c) 2016-2018, HiQDev (http://hiqdev.com/)
- */
+namespace Yiisoft\Composer\Config\Readers;
 
-namespace hiqdev\composer\config\readers;
-
-use hiqdev\composer\config\exceptions\UnsupportedFileTypeException;
+use Yiisoft\Composer\Config\exceptions\UnsupportedFileTypeException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlReader - reads YAML files.
- *
- * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class YamlReader extends AbstractReader
 {
