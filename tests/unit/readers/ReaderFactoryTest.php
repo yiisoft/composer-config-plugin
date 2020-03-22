@@ -3,11 +3,11 @@
 namespace Yiisoft\Composer\Config\Tests\Unit\Configs;
 
 use Yiisoft\Composer\Config\Builder;
-use Yiisoft\Composer\Config\readers\EnvReader;
-use Yiisoft\Composer\Config\readers\JsonReader;
-use Yiisoft\Composer\Config\readers\PhpReader;
-use Yiisoft\Composer\Config\readers\ReaderFactory;
-use Yiisoft\Composer\Config\readers\YamlReader;
+use Yiisoft\Composer\Config\Readers\EnvReader;
+use Yiisoft\Composer\Config\Readers\JsonReader;
+use Yiisoft\Composer\Config\Readers\PhpReader;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
+use Yiisoft\Composer\Config\Readers\YamlReader;
 
 /**
  * ReaderFactoryTest.
