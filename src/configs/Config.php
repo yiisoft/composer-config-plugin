@@ -12,8 +12,8 @@ use ReflectionException;
  */
 class Config
 {
-    const UNIX_DS = '/';
-    const BASE_DIR_MARKER = '<<<base-dir>>>';
+    private const UNIX_DS = '/';
+    private const BASE_DIR_MARKER = '<<<base-dir>>>';
 
     /**
      * @var string config name
@@ -41,7 +41,7 @@ class Config
         $this->name = $name;
     }
 
-    public function clone(Builder $builder)
+    public function clone(Builder $builder): self
     {
         $config = new Config($builder, $this->name);
         $config->sources = $this->sources;
@@ -185,7 +185,7 @@ class Config
         return !in_array(static::class, [System::class, DotEnv::class, Defines::class, Params::class], true);
     }
 
-    private function findDepth()
+    private function findDepth(): int
     {
         $outDir = dirname(self::normalizePath($this->getOutputPath()));
         $diff = substr($outDir, strlen($this->getBaseDir()));

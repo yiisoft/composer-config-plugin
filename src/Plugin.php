@@ -73,7 +73,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Returns list of events the plugin is subscribed to.
      * @return array list of events
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ScriptEvents::POST_AUTOLOAD_DUMP => [
@@ -86,7 +86,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * This is the main function.
      * @param Event $event
      */
-    public function onPostAutoloadDump(Event $event)
+    public function onPostAutoloadDump(Event $event): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
@@ -111,13 +111,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function initAutoload()
+    protected function initAutoload(): void
     {
-        $dir = dirname(dirname(dirname(__DIR__)));
+        $dir = dirname(__DIR__, 3);
         require_once "$dir/autoload.php";
     }
 
-    protected function scanPackages()
+    protected function scanPackages(): void
     {
         foreach ($this->getPackages() as $package) {
             if ($package->isComplete()) {

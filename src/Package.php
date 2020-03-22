@@ -12,10 +12,10 @@ use Composer\Util\Filesystem;
  */
 class Package
 {
-    const EXTRA_FILES_OPTION_NAME           = 'config-plugin';
-    const EXTRA_DEV_FILES_OPTION_NAME       = 'config-plugin-dev';
-    const EXTRA_OUTPUT_DIR_OPTION_NAME      = 'config-plugin-output-dir';
-    const EXTRA_ALTERNATIVES_OPTION_NAME    = 'config-plugin-alternatives';
+    public const EXTRA_FILES_OPTION_NAME           = 'config-plugin';
+    public const EXTRA_DEV_FILES_OPTION_NAME       = 'config-plugin-dev';
+    public const EXTRA_OUTPUT_DIR_OPTION_NAME      = 'config-plugin-output-dir';
+    public const EXTRA_ALTERNATIVES_OPTION_NAME    = 'config-plugin-alternatives';
 
     private $options = ['output-dir', 'alternatives'];
 
@@ -75,7 +75,7 @@ class Package
      * @param bool $dev
      * @return array
      */
-    protected function prepareAliases($psr, $dev = false)
+    protected function prepareAliases(string $psr, bool $dev = false): array
     {
         $autoload = $dev ? $this->getDevAutoload() : $this->getAutoload();
         if (empty($autoload[$psr])) {
@@ -312,7 +312,7 @@ class Package
      * Get absolute path to package base dir.
      * @return string
      */
-    public function getBaseDir()
+    public function getBaseDir(): string
     {
         if (null === $this->baseDir) {
             $this->baseDir = dirname($this->getVendorDir());
@@ -325,7 +325,7 @@ class Package
      * Get absolute path to composer vendor dir.
      * @return string
      */
-    public function getVendorDir()
+    public function getVendorDir(): string
     {
         if (null === $this->vendorDir) {
             $dir = $this->composer->getConfig()->get('vendor-dir');
@@ -339,7 +339,7 @@ class Package
      * Getter for filesystem utility.
      * @return Filesystem
      */
-    public function getFilesystem()
+    public function getFilesystem(): Filesystem
     {
         if (null === $this->filesystem) {
             $this->filesystem = new Filesystem();

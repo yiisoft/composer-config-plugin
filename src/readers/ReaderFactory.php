@@ -34,7 +34,7 @@ class ReaderFactory
         return static::$loaders[$uniqid];
     }
 
-    public static function detectType($path)
+    public static function detectType($path): string
     {
         if (strncmp(basename($path), '.env.', 5) === 0) {
             return 'env';
@@ -43,7 +43,7 @@ class ReaderFactory
         return pathinfo($path, PATHINFO_EXTENSION);
     }
 
-    public static function findClass($type)
+    public static function findClass(string $type): string
     {
         if (empty(static::$knownReaders[$type])) {
             throw new UnsupportedFileTypeException("unsupported file type: $type");

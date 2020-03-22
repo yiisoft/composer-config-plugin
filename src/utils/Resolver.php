@@ -1,7 +1,8 @@
 <?php
 namespace Yiisoft\Composer\Config\Utils;
 
-use Yiisoft\Composer\Config\Rxceptions\CircularDependencyException;
+use Yiisoft\Composer\Config\Builder;
+use Yiisoft\Composer\Config\Exceptions\CircularDependencyException;
 
 /**
  * Resolver class.

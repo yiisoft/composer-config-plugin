@@ -15,16 +15,11 @@ class Builder
     protected $outputDir;
 
     /**
-     * @var array collected variables
-     */
-    protected $vars = [];
-
-    /**
      * @var array configurations
      */
     protected $configs = [];
 
-    const OUTPUT_DIR_SUFFIX = '-output';
+    private const OUTPUT_DIR_SUFFIX = '-output';
 
     public function __construct($outputDir = null)
     {
@@ -93,10 +88,10 @@ class Builder
 
     /**
      * Returns default output dir.
-     * @param string $vendor path to vendor dir
+     * @param string $baseDir path to base directory
      * @return string
      */
-    public static function defaultOutputDir($baseDir = null): string
+    public static function defaultOutputDir(string $baseDir = null): string
     {
         if ($baseDir) {
             $dir = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . basename(dirname(__DIR__));
@@ -113,7 +108,7 @@ class Builder
      * @param string $baseDir path to base dir
      * @return string absolute path
      */
-    public static function path($filename, $baseDir = null)
+    public static function path(string $filename, string $baseDir = null): string
     {
         return static::buildAbsPath(static::findOutputDir($baseDir), $filename . '.php');
     }
@@ -148,7 +143,7 @@ class Builder
         return $files;
     }
 
-    public function buildSystemConfigs(array $files)
+    public function buildSystemConfigs(array $files): void
     {
         $this->getConfig('__files')->setValues($files);
         foreach (['__rebuild', '__files', 'aliases', 'packages'] as $name) {
@@ -156,7 +151,7 @@ class Builder
         }
     }
 
-    public function getOutputPath($name)
+    public function getOutputPath($name): string
     {
         return $this->outputDir . DIRECTORY_SEPARATOR . $name . '.php';
     }
@@ -188,7 +183,7 @@ class Builder
         return $config->getValues()[$key] ?? null;
     }
 
-    public function getVars()
+    public function getVars(): array
     {
         $vars = [];
         foreach ($this->configs as $name => $config) {
@@ -198,12 +193,12 @@ class Builder
         return $vars;
     }
 
-    public function mergeAliases(array $aliases)
+    public function mergeAliases(array $aliases): void
     {
         $this->getConfig('aliases')->mergeValues($aliases);
     }
 
-    public function setPackage(string $name, array $data)
+    public function setPackage(string $name, array $data): void
     {
         $this->getConfig('packages')->setValue($name, $data);
     }

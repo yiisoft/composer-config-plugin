@@ -10,25 +10,16 @@ use Opis\Closure\ReflectionClosure;
  */
 class ClosureEncoder implements Encoder
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($value)
+    public function supports($value): bool
     {
         return $value instanceof Closure;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function encode($value, $depth, array $options, callable $encode)
     {
         return (new ReflectionClosure($value))->getCode();

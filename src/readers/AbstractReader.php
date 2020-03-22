@@ -24,7 +24,7 @@ abstract class AbstractReader
         return $this->builder;
     }
 
-    public function read($path)
+    public function read($path): array
     {
         $skippable = 0 === strncmp($path, '?', 1) ? '?' : '';
         if ($skippable) {
@@ -44,7 +44,7 @@ abstract class AbstractReader
         return [];
     }
 
-    public function getFileContents($path)
+    public function getFileContents($path): string
     {
         $res = file_get_contents($path);
         if (false === $res) {
