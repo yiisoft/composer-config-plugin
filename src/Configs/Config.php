@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config\Configs;
 
 use Yiisoft\Composer\Config\Builder;
@@ -96,7 +97,7 @@ class Config
 
     protected function glob(string $path): array
     {
-        if (strpos($path, '*') === FALSE) {
+        if (strpos($path, '*') === false) {
             return [$path];
         }
 

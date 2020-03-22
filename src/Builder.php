@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config;
 
 use Yiisoft\Composer\Config\Configs\ConfigFactory;

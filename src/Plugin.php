@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
@@ -221,7 +222,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $reader = ReaderFactory::get($this->builder, $path);
 
         return $reader->read($path);
-
     }
 
     protected function loadDotEnv(Package $package)

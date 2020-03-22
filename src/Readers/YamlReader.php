@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config\Readers;
 
 use Yiisoft\Composer\Config\exceptions\UnsupportedFileTypeException;

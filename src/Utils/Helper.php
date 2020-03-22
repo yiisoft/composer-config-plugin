@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config\Utils;
 
 use Riimu\Kit\PHPEncoder\PHPEncoder;
@@ -28,7 +29,7 @@ class Helper
                     $res[$k] = $v->value;
                 } elseif (\is_int($k)) {
                     /// XXX skip repeated values
-                    if (\in_array($v, $res, true))  {
+                    if (\in_array($v, $res, true)) {
                         continue;
                     }
                     if (isset($res[$k])) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
@@ -60,7 +61,8 @@ class Package
             $this->prepareAliases('psr-4')
         );
         if ($this->isRoot()) {
-            $aliases = array_merge($aliases,
+            $aliases = array_merge(
+                $aliases,
                 $this->prepareAliases('psr-0', true),
                 $this->prepareAliases('psr-4', true)
             );

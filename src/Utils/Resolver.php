@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config\Utils;
 
 use Yiisoft\Composer\Config\Builder;

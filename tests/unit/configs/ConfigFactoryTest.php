@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Composer\Config\Tests\Unit\Configs;
 
 use Yiisoft\Composer\Config\Builder;
@@ -19,10 +20,10 @@ class ConfigFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $this->builder = new Builder();
 
-        $this->checkCreate('common',    Config::class);
-        $this->checkCreate('defines',   Defines::class);
-        $this->checkCreate('params',    Params::class);
-        $this->checkCreate('__files',   System::class);
+        $this->checkCreate('common', Config::class);
+        $this->checkCreate('defines', Defines::class);
+        $this->checkCreate('params', Params::class);
+        $this->checkCreate('__files', System::class);
     }
 
     public function checkCreate(string $name, string $class)
