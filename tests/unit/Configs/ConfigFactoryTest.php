@@ -13,7 +13,7 @@ use Yiisoft\Composer\Config\Configs\System;
 /**
  * ConfigFactoryTest.
  */
-class ConfigFactoryTest extends TestCase
+final class ConfigFactoryTest extends TestCase
 {
     protected $builder;
 

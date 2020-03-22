@@ -22,10 +22,10 @@ class ReaderFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->checkGet('.env', EnvReader::class);
         $this->checkGet('.json', JsonReader::class);
-        $yml    = $this->checkGet('.yml', YamlReader::class);
-        $yaml   = $this->checkGet('.yaml', YamlReader::class);
-        $php    = $this->checkGet('.php', PhpReader::class);
-        $php2   = $this->checkGet('.php', PhpReader::class);
+        $yml = $this->checkGet('.yml', YamlReader::class);
+        $yaml = $this->checkGet('.yaml', YamlReader::class);
+        $php = $this->checkGet('.php', PhpReader::class);
+        $php2 = $this->checkGet('.php', PhpReader::class);
 
         $this->assertSame($php, $php2);
         $this->assertSame($yml, $yaml);
