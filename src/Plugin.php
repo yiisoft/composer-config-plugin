@@ -86,13 +86,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * This is the main function.
      */
-    public function onPostAutoloadDump(): void
+    public function onPostAutoloadDump(Event $event): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
         $this->builder = new Builder();
 
-        $this->initAutoload();
+        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
         $this->scanPackages();
         $this->reorderFiles();
         $this->showDepsTree();
@@ -109,12 +109,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->addFiles($this->rootPackage, $files);
             $builder->buildAllConfigs($this->files);
         }
-    }
-
-    protected function initAutoload(): void
-    {
-        $dir = dirname(__DIR__, 3);
-        require_once "$dir/autoload.php";
     }
 
     protected function scanPackages(): void

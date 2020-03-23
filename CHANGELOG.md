@@ -2,7 +2,8 @@
 
 ## 1.0.0 under development
 
-- Changed namespace to `Yiisoft/Composer/Config` (sadmark)
+- Chg: Changed namespace to `Yiisoft/Composer/Config` (sadmark)
+- Fix #1: Use Composer to determine vendor directory (roxblnfk)
 
 ## [0.4.0] - 2020-03-08
 
