@@ -7,4 +7,18 @@ namespace Yiisoft\Composer\Config\Configs;
  */
 class DotEnv extends Config
 {
+    public function hasEnv(): bool
+    {
+        return true;
+    }
+
+    public function hasConstants(): bool
+    {
+        return true;
+    }
+
+    public function hasParams(): bool
+    {
+        return true;
+    }
 }

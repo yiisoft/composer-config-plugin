@@ -20,7 +20,14 @@ class ReaderFactory
         'yml' => YamlReader::class,
     ];
 
-    public static function get(Builder $builder, $path): ReaderInterface
+    private Builder $builder;
+
+    public function __construct(Builder $builder)
+    {
+        $this->builder = $builder;
+    }
+
+    public static function get(Builder $builder, string $path): ReaderInterface
     {
         $type = static::detectType($path);
         $class = static::findClass($type);
@@ -32,7 +39,7 @@ class ReaderFactory
         return self::$loaders[$class];
     }
 
-    public static function detectType($path): string
+    private static function detectType(string $path): string
     {
         if (strncmp(basename($path), '.env.', 5) === 0) {
             return 'env';
@@ -41,19 +48,19 @@ class ReaderFactory
         return pathinfo($path, PATHINFO_EXTENSION);
     }
 
-    public static function findClass(string $type): string
-    {
-        if (empty(static::$knownReaders[$type])) {
-            throw new UnsupportedFileTypeException("unsupported file type: $type");
-        }
-
-        return static::$knownReaders[$type];
-    }
-
-    public static function create(Builder $builder, $type)
+    private static function create(Builder $builder, string $type): ReaderInterface
     {
         $class = static::findClass($type);
 
         return new $class($builder);
+    }
+
+    private static function findClass(string $type): string
+    {
+        if (!array_key_exists($type, static::$knownReaders)) {
+            throw new UnsupportedFileTypeException("Unsupported file type: \"$type\"");
+        }
+
+        return static::$knownReaders[$type];
     }
 }

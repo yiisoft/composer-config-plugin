@@ -28,7 +28,7 @@ class Builder
 
     private ConfigFactory $configFactory;
 
-    public function __construct(ConfigFactory $configFactory, $outputDir = null)
+    public function __construct(ConfigFactory $configFactory, string $outputDir = null)
     {
         $this->configFactory = $configFactory;
         $this->setOutputDir($outputDir);
