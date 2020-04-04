@@ -17,7 +17,7 @@ class ConfigFactory
         'packages' => System::class,
         'envs' => Envs::class,
         'params' => Params::class,
-        'defines' => Defines::class,
+        'constants' => Constants::class,
     ];
 
     public function create(Builder $builder, string $name): Config
