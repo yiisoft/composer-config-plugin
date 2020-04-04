@@ -13,7 +13,6 @@ use Yiisoft\Composer\Config\Utils\Helper;
  */
 class Config
 {
-    private const UNIX_DS = '/';
     private const BASE_DIR_MARKER = '<<<base-dir>>>';
 
     /**
@@ -63,7 +62,7 @@ class Config
         return $this;
     }
 
-    protected function loadFiles(array $paths): array
+    private function loadFiles(array $paths): array
     {
         switch (count($paths)) {
             case 0:
@@ -85,7 +84,7 @@ class Config
         return $configs;
     }
 
-    protected function glob(string $path): array
+    private function glob(string $path): array
     {
         if (strpos($path, '*') === false) {
             return [$path];
@@ -168,10 +167,10 @@ class Config
 
     private function findDepth(): int
     {
-        $outDir = dirname(self::normalizePath($this->getOutputPath()));
+        $outDir = dirname($this->normalizePath($this->getOutputPath()));
         $diff = substr($outDir, strlen($this->getBaseDir()));
 
-        return substr_count($diff, self::UNIX_DS);
+        return substr_count($diff, DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -179,12 +178,12 @@ class Config
      * @return string
      * @throws ReflectionException
      */
-    protected function renderVars(array $vars): string
+    private function renderVars(array $vars): string
     {
         return 'return ' . Helper::exportVar($vars) . ';';
     }
 
-    protected function replaceMarkers(string $content): string
+    private function replaceMarkers(string $content): string
     {
         return str_replace(
             ["'" . self::BASE_DIR_MARKER, "'?" . self::BASE_DIR_MARKER],
@@ -199,11 +198,11 @@ class Config
      * @param array $data
      * @return array
      */
-    public function substituteOutputDirs(array $data): array
+    protected function substituteOutputDirs(array $data): array
     {
-        $dir = static::normalizePath($this->getBaseDir());
+        $dir = $this->normalizePath($this->getBaseDir());
 
-        return static::substitutePaths($data, $dir, self::BASE_DIR_MARKER);
+        return $this->substitutePaths($data, $dir, self::BASE_DIR_MARKER);
     }
 
     /**
@@ -214,7 +213,7 @@ class Config
      * @param string $ds directory separator
      * @return string
      */
-    public static function normalizePath($path): string
+    private function normalizePath($path): string
     {
         return rtrim(strtr($path, '/\\', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
     }
@@ -227,13 +226,13 @@ class Config
      * @param string $alias
      * @return array
      */
-    public static function substitutePaths($data, $dir, $alias): array
+    private function substitutePaths($data, $dir, $alias): array
     {
         foreach ($data as &$value) {
             if (is_string($value)) {
-                $value = static::substitutePath($value, $dir, $alias);
+                $value = $this->substitutePath($value, $dir, $alias);
             } elseif (is_array($value)) {
-                $value = static::substitutePaths($value, $dir, $alias);
+                $value = $this->substitutePaths($value, $dir, $alias);
             }
         }
 
@@ -248,7 +247,7 @@ class Config
      * @param string $alias
      * @return string
      */
-    protected static function substitutePath($path, $dir, $alias): string
+    private function substitutePath($path, $dir, $alias): string
     {
         $end = $dir . DIRECTORY_SEPARATOR;
         $skippable = 0 === strncmp($path, '?', 1);
@@ -266,12 +265,12 @@ class Config
         return ($skippable ? '?' : '') . $result;
     }
 
-    public function getBaseDir(): string
+    private function getBaseDir(): string
     {
         return dirname(__DIR__, 5);
     }
 
-    public function getOutputPath(string $name = null): string
+    protected function getOutputPath(string $name = null): string
     {
         return $this->builder->getOutputPath($name ?: $this->name);
     }
