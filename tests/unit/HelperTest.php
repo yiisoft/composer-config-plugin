@@ -2,9 +2,9 @@
 
 namespace Yiisoft\Composer\Config\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Composer\Config\Utils\Helper;
 use Yiisoft\Composer\Config\Utils\RemoveArrayKeys;
-use PHPUnit\Framework\TestCase;
 
 class HelperTest extends TestCase
 {
@@ -15,9 +15,11 @@ class HelperTest extends TestCase
             return $params['test'];
         };
 
-        $exportedClosure = Helper::exportVar($closure);
+        $helper = new Helper();
+        $exportedClosure = $helper->exportVar($closure);
 
-        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }", $exportedClosure);
+        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }",
+            $exportedClosure);
     }
 
     private function assertSameWithoutLE($expected, $actual, string $message = ''): void
@@ -43,6 +45,7 @@ class HelperTest extends TestCase
         unset($fixed['c']['remove']);
         $fixed['c'] = array_values($fixed['c']);
 
-        $this->assertEquals($fixed, Helper::fixConfig($config));
+        $helper = new Helper();
+        $this->assertEquals($fixed, $helper->fixConfig($config));
     }
 }

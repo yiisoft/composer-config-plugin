@@ -128,8 +128,9 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
-        $values = Helper::fixConfig($values);
+        $helper = new Helper();
+        $values = $helper->mergeConfig(...$sources);
+        $values = $helper->fixConfig($values);
 
         return $this->substituteOutputDirs($values);
     }
@@ -181,7 +182,9 @@ class Config
      */
     protected function renderVars(array $vars): string
     {
-        return 'return ' . Helper::exportVar($vars) . ';';
+        $helper = new Helper();
+
+        return 'return ' . $helper->exportVar($vars) . ';';
     }
 
     protected function replaceMarkers(string $content): string
