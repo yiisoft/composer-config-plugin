@@ -2,35 +2,42 @@
 
 namespace Yiisoft\Composer\Config;
 
+use JsonException;
+use Yiisoft\Composer\Config\Configs\Config;
 use Yiisoft\Composer\Config\Configs\ConfigFactory;
 use Yiisoft\Composer\Config\Utils\Resolver;
+
+use function dirname;
 
 /**
  * Builder assembles config files.
  */
 class Builder
 {
+    private const OUTPUT_DIR_SUFFIX = '-output';
+
     /**
      * @var string path to output assembled configs
      */
-    protected $outputDir;
+    private string $outputDir;
 
     /**
-     * @var array configurations
+     * @var Config[] configurations
      */
-    protected $configs = [];
+    private array $configs = [];
 
-    private const OUTPUT_DIR_SUFFIX = '-output';
+    private ConfigFactory $configFactory;
 
-    public function __construct($outputDir = null)
+    public function __construct(ConfigFactory $configFactory, $outputDir = null)
     {
+        $this->configFactory = $configFactory;
         $this->setOutputDir($outputDir);
     }
 
     public function createAlternative($name): Builder
     {
         $dir = $this->outputDir . DIRECTORY_SEPARATOR . $name;
-        $alt = new static($dir);
+        $alt = new static($this->configFactory, $dir);
         foreach (['aliases', 'packages'] as $key) {
             $alt->configs[$key] = $this->getConfig($key)->clone($alt);
         }
@@ -38,41 +45,33 @@ class Builder
         return $alt;
     }
 
-    public function setOutputDir($outputDir)
+    public function setOutputDir(?string $outputDir): void
     {
         $this->outputDir = $outputDir
             ? static::buildAbsPath($this->getBaseDir(), $outputDir)
             : static::findOutputDir();
     }
 
-    public function getBaseDir(): string
+    private function getBaseDir(): string
     {
         return dirname(__DIR__, 4);
     }
 
-    public function getOutputDir(): string
+    public static function rebuild(string $outputDir = null): void
     {
-        return $this->outputDir;
-    }
-
-    public static function rebuild($outputDir = null)
-    {
-        $builder = new self($outputDir);
+        $builder = new self(new ConfigFactory(), $outputDir);
         $files = $builder->getConfig('__files')->load();
         $builder->buildUserConfigs($files->getValues());
     }
 
-    public function rebuildUserConfigs()
-    {
-        $this->getConfig('__files')->load();
-    }
-
     /**
      * Returns default output dir.
+     *
      * @param string $baseDir path to project base dir
      * @return string
+     * @throws JsonException
      */
-    public static function findOutputDir(string $baseDir = null): string
+    private static function findOutputDir(string $baseDir = null): string
     {
         $baseDir = $baseDir ?: static::findBaseDir();
         $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
@@ -82,22 +81,23 @@ class Builder
         return $dir ? static::buildAbsPath($baseDir, $dir) : static::defaultOutputDir($baseDir);
     }
 
-    public static function findBaseDir(): string
+    private static function findBaseDir(): string
     {
         return dirname(__DIR__, 4);
     }
 
     /**
      * Returns default output dir.
+     *
      * @param string $baseDir path to base directory
      * @return string
      */
-    public static function defaultOutputDir(string $baseDir = null): string
+    private static function defaultOutputDir(string $baseDir = null): string
     {
         if ($baseDir) {
             $dir = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . basename(dirname(__DIR__));
         } else {
-            $dir = \dirname(__DIR__);
+            $dir = dirname(__DIR__);
         }
 
         return $dir . static::OUTPUT_DIR_SUFFIX;
@@ -105,25 +105,28 @@ class Builder
 
     /**
      * Returns full path to assembled config file.
+     *
      * @param string $filename name of config
      * @param string $baseDir path to base dir
      * @return string absolute path
+     * @throws JsonException
      */
     public static function path(string $filename, string $baseDir = null): string
     {
         return static::buildAbsPath(static::findOutputDir($baseDir), $filename . '.php');
     }
 
-    public static function buildAbsPath(string $dir, string $file): string
+    private static function buildAbsPath(string $dir, string $file): string
     {
         return strncmp($file, DIRECTORY_SEPARATOR, 1) === 0 ? $file : $dir . DIRECTORY_SEPARATOR . $file;
     }
 
     /**
      * Builds all (user and system) configs by given files list.
+     *
      * @param null|array $files files to process: config name => list of files
      */
-    public function buildAllConfigs(array $files)
+    public function buildAllConfigs(array $files): void
     {
         $this->buildUserConfigs($files);
         $this->buildSystemConfigs($files);
@@ -131,9 +134,11 @@ class Builder
 
     /**
      * Builds configs by given files list.
+     *
      * @param null|array $files files to process: config name => list of files
+     * @return array
      */
-    public function buildUserConfigs(array $files): array
+    private function buildUserConfigs(array $files): array
     {
         $resolver = new Resolver($files);
         $files = $resolver->get();
@@ -144,7 +149,7 @@ class Builder
         return $files;
     }
 
-    public function buildSystemConfigs(array $files): void
+    private function buildSystemConfigs(array $files): void
     {
         $this->getConfig('__files')->setValues($files);
         foreach (['__rebuild', '__files', 'aliases', 'packages'] as $name) {
@@ -157,9 +162,9 @@ class Builder
         return $this->outputDir . DIRECTORY_SEPARATOR . $name . '.php';
     }
 
-    protected function createConfig($name)
+    private function createConfig($name): Config
     {
-        $config = ConfigFactory::create($this, $name);
+        $config = $this->configFactory->create($this, $name);
         $this->configs[$name] = $config;
 
         return $config;
@@ -172,16 +177,6 @@ class Builder
         }
 
         return $this->configs[$name];
-    }
-
-    public function getVar($name, $key)
-    {
-        $config = $this->configs[$name] ?? null;
-        if (empty($config)) {
-            return null;
-        }
-
-        return $config->getValues()[$key] ?? null;
     }
 
     public function getVars(): array

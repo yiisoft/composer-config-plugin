@@ -2,11 +2,11 @@
 
 namespace Yiisoft\Composer\Config\Configs;
 
+use ReflectionException;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\Exceptions\FailedWriteException;
-use Yiisoft\Composer\Config\Utils\Helper;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
-use ReflectionException;
+use Yiisoft\Composer\Config\Utils\Helper;
 
 /**
  * Config class represents output configuration file.
@@ -49,11 +49,6 @@ class Config
         $config->values = $this->values;
 
         return $config;
-    }
-
-    public function getBuilder(): Builder
-    {
-        return $this->builder;
     }
 
     public function getName(): string
@@ -303,11 +298,6 @@ class Config
     public function getBaseDir(): string
     {
         return dirname(__DIR__, 5);
-    }
-
-    public function getOutputDir(): string
-    {
-        return $this->builder->getOutputDir();
     }
 
     public function getOutputPath(string $name = null): string

@@ -15,23 +15,19 @@ use Yiisoft\Composer\Config\Configs\System;
  */
 final class ConfigFactoryTest extends TestCase
 {
-    protected $builder;
-
     public function testCreate(): void
     {
-        $this->builder = new Builder();
+        $factory = new ConfigFactory();
 
-        $this->checkCreate('common', Config::class);
-        $this->checkCreate('defines', Defines::class);
-        $this->checkCreate('params', Params::class);
-        $this->checkCreate('__files', System::class);
+        $this->checkCreate($factory, 'common', Config::class);
+        $this->checkCreate($factory, 'defines', Defines::class);
+        $this->checkCreate($factory, 'params', Params::class);
+        $this->checkCreate($factory, '__files', System::class);
     }
 
-    public function checkCreate(string $name, string $class): void
+    public function checkCreate(ConfigFactory $configFactory, string $name, string $class): void
     {
-        $config = ConfigFactory::create($this->builder, $name);
+        $config = $configFactory->create($this->createMock(Builder::class), $name);
         $this->assertInstanceOf($class, $config);
-        $this->assertSame($this->builder, $config->getBuilder());
-        $this->assertSame($name, $config->getName());
     }
 }

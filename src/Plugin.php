@@ -9,6 +9,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
+use Yiisoft\Composer\Config\Configs\ConfigFactory;
 use Yiisoft\Composer\Config\exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
@@ -72,7 +73,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->builder = new Builder();
+        $this->builder = new Builder(new ConfigFactory());
         $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->composer = $composer;

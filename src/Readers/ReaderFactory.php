@@ -10,29 +10,26 @@ use Yiisoft\Composer\Config\Exceptions\UnsupportedFileTypeException;
  */
 class ReaderFactory
 {
-    private static $loaders;
+    private static array $loaders = [];
 
-    protected static $knownReaders = [
-        'env'   => EnvReader::class,
-        'php'   => PhpReader::class,
-        'json'  => JsonReader::class,
-        'yaml'  => YamlReader::class,
-        'yml'   => YamlReader::class,
+    private static array $knownReaders = [
+        'env' => EnvReader::class,
+        'php' => PhpReader::class,
+        'json' => JsonReader::class,
+        'yaml' => YamlReader::class,
+        'yml' => YamlReader::class,
     ];
 
-    public static function get(Builder $builder, $path)
+    public static function get(Builder $builder, $path): ReaderInterface
     {
         $type = static::detectType($path);
         $class = static::findClass($type);
 
-        #return static::create($builder, $type);
-
-        $uniqid = $class . ':' . spl_object_hash($builder);
-        if (empty(self::$loaders[$uniqid])) {
-            self::$loaders[$uniqid] = static::create($builder, $type);
+        if (!array_key_exists($class, self::$loaders)) {
+            self::$loaders[$class] = static::create($builder, $type);
         }
 
-        return self::$loaders[$uniqid];
+        return self::$loaders[$class];
     }
 
     public static function detectType($path): string
