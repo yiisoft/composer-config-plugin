@@ -47,19 +47,4 @@ class System extends Config
 
         return $this;
     }
-
-    public function envRequires(): bool
-    {
-        return true;
-    }
-
-    public function constantsRequires(): bool
-    {
-        return true;
-    }
-
-    public function paramsRequires(): bool
-    {
-        return true;
-    }
 }
