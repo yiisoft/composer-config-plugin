@@ -14,7 +14,7 @@ class Params extends Config
 
     protected function pushEnvVars($vars): array
     {
-        $env = $this->builder->getConfig('dotenv')->getValues();
+        $env = $this->builder->getConfig('envs')->getValues();
         if (!empty($vars)) {
             foreach ($vars as $key => &$value) {
                 if (is_array($value)) {

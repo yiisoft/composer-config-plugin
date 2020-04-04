@@ -15,7 +15,7 @@ class ConfigFactory
         '__files' => System::class,
         'aliases' => System::class,
         'packages' => System::class,
-        'dotenv' => DotEnv::class,
+        'envs' => Envs::class,
         'params' => Params::class,
         'defines' => Defines::class,
     ];
