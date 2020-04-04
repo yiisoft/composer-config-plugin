@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Package;
 
-use Composer\Composer;
+use Composer\Package\PackageInterface;
 use Yiisoft\Composer\Config\Package;
 
 class PackageFinder
@@ -21,11 +21,20 @@ class PackageFinder
      */
     protected array $orderedList = [];
 
-    private Composer $composer;
+    private PackageInterface $rootPackage;
 
-    public function __construct(Composer $composer)
+    /**
+     * @var PackageInterface[]
+     */
+    private array $packages;
+
+    private string $vendorDir;
+
+    public function __construct(string $vendorDir, PackageInterface $rootPackage, array $packages)
     {
-        $this->composer = $composer;
+        $this->rootPackage = $rootPackage;
+        $this->packages = $packages;
+        $this->vendorDir = $vendorDir;
     }
 
     /**
@@ -37,10 +46,10 @@ class PackageFinder
      */
     public function findPackages(): array
     {
-        $root = new Package($this->composer->getPackage(), $this->composer);
+        $root = new Package($this->rootPackage, $this->vendorDir);
         $this->plainList[$root->getPrettyName()] = $root;
-        foreach ($this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages() as $package) {
-            $this->plainList[$package->getPrettyName()] = new Package($package, $this->composer);
+        foreach ($this->packages as $package) {
+            $this->plainList[$package->getPrettyName()] = new Package($package, $this->vendorDir);
         }
         $this->orderedList = [];
         $this->iteratePackage($root, true);
