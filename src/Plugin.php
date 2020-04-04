@@ -24,7 +24,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var Package[] the array of active composer packages
      */
-    private array $packages = [];
+    private array $packages;
 
     private array $alternatives = [];
 
@@ -38,6 +38,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     private array $files = [
         'envs' => [],
         'params' => [],
+        'constants' => [],
     ];
 
     /**
@@ -45,22 +46,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     private array $originalFiles = [];
 
-    /**
-     * @var Builder
-     */
     private Builder $builder;
 
-    /**
-     * @var Composer instance
-     */
     private Composer $composer;
 
-    /**
-     * @var IOInterface
-     */
     private IOInterface $io;
-
-    private PackageFinder $packageFinder;
 
     private AliasesCollector $aliasesCollector;
 
@@ -72,15 +62,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->builder = new Builder(new ConfigFactory());
-        $this->packageFinder = new PackageFinder($composer);
-        $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->composer = $composer;
         $this->io = $io;
+        $this->builder = new Builder(new ConfigFactory());
+
+        $this->packages = $this->collectPackages();
+        $this->aliasesCollector = new AliasesCollector(new Filesystem());
     }
 
     /**
      * Returns list of events the plugin is subscribed to.
+     *
      * @return array list of events
      */
     public static function getSubscribedEvents(): array
@@ -100,7 +92,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io->overwriteError('<info>Assembling config files</info>');
 
         require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
-        $this->scanPackages();
+        $this->processPackages();
         $this->reorderFiles();
 
         $this->builder->setOutputDir($this->outputDir);
@@ -117,9 +109,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    private function scanPackages(): void
+    private function processPackages(): void
     {
-        foreach ($this->getPackages() as $package) {
+        foreach ($this->packages as $package) {
             if ($package->isComplete()) {
                 $this->processPackage($package);
             }
@@ -139,7 +131,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     private function getAllFiles(string $name, array $stack = []): array
     {
         if (empty($this->files[$name])) {
-            return[];
+            return [];
         }
         $res = [];
         foreach ($this->files[$name] as $file) {
@@ -157,13 +149,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     private function orderFiles(array $files): array
     {
-        if (empty($files)) {
+        if ($files === []) {
             return [];
         }
         $keys = array_combine($files, $files);
         $res = [];
         foreach ($this->orderedFiles as $file) {
-            if (isset($keys[$file])) {
+            if (array_key_exists($file, $keys)) {
                 $res[$file] = $file;
             }
         }
@@ -173,9 +165,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Scans the given package and collects packages data.
+     *
      * @param Package $package
      */
-    private function processPackage(Package $package)
+    private function processPackage(Package $package): void
     {
         $files = $package->getFiles();
         $this->originalFiles[$package->getPrettyName()] = $files;
@@ -227,14 +220,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $path = $package->preparePath('.env');
         if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
-            $this->addFile($package, 'dotenv', $path);
+            $this->addFile($package, 'envs', $path);
         }
     }
 
     /**
      * Adds given files to the list of files to be processed.
-     * Prepares `defines` in reversed order (outer package first) because
+     * Prepares `constants` in reversed order (outer package first) because
      * constants cannot be redefined.
+     *
      * @param Package $package
      * @param array $files
      */
@@ -242,7 +236,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         foreach ($files as $name => $paths) {
             $paths = (array) $paths;
-            if ('defines' === $name) {
+            if ('constants' === $name) {
                 $paths = array_reverse($paths);
             }
             foreach ($paths as $path) {
@@ -262,7 +256,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (in_array($path, $this->files[$name], true)) {
             return;
         }
-        if ('defines' === $name) {
+        if ('constants' === $name) {
             array_unshift($this->orderedFiles, $path);
             array_unshift($this->files[$name], $path);
         } else {
@@ -271,17 +265,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    /**
-     * Gets [[packages]].
-     * @return Package[]
-     */
-    private function getPackages(): array
+    private function collectPackages(): array
     {
-        if ([] === $this->packages) {
-            $this->packages = $this->packageFinder->findPackages();
-        }
+        $vendorDir = $this->composer->getConfig()->get('vendor-dir');
+        $rootPackage = $this->composer->getPackage();
+        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
+        $packageFinder = new PackageFinder($vendorDir, $rootPackage, $packages);
 
-        return $this->packages;
+        return $packageFinder->findPackages();
     }
-
 }
