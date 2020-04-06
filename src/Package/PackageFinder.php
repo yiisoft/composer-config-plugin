@@ -91,7 +91,7 @@ final class PackageFinder
      * Iterates dependencies of the given package.
      *
      * @param Package $package
-     * @param bool $dev which dependencies to iterate: true - dev, default - general
+     * @param bool $dev type of dependencies to iterate: true - dev, default - general.
      */
     private function iterateDependencies(Package $package, bool $dev = false): void
     {
