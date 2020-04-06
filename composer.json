@@ -19,10 +19,10 @@
     },
     "require": {
         "php": "^7.4",
+        "ext-json": "*",
         "composer-plugin-api": "^1.0",
-        "riimu/kit-phpencoder": "^2.4",
         "opis/closure": "^3.5",
-        "ext-json": "*"
+        "riimu/kit-phpencoder": "^2.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
@@ -31,6 +31,9 @@
     "suggest": {
         "vlucas/phpdotenv": "^2.0 for `.env` files support",
         "symfony/yaml": "^2.0 || ^3.0 || ^4.0 for YAML files support"
+    },
+    "config": {
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
