@@ -3,18 +3,12 @@
 namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Plugin\PluginInterface;
-use Composer\Script\ScriptEvents;
 use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
 
-/**
- * Plugin class.
- */
-class Plugin implements PluginInterface, EventSubscriberInterface
+final class Plugin
 {
     /**
      * @var Package[] the array of active composer packages
@@ -63,29 +57,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Composer $composer
      * @param IOInterface $io
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function __construct(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
         $this->io = $io;
     }
 
-    /**
-     * Returns list of events the plugin is subscribed to.
-     * @return array list of events
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ScriptEvents::POST_AUTOLOAD_DUMP => [
-                ['onPostAutoloadDump', 0],
-            ],
-        ];
-    }
-
-    /**
-     * This is the main function.
-     */
-    public function onPostAutoloadDump(): void
+    public function build(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
