@@ -16,7 +16,7 @@ final class PackageFinder
     private array $plainList = [];
 
     /**
-     * Ordered list of package in form: package => depth
+     * Ordered list of package in form: package => depth.
      * For order description @see findPackages.
      */
     private array $orderedList = [];
