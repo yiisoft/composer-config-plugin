@@ -28,7 +28,11 @@ final class ComposerEventHandler implements PluginInterface, EventSubscriberInte
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $plugin = new Plugin($composer, $io);
-        $plugin->build();
+        $this->plugin = new Plugin($composer, $io);
+    }
+
+    public function onPostAutoloadDump()
+    {
+        $this->plugin->build();
     }
 }
