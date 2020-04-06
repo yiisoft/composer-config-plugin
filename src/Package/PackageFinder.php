@@ -17,7 +17,7 @@ final class PackageFinder
 
     /**
      * Ordered list of package in form: package => depth.
-     * For order description @see findPackages.
+     * For order description see {@see findPackages()}.
      */
     private array $orderedList = [];
 
