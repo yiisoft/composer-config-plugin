@@ -71,7 +71,7 @@ class PackageFinder
 
         $processed[$name] = 1;
 
-        /// package depth in dependency hierarchy
+        // package depth in dependency hierarchy
         static $depth = 0;
         ++$depth;
 
