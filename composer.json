@@ -37,6 +37,11 @@
             "Yiisoft\\Composer\\Config\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Yiisoft\\Composer\\Config\\Tests\\": "tests"
+        }
+    },
     "extra": {
         "class": "Yiisoft\\Composer\\Config\\Plugin",
         "branch-alias": {
