@@ -30,7 +30,8 @@ final class PackageFinder
 
     /**
      * Returns ordered list of packages:
-     * - listed earlier in the composer.json will get earlier in the list
+
+     * - Packages listed earlier in the composer.json will get earlier in the list.
      * - childs before parents.
      *
      * @return Package[]
