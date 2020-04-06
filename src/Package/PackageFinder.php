@@ -7,19 +7,19 @@ namespace Yiisoft\Composer\Config\Package;
 use Composer\Composer;
 use Yiisoft\Composer\Config\Package;
 
-class PackageFinder
+final class PackageFinder
 {
     /**
      * Plain list of all project dependencies (including nested) as provided by composer.
      * The list is unordered (chaotic, can be different after every update).
      */
-    protected array $plainList = [];
+    private array $plainList = [];
 
     /**
      * Ordered list of package in form: package => depth
      * For order description @see findPackages.
      */
-    protected array $orderedList = [];
+    private array $orderedList = [];
 
     private Composer $composer;
 
@@ -45,12 +45,12 @@ class PackageFinder
         $this->orderedList = [];
         $this->iteratePackage($root, true);
 
-        $res = [];
+        $result = [];
         foreach (array_keys($this->orderedList) as $name) {
-            $res[] = $this->plainList[$name];
+            $result[] = $this->plainList[$name];
         }
 
-        return $res;
+        return $result;
     }
 
     /**
@@ -59,7 +59,7 @@ class PackageFinder
      * @param Package $package to iterate
      * @param bool $includingDev process development dependencies, defaults to not process
      */
-    protected function iteratePackage(Package $package, bool $includingDev = false): void
+    private function iteratePackage(Package $package, bool $includingDev = false): void
     {
         $name = $package->getPrettyName();
 
@@ -92,7 +92,7 @@ class PackageFinder
      * @param Package $package
      * @param bool $dev which dependencies to iterate: true - dev, default - general
      */
-    protected function iterateDependencies(Package $package, bool $dev = false): void
+    private function iterateDependencies(Package $package, bool $dev = false): void
     {
         $deps = $dev ? $package->getDevRequires() : $package->getRequires();
         foreach (array_keys($deps) as $target) {
