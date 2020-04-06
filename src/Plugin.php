@@ -6,7 +6,6 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
@@ -86,13 +85,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * This is the main function.
      */
-    public function onPostAutoloadDump(Event $event): void
+    public function onPostAutoloadDump(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
         $this->builder = new Builder();
 
-        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
         $this->scanPackages();
         $this->reorderFiles();
         $this->showDepsTree();
