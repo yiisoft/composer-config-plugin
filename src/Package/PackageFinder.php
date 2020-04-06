@@ -58,7 +58,7 @@ final class PackageFinder
      * Iterates through package dependencies.
      *
      * @param Package $package to iterate.
-     * @param bool $includingDev process development dependencies, defaults to not process
+     * @param bool $includingDev process development dependencies, defaults to not process.
      */
     private function iteratePackage(Package $package, bool $includingDev = false): void
     {
