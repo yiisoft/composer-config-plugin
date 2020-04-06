@@ -94,8 +94,8 @@ final class PackageFinder
      */
     private function iterateDependencies(Package $package, bool $dev = false): void
     {
-        $deps = $dev ? $package->getDevRequires() : $package->getRequires();
-        foreach (array_keys($deps) as $target) {
+        $dependencies = $dev ? $package->getDevRequires() : $package->getRequires();
+        foreach (array_keys($dependencies) as $target) {
             if (isset($this->plainList[$target]) && empty($this->orderedList[$target])) {
                 $this->iteratePackage($this->plainList[$target]);
             }
