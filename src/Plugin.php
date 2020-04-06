@@ -8,9 +8,9 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Yiisoft\Composer\Config\exceptions\BadConfigurationException;
-use Yiisoft\Composer\Config\exceptions\FailedReadException;
-use Yiisoft\Composer\Config\readers\ReaderFactory;
+use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
+use Yiisoft\Composer\Config\Exceptions\FailedReadException;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
 
 /**
  * Plugin class.
