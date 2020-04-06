@@ -63,7 +63,7 @@ class PackageFinder
     {
         $name = $package->getPrettyName();
 
-        /// prevent infinite loop in case of circular dependencies
+        // prevent infinite loop in case of circular dependencies
         static $processed = [];
         if (isset($processed[$name])) {
             return;
