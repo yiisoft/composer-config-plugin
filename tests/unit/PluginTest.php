@@ -4,9 +4,9 @@ namespace Yiisoft\Composer\Config\Tests\Unit;
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\IO\IOInterface;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Composer\Config\Plugin;
-use Composer\IO\IOInterface;
 
 /**
  * Class PluginTest.
@@ -16,7 +16,7 @@ class PluginTest extends TestCase
     private $object;
     private $packages = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $composer = new Composer();
