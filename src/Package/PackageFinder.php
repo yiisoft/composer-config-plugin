@@ -7,19 +7,19 @@ namespace Yiisoft\Composer\Config\Package;
 use Composer\Composer;
 use Yiisoft\Composer\Config\Package;
 
-class PackageFinder
+final class PackageFinder
 {
     /**
      * Plain list of all project dependencies (including nested) as provided by composer.
      * The list is unordered (chaotic, can be different after every update).
      */
-    protected array $plainList = [];
+    private array $plainList = [];
 
     /**
-     * Ordered list of package in form: package => depth
-     * For order description @see findPackages.
+     * Ordered list of package in form: package => depth.
+     * For order description see {@see findPackages()}.
      */
-    protected array $orderedList = [];
+    private array $orderedList = [];
 
     private Composer $composer;
 
@@ -30,8 +30,9 @@ class PackageFinder
 
     /**
      * Returns ordered list of packages:
-     * - listed earlier in the composer.json will get earlier in the list
-     * - childs before parents.
+
+     * - Packages listed earlier in the composer.json will get earlier in the list.
+     * - Children are listed before parents.
      *
      * @return Package[]
      */
@@ -45,25 +46,25 @@ class PackageFinder
         $this->orderedList = [];
         $this->iteratePackage($root, true);
 
-        $res = [];
+        $result = [];
         foreach (array_keys($this->orderedList) as $name) {
-            $res[] = $this->plainList[$name];
+            $result[] = $this->plainList[$name];
         }
 
-        return $res;
+        return $result;
     }
 
     /**
      * Iterates through package dependencies.
      *
-     * @param Package $package to iterate
-     * @param bool $includingDev process development dependencies, defaults to not process
+     * @param Package $package to iterate.
+     * @param bool $includingDev process development dependencies, defaults to not process.
      */
-    protected function iteratePackage(Package $package, bool $includingDev = false): void
+    private function iteratePackage(Package $package, bool $includingDev = false): void
     {
         $name = $package->getPrettyName();
 
-        /// prevent infinite loop in case of circular dependencies
+        // prevent infinite loop in case of circular dependencies
         static $processed = [];
         if (isset($processed[$name])) {
             return;
@@ -71,7 +72,7 @@ class PackageFinder
 
         $processed[$name] = 1;
 
-        /// package depth in dependency hierarchy
+        // package depth in dependency hierarchy
         static $depth = 0;
         ++$depth;
 
@@ -90,12 +91,12 @@ class PackageFinder
      * Iterates dependencies of the given package.
      *
      * @param Package $package
-     * @param bool $dev which dependencies to iterate: true - dev, default - general
+     * @param bool $dev type of dependencies to iterate: true - dev, default - general.
      */
-    protected function iterateDependencies(Package $package, bool $dev = false): void
+    private function iterateDependencies(Package $package, bool $dev = false): void
     {
-        $deps = $dev ? $package->getDevRequires() : $package->getRequires();
-        foreach (array_keys($deps) as $target) {
+        $dependencies = $dev ? $package->getDevRequires() : $package->getRequires();
+        foreach (array_keys($dependencies) as $target) {
             if (isset($this->plainList[$target]) && empty($this->orderedList[$target])) {
                 $this->iteratePackage($this->plainList[$target]);
             }

@@ -8,12 +8,12 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Composer\Util\Filesystem;
-use Yiisoft\Composer\Config\exceptions\BadConfigurationException;
-use Yiisoft\Composer\Config\exceptions\FailedReadException;
-use Yiisoft\Composer\Config\Package\AliasesCollector;
+use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
+use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
-use Yiisoft\Composer\Config\readers\ReaderFactory;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
+use Composer\Util\Filesystem;
+use Yiisoft\Composer\Config\Package\AliasesCollector;
 
 /**
  * Plugin class.
@@ -283,5 +283,4 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         return $this->packages;
     }
-
 }
