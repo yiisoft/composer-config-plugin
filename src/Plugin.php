@@ -8,9 +8,9 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
+use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
 
 /**
@@ -278,5 +278,4 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         return $this->packages;
     }
-
 }
