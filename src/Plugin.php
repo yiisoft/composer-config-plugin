@@ -9,6 +9,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
+use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
 
 /**
@@ -19,52 +20,55 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var Package[] the array of active composer packages
      */
-    protected $packages;
+    private array $packages = [];
 
-    private $alternatives = [];
+    private array $alternatives = [];
 
-    private $outputDir;
+    private ?string $outputDir = null;
 
-    private $rootPackage;
+    private ?Package $rootPackage = null;
 
     /**
      * @var array config name => list of files
      */
-    protected $files = [
-        'dotenv'  => [],
+    private array $files = [
+        'dotenv' => [],
         'defines' => [],
-        'params'  => [],
+        'params' => [],
     ];
-
-    protected $colors = ['red', 'green', 'yellow', 'cyan', 'magenta', 'blue'];
 
     /**
      * @var array package name => configs as listed in `composer.json`
      */
-    protected $originalFiles = [];
+    private array $originalFiles = [];
 
     /**
      * @var Builder
      */
-    protected $builder;
+    private Builder $builder;
 
     /**
      * @var Composer instance
      */
-    protected $composer;
+    private Composer $composer;
 
     /**
      * @var IOInterface
      */
-    public $io;
+    private IOInterface $io;
+
+    private PackageFinder $packageFinder;
 
     /**
      * Initializes the plugin object with the passed $composer and $io.
+     *
      * @param Composer $composer
      * @param IOInterface $io
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
+        $this->builder = new Builder();
+        $this->packageFinder = new PackageFinder($composer);
         $this->composer = $composer;
         $this->io = $io;
     }
@@ -89,11 +93,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
-        $this->builder = new Builder();
-
         $this->scanPackages();
         $this->reorderFiles();
-        $this->showDepsTree();
 
         $this->builder->setOutputDir($this->outputDir);
         $this->builder->buildAllConfigs($this->files);
@@ -109,7 +110,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function scanPackages(): void
+    private function scanPackages(): void
     {
         foreach ($this->getPackages() as $package) {
             if ($package->isComplete()) {
@@ -118,7 +119,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function reorderFiles(): void
+    private function reorderFiles(): void
     {
         foreach (array_keys($this->files) as $name) {
             $this->files[$name] = $this->getAllFiles($name);
@@ -128,7 +129,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected function getAllFiles(string $name, array $stack = []): array
+    private function getAllFiles(string $name, array $stack = []): array
     {
         if (empty($this->files[$name])) {
             return[];
@@ -147,7 +148,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return $res;
     }
 
-    protected function orderFiles(array $files): array
+    private function orderFiles(array $files): array
     {
         if (empty($files)) {
             return [];
@@ -167,7 +168,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Scans the given package and collects packages data.
      * @param Package $package
      */
-    protected function processPackage(Package $package)
+    private function processPackage(Package $package)
     {
         $files = $package->getFiles();
         $this->originalFiles[$package->getPrettyName()] = $files;
@@ -215,7 +216,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return $reader->read($path);
     }
 
-    protected function loadDotEnv(Package $package): void
+    private function loadDotEnv(Package $package): void
     {
         $path = $package->preparePath('.env');
         if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
@@ -230,7 +231,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Package $package
      * @param array $files
      */
-    protected function addFiles(Package $package, array $files): void
+    private function addFiles(Package $package, array $files): void
     {
         foreach ($files as $name => $paths) {
             $paths = (array) $paths;
@@ -243,9 +244,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    protected $orderedFiles = [];
+    private array $orderedFiles = [];
 
-    protected function addFile(Package $package, string $name, string $path): void
+    private function addFile(Package $package, string $name, string $path): void
     {
         $path = $package->preparePath($path);
         if (!isset($this->files[$name])) {
@@ -264,123 +265,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Sets [[packages]].
-     * @param Package[] $packages
-     */
-    public function setPackages(array $packages): void
-    {
-        $this->packages = $packages;
-    }
-
-    /**
      * Gets [[packages]].
      * @return Package[]
      */
-    public function getPackages(): array
+    private function getPackages(): array
     {
-        if (null === $this->packages) {
-            $this->packages = $this->findPackages();
+        if ([] === $this->packages) {
+            $this->packages = $this->packageFinder->findPackages();
         }
 
         return $this->packages;
-    }
-
-    /**
-     * Plain list of all project dependencies (including nested) as provided by composer.
-     * The list is unordered (chaotic, can be different after every update).
-     */
-    protected $plainList = [];
-
-    /**
-     * Ordered list of package in form: package => depth
-     * For order description @see findPackages.
-     */
-    protected $orderedList = [];
-
-    /**
-     * Returns ordered list of packages:
-     * - listed earlier in the composer.json will get earlier in the list
-     * - childs before parents.
-     * @return Package[]
-     */
-    public function findPackages(): array
-    {
-        $root = new Package($this->composer->getPackage(), $this->composer);
-        $this->plainList[$root->getPrettyName()] = $root;
-        foreach ($this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages() as $package) {
-            $this->plainList[$package->getPrettyName()] = new Package($package, $this->composer);
-        }
-        $this->orderedList = [];
-        $this->iteratePackage($root, true);
-
-        $res = [];
-        foreach (array_keys($this->orderedList) as $name) {
-            $res[] = $this->plainList[$name];
-        }
-
-        return $res;
-    }
-
-    /**
-     * Iterates through package dependencies.
-     * @param Package $package to iterate
-     * @param bool $includingDev process development dependencies, defaults to not process
-     */
-    protected function iteratePackage(Package $package, bool $includingDev = false): void
-    {
-        $name = $package->getPrettyName();
-
-        /// prevent infinite loop in case of circular dependencies
-        static $processed = [];
-        if (isset($processed[$name])) {
-            return;
-        }
-
-        $processed[$name] = 1;
-
-        /// package depth in dependency hierarchy
-        static $depth = 0;
-        ++$depth;
-
-        $this->iterateDependencies($package);
-        if ($includingDev) {
-            $this->iterateDependencies($package, true);
-        }
-        if (!isset($this->orderedList[$name])) {
-            $this->orderedList[$name] = $depth;
-        }
-
-        --$depth;
-    }
-
-    /**
-     * Iterates dependencies of the given package.
-     * @param Package $package
-     * @param bool $dev which dependencies to iterate: true - dev, default - general
-     */
-    protected function iterateDependencies(Package $package, bool $dev = false): void
-    {
-        $deps = $dev ? $package->getDevRequires() : $package->getRequires();
-        foreach (array_keys($deps) as $target) {
-            if (isset($this->plainList[$target]) && empty($this->orderedList[$target])) {
-                $this->iteratePackage($this->plainList[$target]);
-            }
-        }
-    }
-
-    protected function showDepsTree(): void
-    {
-        if (!$this->io->isVerbose()) {
-            return;
-        }
-
-        foreach (array_reverse($this->orderedList) as $name => $depth) {
-            $deps = $this->originalFiles[$name];
-            $color = $this->colors[$depth % count($this->colors)];
-            $indent = str_repeat('   ', $depth - 1);
-            $package = $this->plainList[$name];
-            $showdeps = $deps ? '<comment>[' . implode(',', array_keys($deps)) . ']</>' : '';
-            $this->io->write(sprintf('%s - <fg=%s;options=bold>%s</> %s %s', $indent, $color, $name, $package->getFullPrettyVersion(), $showdeps));
-        }
     }
 }
