@@ -8,10 +8,13 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 
 final class ComposerEventHandler implements PluginInterface, EventSubscriberInterface
 {
+    private Plugin $plugin;
+
     /**
      * Returns list of events the plugin is subscribed to.
      *
@@ -31,8 +34,10 @@ final class ComposerEventHandler implements PluginInterface, EventSubscriberInte
         $this->plugin = new Plugin($composer, $io);
     }
 
-    public function onPostAutoloadDump()
+    public function onPostAutoloadDump(Event $event): void
     {
+        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
+
         $this->plugin->build();
     }
 }
