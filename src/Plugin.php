@@ -12,6 +12,8 @@ use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
+use Composer\Util\Filesystem;
+use Yiisoft\Composer\Config\Package\AliasesCollector;
 
 /**
  * Plugin class.
@@ -60,6 +62,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     private PackageFinder $packageFinder;
 
+    private AliasesCollector $aliasesCollector;
+
     /**
      * Initializes the plugin object with the passed $composer and $io.
      *
@@ -70,6 +74,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $this->builder = new Builder();
         $this->packageFinder = new PackageFinder($composer);
+        $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->composer = $composer;
         $this->io = $io;
     }
@@ -196,7 +201,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
         }
 
-        $aliases = $package->collectAliases();
+        $aliases = $this->aliasesCollector->collect($package);
 
         $this->builder->mergeAliases($aliases);
         $this->builder->setPackage($package->getPrettyName(), array_filter([

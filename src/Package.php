@@ -18,86 +18,37 @@ class Package
     public const EXTRA_OUTPUT_DIR_OPTION_NAME = 'config-plugin-output-dir';
     public const EXTRA_ALTERNATIVES_OPTION_NAME = 'config-plugin-alternatives';
 
-    protected $package;
+    private PackageInterface $package;
 
     /**
      * @var array composer.json raw data array
      */
-    protected $data;
+    private array $data;
 
     /**
      * @var string absolute path to the root base directory
      */
-    protected $baseDir;
+    private string $baseDir;
 
     /**
      * @var string absolute path to vendor directory
      */
-    protected $vendorDir;
+    private string $vendorDir;
 
     /**
      * @var Filesystem utility
      */
-    protected $filesystem;
-
-    private $composer;
+    private Filesystem $filesystem;
 
     public function __construct(PackageInterface $package, Composer $composer)
     {
         $this->package = $package;
-        $this->composer = $composer;
-    }
+        $this->filesystem = new Filesystem();
 
-    /**
-     * Collects package aliases.
-     * @return array collected aliases
-     */
-    public function collectAliases(): array
-    {
-        $aliases = array_merge(
-            $this->prepareAliases('psr-0'),
-            $this->prepareAliases('psr-4')
-        );
-        if ($this->isRoot()) {
-            $aliases = array_merge(
-                $aliases,
-                $this->prepareAliases('psr-0', true),
-                $this->prepareAliases('psr-4', true)
-            );
-        }
-
-        return $aliases;
-    }
-
-    /**
-     * Prepare aliases.
-     * @param string $psr 'psr-0' or 'psr-4'
-     * @param bool $dev
-     * @return array
-     */
-    protected function prepareAliases(string $psr, bool $dev = false): array
-    {
-        $autoload = $dev ? $this->getDevAutoload() : $this->getAutoload();
-        if (empty($autoload[$psr])) {
-            return [];
-        }
-
-        $aliases = [];
-        foreach ($autoload[$psr] as $name => $path) {
-            if (is_array($path)) {
-                // ignore psr-4 autoload specifications with multiple search paths
-                // we can not convert them into aliases as they are ambiguous
-                continue;
-            }
-            $name = str_replace('\\', '/', trim($name, '\\'));
-            $path = $this->preparePath($path);
-            if ('psr-0' === $psr) {
-                $path .= '/' . $name;
-            }
-            $aliases["@$name"] = $path;
-        }
-
-        return $aliases;
+        $dir = $composer->getConfig()->get('vendor-dir');
+        $this->vendorDir = $this->filesystem->normalizePath($dir);
+        $this->baseDir = dirname($this->vendorDir);
+        $this->data = $this->readRawData();
     }
 
     /**
@@ -114,14 +65,6 @@ class Package
     public function getVersion(): string
     {
         return $this->package->getVersion();
-    }
-
-    /**
-     * @return string package human friendly version, like: 5.x-dev d9aed42, 2.1.1, dev-master f6561bf
-     */
-    public function getFullPrettyVersion(): string
-    {
-        return $this->package->getFullPrettyVersion();
     }
 
     /**
@@ -157,14 +100,6 @@ class Package
     }
 
     /**
-     * @return string package type, like: package, library
-     */
-    public function getType(): string
-    {
-        return $this->getRawValue('type') ?? $this->package->getType();
-    }
-
-    /**
      * @return array autoload configuration array
      */
     public function getAutoload(): array
@@ -181,7 +116,7 @@ class Package
     }
 
     /**
-     * @return array requre configuration array
+     * @return array require configuration array
      */
     public function getRequires(): array
     {
@@ -231,7 +166,7 @@ class Package
     /**
      * @return array alternatives array
      */
-    public function getExtraValue($key, $default = null)
+    private function getExtraValue($key, $default = null)
     {
         return $this->getExtra()[$key] ?? $default;
     }
@@ -239,7 +174,7 @@ class Package
     /**
      * @return array extra configuration array
      */
-    public function getExtra(): array
+    private function getExtra(): array
     {
         return $this->getRawValue('extra') ?? $this->package->getExtra();
     }
@@ -248,35 +183,20 @@ class Package
      * @param string $name option name
      * @return mixed raw value from composer.json if available
      */
-    public function getRawValue(string $name)
+    private function getRawValue(string $name)
     {
-        if ($this->data === null) {
-            $this->data = $this->readRawData();
-        }
-
         return $this->data[$name] ?? null;
     }
 
     /**
-     * @return mixed all raw data from composer.json if available
-     */
-    public function getRawData(): array
-    {
-        if ($this->data === null) {
-            $this->data = $this->readRawData();
-        }
-
-        return $this->data;
-    }
-
-    /**
      * @return array composer.json contents as array
+     * @throws \JsonException
      */
-    protected function readRawData(): array
+    private function readRawData(): array
     {
         $path = $this->preparePath('composer.json');
         if (file_exists($path)) {
-            return json_decode(file_get_contents($path), true);
+            return json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
         }
 
         return [];
@@ -284,6 +204,7 @@ class Package
 
     /**
      * Builds path inside of a package.
+     *
      * @param string $file
      * @return string absolute paths will stay untouched
      */
@@ -298,53 +219,23 @@ class Package
             $file = substr($file, 1);
         }
 
-        if (!$this->getFilesystem()->isAbsolutePath($file)) {
+        if (!$this->filesystem->isAbsolutePath($file)) {
             $prefix = $this->isRoot()
-                ? $this->getBaseDir()
-                : $this->getVendorDir() . '/' . $this->getPrettyName();
+                ? $this->baseDir
+                : $this->vendorDir . '/' . $this->getPrettyName();
             $file = $prefix . '/' . $file;
         }
 
-        return $skippable . $this->getFilesystem()->normalizePath($file);
+        return $skippable . $this->filesystem->normalizePath($file);
     }
 
-    /**
-     * Get absolute path to package base dir.
-     * @return string
-     */
-    public function getBaseDir(): string
-    {
-        if (null === $this->baseDir) {
-            $this->baseDir = dirname($this->getVendorDir());
-        }
-
-        return $this->baseDir;
-    }
-
-    /**
-     * Get absolute path to composer vendor dir.
-     * @return string
-     */
     public function getVendorDir(): string
     {
-        if (null === $this->vendorDir) {
-            $dir = $this->composer->getConfig()->get('vendor-dir');
-            $this->vendorDir = $this->getFilesystem()->normalizePath($dir);
-        }
-
         return $this->vendorDir;
     }
 
-    /**
-     * Getter for filesystem utility.
-     * @return Filesystem
-     */
-    public function getFilesystem(): Filesystem
+    public function getBaseDir(): string
     {
-        if (null === $this->filesystem) {
-            $this->filesystem = new Filesystem();
-        }
-
-        return $this->filesystem;
+        return $this->baseDir;
     }
 }
