@@ -46,7 +46,7 @@
         }
     },
     "extra": {
-        "class": "Yiisoft\\Composer\\Config\\Plugin",
+        "class": "Yiisoft\\Composer\\Config\\ComposerEventHandler",
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }

@@ -3,11 +3,7 @@
 namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Plugin\PluginInterface;
-use Composer\Script\Event;
-use Composer\Script\ScriptEvents;
 use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
@@ -15,10 +11,7 @@ use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Composer\Util\Filesystem;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 
-/**
- * Plugin class.
- */
-class Plugin implements PluginInterface, EventSubscriberInterface
+final class Plugin
 {
     /**
      * @var Package[] the array of active composer packages
@@ -70,7 +63,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Composer $composer
      * @param IOInterface $io
      */
-    public function activate(Composer $composer, IOInterface $io): void
+    public function __construct(Composer $composer, IOInterface $io)
     {
         $this->builder = new Builder();
         $this->packageFinder = new PackageFinder($composer);
@@ -79,27 +72,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
     }
 
-    /**
-     * Returns list of events the plugin is subscribed to.
-     * @return array list of events
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ScriptEvents::POST_AUTOLOAD_DUMP => [
-                ['onPostAutoloadDump', 0],
-            ],
-        ];
-    }
-
-    /**
-     * This is the main function.
-     */
-    public function onPostAutoloadDump(Event $event): void
+    public function build(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
-        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
         $this->scanPackages();
         $this->reorderFiles();
 
