@@ -18,8 +18,10 @@ class HelperTest extends TestCase
         $helper = new Helper();
         $exportedClosure = $helper->exportVar($closure);
 
-        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }",
-            $exportedClosure);
+        $this->assertSameWithoutLE(
+            "static function () use (\$params) {\n            return \$params['test'];\n        }",
+            $exportedClosure
+        );
     }
 
     private function assertSameWithoutLE($expected, $actual, string $message = ''): void
