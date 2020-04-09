@@ -7,11 +7,15 @@ namespace Yiisoft\Composer\Config\Readers;
  */
 class PhpReader extends AbstractReader
 {
-    public function readRaw($__path)
+    protected function readRaw($path)
     {
-        /// Expose variables to be used in configs
-        extract($this->builder->getVars());
+        $result = static function () {
+            /** @noinspection NonSecureExtractUsageInspection */
+            extract(func_get_arg(0));
 
-        return require $__path;
+            return require func_get_arg(1);
+        };
+
+        return $result($this->builder->getVars(), $path);
     }
 }

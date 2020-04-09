@@ -9,6 +9,7 @@ use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Composer\Util\Filesystem;
+use Yiisoft\Composer\Config\Configs\ConfigFactory;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 
 final class Plugin
@@ -65,7 +66,7 @@ final class Plugin
      */
     public function __construct(Composer $composer, IOInterface $io)
     {
-        $this->builder = new Builder();
+        $this->builder = new Builder(new ConfigFactory());
         $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->composer = $composer;

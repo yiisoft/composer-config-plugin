@@ -47,4 +47,19 @@ class System extends Config
 
         return $this;
     }
+
+    public function hasEnv(): bool
+    {
+        return true;
+    }
+
+    public function hasConstants(): bool
+    {
+        return true;
+    }
+
+    public function hasParams(): bool
+    {
+        return true;
+    }
 }

@@ -14,12 +14,8 @@ use Yiisoft\Composer\Config\Readers\YamlReader;
  */
 class ReaderFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    protected $builder;
-
     public function testCreate(): void
     {
-        $this->builder = new Builder();
-
         $this->checkGet('.env', EnvReader::class);
         $this->checkGet('.json', JsonReader::class);
         $yml = $this->checkGet('.yml', YamlReader::class);
@@ -33,9 +29,9 @@ class ReaderFactoryTest extends \PHPUnit\Framework\TestCase
 
     public function checkGet(string $name, string $class)
     {
-        $reader = ReaderFactory::get($this->builder, $name);
+        $builder = $this->createMock(Builder::class);
+        $reader = ReaderFactory::get($builder, $name);
         $this->assertInstanceOf($class, $reader);
-        $this->assertSame($this->builder, $reader->getBuilder());
 
         return $reader;
     }

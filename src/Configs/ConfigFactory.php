@@ -20,12 +20,7 @@ class ConfigFactory
         'defines' => Defines::class,
     ];
 
-    /**
-     * @param Builder $builder
-     * @param string $name
-     * @return Config
-     */
-    public static function create(Builder $builder, string $name): Config
+    public function create(Builder $builder, string $name): Config
     {
         $class = self::KNOWN_TYPES[$name] ?? Config::class;
 

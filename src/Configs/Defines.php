@@ -26,4 +26,14 @@ class Defines extends Config
 
         return implode("\n", $res);
     }
+
+    public function hasConstants(): bool
+    {
+        return true;
+    }
+
+    public function hasParams(): bool
+    {
+        return true;
+    }
 }

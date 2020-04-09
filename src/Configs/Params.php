@@ -40,4 +40,9 @@ class Params extends Config
     {
         return strtoupper(strtr($key, '.-', '__'));
     }
+
+    public function hasParams(): bool
+    {
+        return true;
+    }
 }
