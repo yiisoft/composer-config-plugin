@@ -171,7 +171,7 @@ class Config
         $outDir = dirname($this->normalizePath($this->getOutputPath()));
         $diff = substr($outDir, strlen($this->getBaseDir()));
 
-        return substr_count($diff, DIRECTORY_SEPARATOR);
+        return substr_count($diff, '/');
     }
 
     /**
@@ -218,7 +218,7 @@ class Config
      */
     private function normalizePath($path): string
     {
-        return rtrim(strtr($path, '/\\', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
+        return rtrim(strtr($path, '/\\', '//'), '/');
     }
 
     /**
@@ -252,7 +252,7 @@ class Config
      */
     private function substitutePath($path, $dir, $alias): string
     {
-        $end = $dir . DIRECTORY_SEPARATOR;
+        $end = $dir . '/';
         $skippable = 0 === strncmp($path, '?', 1);
         if ($skippable) {
             $path = substr($path, 1);
