@@ -152,17 +152,17 @@ class Config
 
     public function hasEnv(): bool
     {
-        return false;
+        return true;
     }
 
     public function hasConstants(): bool
     {
-        return false;
+        return true;
     }
 
     public function hasParams(): bool
     {
-        return false;
+        return true;
     }
 
     private function findDepth(): int
