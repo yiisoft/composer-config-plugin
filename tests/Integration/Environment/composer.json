@@ -19,7 +19,6 @@
         }
     },
     "extra": {
-        "config-plugin-output-dir": "runtime",
         "config-plugin": {
             "params": "config/params.php"
         }
