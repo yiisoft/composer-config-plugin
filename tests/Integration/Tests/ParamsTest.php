@@ -6,6 +6,11 @@ namespace Yiisoft\Composer\Config\Tests\Integration\Tests;
 
 final class ParamsTest extends PluginTestCase
 {
+    protected function setUp(): void
+    {
+        $this->registerConfig('params');
+    }
+
     /**
      * @dataProvider parametersProvider()
      * @param string $name
@@ -13,7 +18,7 @@ final class ParamsTest extends PluginTestCase
      */
     public function testParameters(string $name, $expectedValue): void
     {
-        $actualValue = $this->getParam($name);
+        $actualValue = $this->getConfigValue($name);
         $this->assertEquals($expectedValue, $actualValue);
     }
 
@@ -52,5 +57,10 @@ final class ParamsTest extends PluginTestCase
             ['second-dev-vendor/first-package', true],
             ['second-dev-vendor/second-package', true],
         ];
+    }
+
+    protected function getConfigValue(string $name)
+    {
+        return $this->getFromConfig('params', $name);
     }
 }

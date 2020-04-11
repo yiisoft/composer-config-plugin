@@ -13,13 +13,16 @@ abstract class PluginTestCase extends TestCase
 
     private static array $configs = [];
 
-    protected function setUp(): void
+    protected function registerConfig(string $name): void
     {
-        self::$configs['params'] = require Builder::path('params', self::BASE_DIRECTORY);
+        if (self::$configs !== []) {
+            return;
+        }
+        self::$configs[$name] = require Builder::path($name, self::BASE_DIRECTORY);
     }
 
-    protected function getParam(string $name)
+    protected function getFromConfig(string $config, string $name)
     {
-        return self::$configs['params'][$name];
+        return self::$configs[$config][$name];
     }
 }
