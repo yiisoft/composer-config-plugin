@@ -51,12 +51,19 @@
     ],
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Composer\\Config\\": "src"
+            "Environment\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Environment\\Tests\\": "tests"
         }
     },
     "extra": {
         "config-plugin": {
-            "params": "config/params.php"
+            "params": "config/params.php",
+            "test": "config/test.php",
+            "web": "config/web.php"
         }
     }
 }
