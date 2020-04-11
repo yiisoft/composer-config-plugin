@@ -15,7 +15,7 @@ abstract class PluginTestCase extends TestCase
 
     protected function registerConfig(string $name): void
     {
-        if (self::$configs !== []) {
+        if ((self::$configs[$name] ?? []) !== []) {
             return;
         }
         self::$configs[$name] = require Builder::path($name, self::BASE_DIRECTORY);

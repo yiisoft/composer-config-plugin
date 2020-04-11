@@ -2,27 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Tests\Integration\Tests;
+namespace Yiisoft\Composer\Config\Tests\Integration\Tests\Config;
 
-final class ParamsTest extends PluginTestCase
+use stdClass;
+
+final class ParamsConfigTest extends ConfigTest
 {
-    protected function setUp(): void
-    {
-        $this->registerConfig('params');
-    }
-
-    /**
-     * @dataProvider parametersProvider()
-     * @param string $name
-     * @param $expectedValue
-     */
-    public function testParameters(string $name, $expectedValue): void
-    {
-        $actualValue = $this->getConfigValue($name);
-        $this->assertEquals($expectedValue, $actualValue);
-    }
-
-    public function parametersProvider(): array
+    public function configProvider(): array
     {
         return [
             ['boolean parameter', true],
@@ -44,7 +30,7 @@ final class ParamsTest extends PluginTestCase
                     return 'I am callable';
                 },
             ],
-            ['object parameter', new \stdClass()],
+            ['object parameter', new stdClass()],
             /**
              * Test for subpackages parameters
              */
@@ -59,8 +45,8 @@ final class ParamsTest extends PluginTestCase
         ];
     }
 
-    protected function getConfigValue(string $name)
+    protected function getConfigName(): string
     {
-        return $this->getFromConfig('params', $name);
+        return 'params';
     }
 }
