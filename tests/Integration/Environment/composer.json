@@ -1,11 +1,13 @@
 {
     "name": "test-yiisoft/composer-config-plugin",
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.4",
         "first-vendor/first-package": "*",
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
-        "second-vendor/second-package": "*"
+        "second-vendor/second-package": "*",
+        "yiisoft/composer-config-plugin": "*"
     },
     "require-dev": {
         "first-dev-vendor/first-package": "*",
@@ -13,6 +15,40 @@
         "second-dev-vendor/first-package": "*",
         "second-dev-vendor/second-package": "*"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./repositories/first-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/first-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/first-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/first-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-dev-vendor/second-package"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Yiisoft\\Composer\\Config\\": "src"
