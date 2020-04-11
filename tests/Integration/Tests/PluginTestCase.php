@@ -10,17 +10,16 @@ use Yiisoft\Composer\Config\Builder;
 abstract class PluginTestCase extends TestCase
 {
     private const BASE_DIRECTORY = __DIR__ . '/../Environment';
-    private const OUTPUT_DIRECTORY = self::BASE_DIRECTORY . '/vendor/yiisoft/composer-config-plugin-output';
 
-    final protected function setUp(): void
+    private static array $configs = [];
+
+    protected function setUp(): void
     {
-        Builder::rebuild(self::OUTPUT_DIRECTORY);
+        self::$configs['params'] = require Builder::path('params', self::BASE_DIRECTORY);
     }
 
     protected function getParam(string $name)
     {
-        $config = require Builder::path('params', self::BASE_DIRECTORY);
-
-        return $config[$name];
+        return self::$configs['params'][$name];
     }
 }
