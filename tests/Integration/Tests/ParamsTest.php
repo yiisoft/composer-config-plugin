@@ -14,7 +14,7 @@ final class ParamsTest extends PluginTestCase
     public function testParameters(string $name, $expectedValue): void
     {
         $actualValue = $this->getParam($name);
-        $this->assertEquals($expectedValue, $expectedValue);
+        $this->assertEquals($expectedValue, $actualValue);
     }
 
     public function parametersProvider(): array
@@ -22,12 +22,24 @@ final class ParamsTest extends PluginTestCase
         return [
             ['boolean parameter', true],
             ['string parameter', 'value of param 1'],
-            ['NAN parameter', NAN],
-            ['var parameter', $_SERVER],
+            ['NAN parameter', 'NAN'],
             ['float parameter', 1.0000001],
             ['int parameter', 123],
             ['long int parameter', 123_000],
             ['array parameter', [[[[[[]]]]]]],
+            [
+                'callable parameter',
+                function () {
+                    return 'I am callable';
+                },
+            ],
+            [
+                'static callable parameter',
+                static function () {
+                    return 'I am callable';
+                },
+            ],
+            ['object parameter', new \stdClass()],
         ];
     }
 }
