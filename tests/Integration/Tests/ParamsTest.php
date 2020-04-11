@@ -40,6 +40,17 @@ final class ParamsTest extends PluginTestCase
                 },
             ],
             ['object parameter', new \stdClass()],
+            /**
+             * Test for subpackages parameters
+             */
+            ['first-vendor/first-package', true],
+            ['first-vendor/second-package', true],
+            ['first-dev-vendor/first-package', true],
+            ['first-dev-vendor/second-package', true],
+            ['second-vendor/first-package', true],
+            ['second-vendor/second-package', true],
+            ['second-dev-vendor/first-package', true],
+            ['second-dev-vendor/second-package', true],
         ];
     }
 }
