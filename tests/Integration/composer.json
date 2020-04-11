@@ -1,0 +1,27 @@
+{
+    "name": "test-yiisoft/composer-config-plugin",
+    "require": {
+        "php": "^7.4",
+        "first-vendor/first-package": "*",
+        "first-vendor/second-package": "*",
+        "second-vendor/first-package": "*",
+        "second-vendor/second-package": "*"
+    },
+    "require-dev": {
+        "first-dev-vendor/first-package": "*",
+        "first-dev-vendor/second-package": "*",
+        "second-dev-vendor/first-package": "*",
+        "second-dev-vendor/second-package": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yiisoft\\Composer\\Config\\": "src"
+        }
+    },
+    "extra": {
+        "config-plugin-output-dir": "runtime",
+        "config-plugin": {
+            "params": "config/params.php"
+        }
+    }
+}
