@@ -16,7 +16,7 @@ final class TestConfigTest extends ConfigTest
         ];
     }
 
-    protected function getConfigName(): string
+    protected function getDefaultConfigName(): string
     {
         return 'test';
     }

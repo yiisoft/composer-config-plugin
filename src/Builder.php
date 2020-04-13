@@ -17,6 +17,11 @@ class Builder
     private const OUTPUT_DIR_SUFFIX = '-output';
 
     /**
+     * @var string path to the Composer project root
+     */
+    private string $baseDir;
+
+    /**
      * @var string path to output assembled configs
      */
     private string $outputDir;
@@ -28,16 +33,23 @@ class Builder
 
     private ConfigFactory $configFactory;
 
-    public function __construct(ConfigFactory $configFactory, string $outputDir = null)
+    /**
+     * Builder constructor.
+     *
+     * @param ConfigFactory $configFactory
+     * @param string $baseDir path to the Composer project root
+     */
+    public function __construct(ConfigFactory $configFactory, string $baseDir)
     {
         $this->configFactory = $configFactory;
-        $this->setOutputDir($outputDir);
+        $this->baseDir = $baseDir;
+        $this->outputDir = self::findOutputDir($baseDir);
     }
 
     public function createAlternative($name): Builder
     {
-        $dir = $this->outputDir . DIRECTORY_SEPARATOR . $name;
-        $alt = new static($this->configFactory, $dir);
+        $alt = new static($this->configFactory, $this->baseDir);
+        $alt->setOutputDir($this->outputDir . DIRECTORY_SEPARATOR . $name);
         foreach (['aliases', 'packages'] as $key) {
             $alt->configs[$key] = $this->getConfig($key)->clone($alt);
         }
@@ -49,12 +61,7 @@ class Builder
     {
         $this->outputDir = $outputDir
             ? static::buildAbsPath($this->getBaseDir(), $outputDir)
-            : static::findOutputDir();
-    }
-
-    private function getBaseDir(): string
-    {
-        return dirname(__DIR__, 4);
+            : static::findOutputDir($this->getBaseDir());
     }
 
     public static function rebuild(string $outputDir = null): void
@@ -67,7 +74,9 @@ class Builder
     /**
      * Returns default output dir.
      *
-     * @param string $baseDir path to project base dir
+     * @param string|null $baseDir path to the root Composer package. When `null`,
+     * {@see findBaseDir()} will be called to find a base dir.
+     *
      * @return string
      * @throws JsonException
      */
@@ -197,5 +206,13 @@ class Builder
     public function setPackage(string $name, array $data): void
     {
         $this->getConfig('packages')->setValue($name, $data);
+    }
+
+    /**
+     * @return string a full path to the project root
+     */
+    public function getBaseDir(): string
+    {
+        return $this->baseDir;
     }
 }

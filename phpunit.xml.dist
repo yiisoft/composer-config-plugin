@@ -7,7 +7,7 @@
             <directory>./tests/unit/</directory>
         </testsuite>
         <testsuite name="Integration Test Suite">
-            <directory>./tests/Integration/</directory>
+            <directory>./tests/Integration/Tests</directory>
         </testsuite>
     </testsuites>
     <extensions>

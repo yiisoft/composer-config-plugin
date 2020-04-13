@@ -13,7 +13,8 @@
         "first-dev-vendor/first-package": "*",
         "first-dev-vendor/second-package": "*",
         "second-dev-vendor/first-package": "*",
-        "second-dev-vendor/second-package": "*"
+        "second-dev-vendor/second-package": "*",
+        "vlucas/phpdotenv": "*"
     },
     "repositories": [
         {
@@ -64,6 +65,16 @@
             "params": "config/params.php",
             "test": "config/test.php",
             "web": "config/web.php"
-        }
+        },
+        "config-plugin-alternatives": "config/alternatives.json"
+    },
+    "scripts": {
+        "symlink-package": [
+            "rm -rf vendor/yiisoft/composer-config-plugin",
+            "ln -s ../../../../../ vendor/yiisoft/composer-config-plugin",
+            "@composer dump"
+        ],
+        "post-install-cmd": "@symlink-package",
+        "post-update-cmd": "@symlink-package"
     }
 }

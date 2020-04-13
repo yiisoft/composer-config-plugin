@@ -22,4 +22,6 @@ return [
     // 'short callable parameter' => fn() => 'I am callable',
 
     'object parameter' => new stdClass(),
+
+    'env_parameter' => 'default',
 ];

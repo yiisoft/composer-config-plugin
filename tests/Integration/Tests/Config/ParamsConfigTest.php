@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Tests\Integration\Tests\Config;
 
 use stdClass;
+use Yiisoft\Composer\Config\Tests\Integration\Tests\Helper\LiterallyCallback;
 
 final class ParamsConfigTest extends ConfigTest
 {
@@ -20,15 +21,15 @@ final class ParamsConfigTest extends ConfigTest
             ['array parameter', [[[[[[]]]]]]],
             [
                 'callable parameter',
-                function () {
+                new LiterallyCallback(function () {
                     return 'I am callable';
-                },
+                }),
             ],
             [
                 'static callable parameter',
-                static function () {
+                new LiterallyCallback(static function () {
                     return 'I am callable';
-                },
+                }),
             ],
             ['object parameter', new stdClass()],
             /**
@@ -45,7 +46,7 @@ final class ParamsConfigTest extends ConfigTest
         ];
     }
 
-    protected function getConfigName(): string
+    protected function getDefaultConfigName(): string
     {
         return 'params';
     }
