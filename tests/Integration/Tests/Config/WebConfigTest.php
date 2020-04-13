@@ -13,10 +13,14 @@ final class WebConfigTest extends ConfigTest
                 \Environment\Serializer\SerializerInterface::class,
                 \Environment\Serializer\PhpSerializer::class,
             ],
+            [
+                'params',
+                fn(array $params) => $this->assertSame('default', $params['env_parameter']),
+            ],
         ];
     }
 
-    protected function getConfigName(): string
+    protected function getDefaultConfigName(): string
     {
         return 'web';
     }

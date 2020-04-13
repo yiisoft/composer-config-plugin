@@ -66,10 +66,11 @@ final class Plugin
      */
     public function __construct(Composer $composer, IOInterface $io)
     {
-        $this->builder = new Builder(new ConfigFactory());
+        $this->composer = $composer;
+        $baseDir = $this->composer->getConfig()->get('vendor-dir') . '/../';
+        $this->builder = new Builder(new ConfigFactory(), $baseDir);
         $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
-        $this->composer = $composer;
         $this->io = $io;
     }
 
@@ -80,7 +81,6 @@ final class Plugin
         $this->scanPackages();
         $this->reorderFiles();
 
-        $this->builder->setOutputDir($this->outputDir);
         $this->builder->buildAllConfigs($this->files);
 
         $saveFiles = $this->files;
