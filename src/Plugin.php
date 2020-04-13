@@ -68,7 +68,7 @@ final class Plugin
     {
         $this->composer = $composer;
         $baseDir = $this->composer->getConfig()->get('vendor-dir') . '/../';
-        $this->builder = new Builder(new ConfigFactory(), $baseDir);
+        $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
         $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->io = $io;

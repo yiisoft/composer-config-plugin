@@ -201,9 +201,9 @@ class Builder
     }
 
     /**
-     * @return string
+     * @return string a full path to the project root
      */
-    private function getBaseDir(): string
+    public function getBaseDir(): string
     {
         return $this->baseDir;
     }

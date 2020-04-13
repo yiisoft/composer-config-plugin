@@ -167,8 +167,8 @@ class Config
 
     private function findDepth(): int
     {
-        $outDir = dirname($this->normalizePath($this->getOutputPath()));
-        $diff = substr($outDir, strlen($this->getBaseDir()));
+        $outDir = realpath(dirname($this->normalizePath($this->getOutputPath())));
+        $diff = substr($outDir, strlen(realpath($this->getBaseDir())));
 
         return substr_count($diff, '/');
     }
@@ -267,7 +267,7 @@ class Config
 
     private function getBaseDir(): string
     {
-        return dirname(__DIR__, 5);
+        return $this->builder->getBaseDir();
     }
 
     protected function getOutputPath(string $name = null): string
