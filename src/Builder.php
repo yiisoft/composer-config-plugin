@@ -36,7 +36,7 @@ class Builder
     public function __construct(ConfigFactory $configFactory, string $baseDir = null)
     {
         $this->configFactory = $configFactory;
-        $this->setBaseDir($baseDir);
+        $this->baseDir = $baseDir;
         $this->outputDir = self::findOutputDir($baseDir);
     }
 
@@ -206,13 +206,5 @@ class Builder
     public function getBaseDir(): string
     {
         return $this->baseDir;
-    }
-
-    /**
-     * @param string $baseDir
-     */
-    private function setBaseDir(string $baseDir): void
-    {
-        $this->baseDir = $baseDir;
     }
 }
