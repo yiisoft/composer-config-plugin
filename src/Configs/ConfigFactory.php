@@ -16,8 +16,10 @@ class ConfigFactory
         'aliases' => System::class,
         'packages' => System::class,
         'envs' => Envs::class,
+        'dotenv' => Envs::class,
         'params' => Params::class,
         'constants' => Constants::class,
+        'defines' => Constants::class,
     ];
 
     public function create(Builder $builder, string $name): Config
