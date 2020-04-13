@@ -71,7 +71,8 @@
     "scripts": {
         "symlink-package": [
             "rm -rf vendor/yiisoft/composer-config-plugin",
-            "ln -s ../../../ vendor/yiisoft/composer-config-plugin"
+            "ln -s ../../../../../ vendor/yiisoft/composer-config-plugin",
+            "@composer dump"
         ],
         "post-install-cmd": "@symlink-package",
         "post-update-cmd": "@symlink-package"
