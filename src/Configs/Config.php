@@ -127,9 +127,8 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $helper = new Helper();
-        $values = $helper->mergeConfig(...$sources);
-        $values = $helper->fixConfig($values);
+        $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
+        $values = Helper::fixConfig($values);
 
         return $this->substituteOutputDirs($values);
     }
