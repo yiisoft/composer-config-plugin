@@ -3,7 +3,7 @@
 namespace Yiisoft\Composer\Config\Readers;
 
 use Dotenv\Dotenv;
-use Yiisoft\Composer\Config\exceptions\UnsupportedFileTypeException;
+use Yiisoft\Composer\Config\Exceptions\UnsupportedFileTypeException;
 
 /**
  * EnvReader - reads `.env` files.
@@ -26,7 +26,6 @@ class EnvReader extends AbstractReader
      * Supports all 2, 3 and 4 version of `phpdotenv`
      * @param mixed $dir
      * @param mixed $file
-     * @return Dotenv\Dotenv
      */
     private function loadDotenv($dir, $file)
     {
