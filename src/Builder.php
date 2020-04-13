@@ -55,7 +55,7 @@ class Builder
     {
         $this->outputDir = $outputDir
             ? static::buildAbsPath($this->getBaseDir(), $outputDir)
-            : $this->findOutputDir();
+            : static::findOutputDir();
     }
 
     public static function rebuild(string $outputDir = null): void
