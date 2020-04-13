@@ -15,7 +15,7 @@ final class WebConfigTest extends ConfigTest
             ],
             [
                 'params',
-                fn(array $params) => $this->assertSame('default', $params['env_parameter']),
+                fn (array $params) => $this->assertSame('default', $params['env_parameter']),
             ],
         ];
     }
