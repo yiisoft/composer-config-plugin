@@ -1,0 +1,80 @@
+{
+    "name": "test-yiisoft/composer-config-plugin",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4",
+        "first-vendor/first-package": "*",
+        "first-vendor/second-package": "*",
+        "second-vendor/first-package": "*",
+        "second-vendor/second-package": "*",
+        "yiisoft/composer-config-plugin": "*"
+    },
+    "require-dev": {
+        "first-dev-vendor/first-package": "*",
+        "first-dev-vendor/second-package": "*",
+        "second-dev-vendor/first-package": "*",
+        "second-dev-vendor/second-package": "*",
+        "vlucas/phpdotenv": "*"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./repositories/first-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/first-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/first-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/first-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "./repositories/second-dev-vendor/second-package"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Environment\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Environment\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "config-plugin": {
+            "params": "config/params.php",
+            "test": "config/test.php",
+            "web": "config/web.php"
+        },
+        "config-plugin-alternatives": "config/alternatives.json"
+    },
+    "scripts": {
+        "symlink-package": [
+            "rm -rf vendor/yiisoft/composer-config-plugin",
+            "ln -s ../../../../../ vendor/yiisoft/composer-config-plugin",
+            "@composer dump"
+        ],
+        "post-install-cmd": "@symlink-package",
+        "post-update-cmd": "@symlink-package"
+    }
+}

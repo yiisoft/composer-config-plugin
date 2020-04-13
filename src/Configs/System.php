@@ -50,16 +50,16 @@ class System extends Config
 
     public function hasEnv(): bool
     {
-        return true;
+        return false;
     }
 
     public function hasConstants(): bool
     {
-        return true;
+        return false;
     }
 
     public function hasParams(): bool
     {
-        return true;
+        return false;
     }
 }

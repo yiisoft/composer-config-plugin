@@ -23,8 +23,8 @@ class ReaderFactoryTest extends \PHPUnit\Framework\TestCase
         $php = $this->checkGet('.php', PhpReader::class);
         $php2 = $this->checkGet('.php', PhpReader::class);
 
-        $this->assertSame($php, $php2);
-        $this->assertSame($yml, $yaml);
+        $this->assertNotSame($php, $php2);
+        $this->assertNotSame($yml, $yaml);
     }
 
     public function checkGet(string $name, string $class)

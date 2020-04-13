@@ -43,6 +43,6 @@ class Params extends Config
 
     public function hasParams(): bool
     {
-        return true;
+        return false;
     }
 }

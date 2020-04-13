@@ -20,7 +20,7 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "composer-plugin-api": "^1.0",
+        "composer-plugin-api": "^1.0|^2.0",
         "opis/closure": "^3.5",
         "riimu/kit-phpencoder": "^2.4"
     },
@@ -46,7 +46,7 @@
         }
     },
     "extra": {
-        "class": "Yiisoft\\Composer\\Config\\Plugin",
+        "class": "Yiisoft\\Composer\\Config\\ComposerEventHandler",
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }

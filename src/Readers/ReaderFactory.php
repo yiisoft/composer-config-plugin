@@ -32,11 +32,12 @@ class ReaderFactory
         $type = static::detectType($path);
         $class = static::findClass($type);
 
-        if (!array_key_exists($class, self::$loaders)) {
-            self::$loaders[$class] = static::create($builder, $type);
+        $uniqid = $class . ':' . spl_object_hash($builder);
+        if (empty(self::$loaders[$uniqid])) {
+            self::$loaders[$uniqid] = static::create($builder, $type);
         }
 
-        return self::$loaders[$class];
+        return self::$loaders[$uniqid];
     }
 
     private static function detectType(string $path): string

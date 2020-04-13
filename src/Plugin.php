@@ -3,11 +3,7 @@
 namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Plugin\PluginInterface;
-use Composer\Script\Event;
-use Composer\Script\ScriptEvents;
 use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
 use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
@@ -16,10 +12,7 @@ use Composer\Util\Filesystem;
 use Yiisoft\Composer\Config\Configs\ConfigFactory;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 
-/**
- * Plugin class.
- */
-class Plugin implements PluginInterface, EventSubscriberInterface
+final class Plugin
 {
     /**
      * @var Package[] the array of active composer packages
@@ -52,11 +45,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     private Builder $builder;
 
     /**
-     * @var Composer instance
-     */
-    private Composer $composer;
-
-    /**
      * @var IOInterface
      */
     private IOInterface $io;
@@ -71,40 +59,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Composer $composer
      * @param IOInterface $io
      */
-    public function activate(Composer $composer, IOInterface $io): void
+    public function __construct(Composer $composer, IOInterface $io)
     {
-        $this->builder = new Builder(new ConfigFactory());
+        $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
+        $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
         $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
-        $this->composer = $composer;
         $this->io = $io;
     }
 
-    /**
-     * Returns list of events the plugin is subscribed to.
-     * @return array list of events
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ScriptEvents::POST_AUTOLOAD_DUMP => [
-                ['onPostAutoloadDump', 0],
-            ],
-        ];
-    }
-
-    /**
-     * This is the main function.
-     */
-    public function onPostAutoloadDump(Event $event): void
+    public function build(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
-        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
         $this->scanPackages();
         $this->reorderFiles();
 
-        $this->builder->setOutputDir($this->outputDir);
         $this->builder->buildAllConfigs($this->files);
 
         $saveFiles = $this->files;
