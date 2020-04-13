@@ -4,13 +4,13 @@ namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
-use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
-use Yiisoft\Composer\Config\Exceptions\FailedReadException;
-use Yiisoft\Composer\Config\Package\PackageFinder;
-use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Composer\Util\Filesystem;
 use Yiisoft\Composer\Config\Configs\ConfigFactory;
+use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
+use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
+use Yiisoft\Composer\Config\Package\PackageFinder;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
 
 final class Plugin
 {
@@ -58,13 +58,9 @@ final class Plugin
     {
         $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
         $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
-        $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->io = $io;
-        $this->builder = new Builder(new ConfigFactory());
-
-        $this->packages = $this->collectPackages();
-        $this->aliasesCollector = new AliasesCollector(new Filesystem());
+        $this->collectPackages($composer);
     }
 
     public function build(): void
@@ -87,7 +83,7 @@ final class Plugin
         }
     }
 
-    private function processPackages(): void
+    private function scanPackages(): void
     {
         foreach ($this->packages as $package) {
             if ($package->isComplete()) {
@@ -243,13 +239,13 @@ final class Plugin
         }
     }
 
-    private function collectPackages(): array
+    private function collectPackages(Composer $composer): void
     {
-        $vendorDir = $this->composer->getConfig()->get('vendor-dir');
-        $rootPackage = $this->composer->getPackage();
-        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
+        $vendorDir = $composer->getConfig()->get('vendor-dir');
+        $rootPackage = $composer->getPackage();
+        $packages = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
         $packageFinder = new PackageFinder($vendorDir, $rootPackage, $packages);
 
-        return $packageFinder->findPackages();
+        $this->packages = $packageFinder->findPackages();
     }
 }
