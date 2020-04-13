@@ -12,23 +12,29 @@ class Params extends Config
         return $this->pushEnvVars(parent::calcValues($sources));
     }
 
-    protected function pushEnvVars($vars): array
+    protected function pushEnvVars(array $vars): array
     {
-        $env = $this->builder->getConfig('envs')->getValues();
-        if (!empty($vars)) {
-            foreach ($vars as $key => &$value) {
-                if (is_array($value)) {
-                    foreach (array_keys($value) as $subkey) {
-                        $envKey = $this->getEnvKey($key . '_' . $subkey);
-                        if (isset($env[$envKey])) {
-                            $value[$subkey] = $env[$envKey];
-                        }
-                    }
-                } else {
-                    $envKey = $this->getEnvKey($key);
+        if ($vars === []) {
+            return [];
+        }
+
+        $env = array_merge(
+            $this->builder->getConfig('envs')->getValues(),
+            $this->builder->getConfig('dotenv')->getValues()
+        );
+
+        foreach ($vars as $key => &$value) {
+            if (is_array($value)) {
+                foreach (array_keys($value) as $subkey) {
+                    $envKey = $this->getEnvKey($key . '_' . $subkey);
                     if (isset($env[$envKey])) {
-                        $vars[$key] = $env[$envKey];
+                        $value[$subkey] = $env[$envKey];
                     }
+                }
+            } else {
+                $envKey = $this->getEnvKey($key);
+                if (isset($env[$envKey])) {
+                    $vars[$key] = $env[$envKey];
                 }
             }
         }

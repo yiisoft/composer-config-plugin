@@ -142,7 +142,7 @@ class Config
             'header' => '<?php',
             'baseDir' => "\$baseDir = $baseDir;",
             'envs' => $this->envRequires()
-                ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '',
+                ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php',(array) require __DIR__ . '/dotenv.php', \$_ENV);" : '',
             'constants' => $this->constantsRequires() ? $this->builder->getConfig('constants')->buildRequires() : '',
             'params' => $this->paramsRequires() ? "\$params = require __DIR__ . '/params.php';" : '',
             'content' => $this->renderVars($data),

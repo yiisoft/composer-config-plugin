@@ -12,6 +12,11 @@ class Envs extends Config
         return false;
     }
 
+    public function constantsRequires(): bool
+    {
+        return false;
+    }
+
     public function paramsRequires(): bool
     {
         return false;

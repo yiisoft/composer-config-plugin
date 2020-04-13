@@ -32,11 +32,6 @@ class Constants extends Config
         return false;
     }
 
-    public function envRequires(): bool
-    {
-        return false;
-    }
-
     public function paramsRequires(): bool
     {
         return false;

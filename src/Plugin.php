@@ -30,7 +30,9 @@ final class Plugin
      */
     private array $files = [
         'envs' => [],
+        'dotenv' => [],
         'params' => [],
+        'defines' => [],
         'constants' => [],
     ];
 
@@ -195,6 +197,7 @@ final class Plugin
         $path = $package->preparePath('.env');
         if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
             $this->addFile($package, 'envs', $path);
+            $this->addFile($package, 'dotenv', $path);
         }
     }
 
@@ -210,7 +213,7 @@ final class Plugin
     {
         foreach ($files as $name => $paths) {
             $paths = (array) $paths;
-            if ('constants' === $name) {
+            if ('constants' === $name || 'defines' === $name) {
                 $paths = array_reverse($paths);
             }
             foreach ($paths as $path) {
@@ -230,7 +233,7 @@ final class Plugin
         if (in_array($path, $this->files[$name], true)) {
             return;
         }
-        if ('constants' === $name) {
+        if ('constants' === $name || 'defines' === $name) {
             array_unshift($this->orderedFiles, $path);
             array_unshift($this->files[$name], $path);
         } else {
