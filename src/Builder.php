@@ -17,7 +17,7 @@ class Builder
     private const OUTPUT_DIR_SUFFIX = '-output';
 
     /**
-     * @var string path to the composer project root
+     * @var string path to the Composer project root
      */
     private string $baseDir;
 
@@ -33,7 +33,13 @@ class Builder
 
     private ConfigFactory $configFactory;
 
-    public function __construct(ConfigFactory $configFactory, string $baseDir = null)
+    /**
+     * Builder constructor.
+     *
+     * @param ConfigFactory $configFactory
+     * @param string $baseDir path to the Composer project root
+     */
+    public function __construct(ConfigFactory $configFactory, string $baseDir)
     {
         $this->configFactory = $configFactory;
         $this->baseDir = $baseDir;
@@ -55,7 +61,7 @@ class Builder
     {
         $this->outputDir = $outputDir
             ? static::buildAbsPath($this->getBaseDir(), $outputDir)
-            : static::findOutputDir();
+            : static::findOutputDir($this->getBaseDir());
     }
 
     public static function rebuild(string $outputDir = null): void
@@ -68,7 +74,9 @@ class Builder
     /**
      * Returns default output dir.
      *
-     * @param string $baseDir path to project base dir
+     * @param string|null $baseDir path to the root Composer package. When `null`,
+     * {@see findBaseDir()} will be called to find a base dir.
+     *
      * @return string
      * @throws JsonException
      */

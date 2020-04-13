@@ -45,11 +45,6 @@ final class Plugin
     private Builder $builder;
 
     /**
-     * @var Composer instance
-     */
-    private Composer $composer;
-
-    /**
      * @var IOInterface
      */
     private IOInterface $io;
@@ -66,8 +61,7 @@ final class Plugin
      */
     public function __construct(Composer $composer, IOInterface $io)
     {
-        $this->composer = $composer;
-        $baseDir = $this->composer->getConfig()->get('vendor-dir') . '/../';
+        $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
         $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
         $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
