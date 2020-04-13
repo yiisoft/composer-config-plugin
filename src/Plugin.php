@@ -3,23 +3,16 @@
 namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Plugin\PluginInterface;
-use Composer\Script\Event;
-use Composer\Script\ScriptEvents;
+use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
+use Yiisoft\Composer\Config\Exceptions\FailedReadException;
+use Yiisoft\Composer\Config\Package\PackageFinder;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Composer\Util\Filesystem;
 use Yiisoft\Composer\Config\Configs\ConfigFactory;
-use Yiisoft\Composer\Config\exceptions\BadConfigurationException;
-use Yiisoft\Composer\Config\exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
-use Yiisoft\Composer\Config\Package\PackageFinder;
-use Yiisoft\Composer\Config\readers\ReaderFactory;
 
-/**
- * Plugin class.
- */
-class Plugin implements PluginInterface, EventSubscriberInterface
+final class Plugin
 {
     /**
      * @var Package[] the array of active composer packages
@@ -48,8 +41,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     private Builder $builder;
 
-    private Composer $composer;
-
+    /**
+     * @var IOInterface
+     */
     private IOInterface $io;
 
     private AliasesCollector $aliasesCollector;
@@ -60,9 +54,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Composer $composer
      * @param IOInterface $io
      */
-    public function activate(Composer $composer, IOInterface $io): void
+    public function __construct(Composer $composer, IOInterface $io)
     {
-        $this->composer = $composer;
+        $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
+        $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
+        $this->packageFinder = new PackageFinder($composer);
+        $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->io = $io;
         $this->builder = new Builder(new ConfigFactory());
 
@@ -70,32 +67,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
     }
 
-    /**
-     * Returns list of events the plugin is subscribed to.
-     *
-     * @return array list of events
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ScriptEvents::POST_AUTOLOAD_DUMP => [
-                ['onPostAutoloadDump', 0],
-            ],
-        ];
-    }
-
-    /**
-     * This is the main function.
-     */
-    public function onPostAutoloadDump(Event $event): void
+    public function build(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');
 
-        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
-        $this->processPackages();
+        $this->scanPackages();
         $this->reorderFiles();
 
-        $this->builder->setOutputDir($this->outputDir);
         $this->builder->buildAllConfigs($this->files);
 
         $saveFiles = $this->files;

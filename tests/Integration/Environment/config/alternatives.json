@@ -1,0 +1,12 @@
+{
+    "yiiframework.com": {
+        "dotenv": "config/alt/yiiframework.com.env"
+    },
+
+    "yiiframework.ru": {
+        "dotenv": [
+            "config/alt/yiiframework.ru.env",
+            "config/alt/yiiframework.ru-beta.env"
+        ]
+    }
+}

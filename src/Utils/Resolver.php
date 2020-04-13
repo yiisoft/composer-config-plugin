@@ -24,9 +24,9 @@ class Resolver
     {
         $this->files = $files;
 
-        $this->collectDeps($files);
+        $this->collectDependencies($files);
         foreach (array_keys($files) as $name) {
-            $this->followDeps($name);
+            $this->followDependencies($name);
         }
     }
 
@@ -34,13 +34,13 @@ class Resolver
     {
         $result = [];
         foreach ($this->dependenciesOrder as $name) {
-            $result[$name] = $this->resolveDeps($this->files[$name]);
+            $result[$name] = $this->resolveDependencies($this->files[$name]);
         }
 
         return $result;
     }
 
-    private function resolveDeps(array $paths): array
+    private function resolveDependencies(array $paths): array
     {
         foreach ($paths as &$path) {
             if ($this->isDependency($path)) {
@@ -53,7 +53,7 @@ class Resolver
         return $paths;
     }
 
-    private function followDeps(string $name): void
+    private function followDependencies(string $name): void
     {
         if (array_key_exists($name, $this->dependenciesOrder)) {
             return;
@@ -64,14 +64,14 @@ class Resolver
         $this->following[$name] = $name;
         if (array_key_exists($name, $this->dependencies)) {
             foreach ($this->dependencies[$name] as $dep) {
-                $this->followDeps($dep);
+                $this->followDependencies($dep);
             }
         }
         $this->dependenciesOrder[$name] = $name;
         unset($this->following[$name]);
     }
 
-    private function collectDeps(array $files): void
+    private function collectDependencies(array $files): void
     {
         foreach ($files as $name => $paths) {
             foreach ($paths as $path) {

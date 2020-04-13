@@ -127,9 +127,8 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $helper = new Helper();
-        $values = $helper->mergeConfig(...$sources);
-        $values = $helper->fixConfig($values);
+        $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
+        $values = Helper::fixConfig($values);
 
         return $this->substituteOutputDirs($values);
     }
@@ -168,10 +167,10 @@ class Config
 
     private function findDepth(): int
     {
-        $outDir = dirname($this->normalizePath($this->getOutputPath()));
-        $diff = substr($outDir, strlen($this->getBaseDir()));
+        $outDir = realpath(dirname($this->normalizePath($this->getOutputPath())));
+        $diff = substr($outDir, strlen(realpath($this->getBaseDir())));
 
-        return substr_count($diff, DIRECTORY_SEPARATOR);
+        return substr_count($diff, '/');
     }
 
     /**
@@ -181,9 +180,7 @@ class Config
      */
     private function renderVars(array $vars): string
     {
-        $helper = new Helper();
-
-        return 'return ' . $helper->exportVar($vars) . ';';
+        return 'return ' . Helper::exportVar($vars) . ';';
     }
 
     private function replaceMarkers(string $content): string
@@ -218,7 +215,7 @@ class Config
      */
     private function normalizePath($path): string
     {
-        return rtrim(strtr($path, '/\\', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
+        return rtrim(strtr($path, '/\\', '//'), '/');
     }
 
     /**
@@ -252,7 +249,7 @@ class Config
      */
     private function substitutePath($path, $dir, $alias): string
     {
-        $end = $dir . DIRECTORY_SEPARATOR;
+        $end = $dir . '/';
         $skippable = 0 === strncmp($path, '?', 1);
         if ($skippable) {
             $path = substr($path, 1);
@@ -270,7 +267,7 @@ class Config
 
     private function getBaseDir(): string
     {
-        return dirname(__DIR__, 5);
+        return $this->builder->getBaseDir();
     }
 
     protected function getOutputPath(string $name = null): string

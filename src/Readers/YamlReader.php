@@ -3,7 +3,7 @@
 namespace Yiisoft\Composer\Config\Readers;
 
 use Symfony\Component\Yaml\Yaml;
-use Yiisoft\Composer\Config\exceptions\UnsupportedFileTypeException;
+use Yiisoft\Composer\Config\Exceptions\UnsupportedFileTypeException;
 
 /**
  * YamlReader - reads YAML files.
