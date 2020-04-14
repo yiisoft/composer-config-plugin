@@ -44,9 +44,9 @@ class Resolver
     {
         foreach ($paths as &$path) {
             if ($this->isDependency($path)) {
-                $dep = $this->parseDependencyName($path);
+                $dependency = $this->parseDependencyName($path);
 
-                $path = Builder::path($dep);
+                $path = Builder::path($dependency);
             }
         }
 
@@ -63,8 +63,8 @@ class Resolver
         }
         $this->following[$name] = $name;
         if (array_key_exists($name, $this->dependencies)) {
-            foreach ($this->dependencies[$name] as $dep) {
-                $this->followDependencies($dep);
+            foreach ($this->dependencies[$name] as $dependency) {
+                $this->followDependencies($dependency);
             }
         }
         $this->dependenciesOrder[$name] = $name;
