@@ -14,7 +14,7 @@ class Params extends Config
 
     protected function pushEnvVars(array $vars): array
     {
-        if ($vars === []) {
+        if (empty($vars)) {
             return [];
         }
 
