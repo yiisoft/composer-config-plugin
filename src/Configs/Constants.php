@@ -27,12 +27,12 @@ class Constants extends Config
         return implode("\n", $res);
     }
 
-    public function constantsRequires(): bool
+    public function constantsRequired(): bool
     {
         return false;
     }
 
-    public function paramsRequires(): bool
+    public function paramsRequired(): bool
     {
         return false;
     }

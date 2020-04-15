@@ -47,7 +47,7 @@ class Params extends Config
         return strtoupper(strtr($key, '.-', '__'));
     }
 
-    public function paramsRequires(): bool
+    public function paramsRequired(): bool
     {
         return false;
     }

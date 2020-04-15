@@ -141,26 +141,26 @@ class Config
         $content = $this->replaceMarkers(implode("\n\n", array_filter([
             'header' => '<?php',
             'baseDir' => "\$baseDir = $baseDir;",
-            'envs' => $this->envRequires()
+            'envs' => $this->envsRequired()
                 ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php',(array) require __DIR__ . '/dotenv.php', \$_ENV);" : '',
-            'constants' => $this->constantsRequires() ? $this->builder->getConfig('constants')->buildRequires() : '',
-            'params' => $this->paramsRequires() ? "\$params = require __DIR__ . '/params.php';" : '',
+            'constants' => $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '',
+            'params' => $this->paramsRequired() ? "\$params = require __DIR__ . '/params.php';" : '',
             'content' => $this->renderVars($data),
         ])));
         $this->contentWriter->write($path, $content . "\n");
     }
 
-    public function envRequires(): bool
+    public function envsRequired(): bool
     {
         return true;
     }
 
-    public function constantsRequires(): bool
+    public function constantsRequired(): bool
     {
         return true;
     }
 
-    public function paramsRequires(): bool
+    public function paramsRequired(): bool
     {
         return true;
     }
