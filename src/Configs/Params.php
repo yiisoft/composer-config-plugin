@@ -18,10 +18,7 @@ class Params extends Config
             return [];
         }
 
-        $env = array_merge(
-            $this->builder->getConfig('envs')->getValues(),
-            $this->builder->getConfig('dotenv')->getValues()
-        );
+        $env = $this->builder->getConfig('envs')->getValues();
 
         foreach ($vars as $key => &$value) {
             if (is_array($value)) {
