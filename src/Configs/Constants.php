@@ -5,7 +5,7 @@ namespace Yiisoft\Composer\Config\Configs;
 /**
  * Defines class represents output configuration file with constant definitions.
  */
-class Defines extends Config
+class Constants extends Config
 {
     protected function loadFile($path): array
     {
@@ -27,12 +27,12 @@ class Defines extends Config
         return implode("\n", $res);
     }
 
-    public function hasConstants(): bool
+    public function constantsRequired(): bool
     {
         return false;
     }
 
-    public function hasParams(): bool
+    public function paramsRequired(): bool
     {
         return false;
     }

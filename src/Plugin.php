@@ -4,20 +4,20 @@ namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
-use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
-use Yiisoft\Composer\Config\Exceptions\FailedReadException;
-use Yiisoft\Composer\Config\Package\PackageFinder;
-use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Composer\Util\Filesystem;
 use Yiisoft\Composer\Config\Configs\ConfigFactory;
+use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
+use Yiisoft\Composer\Config\Exceptions\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
+use Yiisoft\Composer\Config\Package\PackageFinder;
+use Yiisoft\Composer\Config\Readers\ReaderFactory;
 
 final class Plugin
 {
     /**
      * @var Package[] the array of active composer packages
      */
-    private array $packages = [];
+    private array $packages;
 
     private array $alternatives = [];
 
@@ -29,9 +29,9 @@ final class Plugin
      * @var array config name => list of files
      */
     private array $files = [
-        'dotenv' => [],
-        'defines' => [],
+        'envs' => [],
         'params' => [],
+        'constants' => [],
     ];
 
     /**
@@ -39,17 +39,12 @@ final class Plugin
      */
     private array $originalFiles = [];
 
-    /**
-     * @var Builder
-     */
     private Builder $builder;
 
     /**
      * @var IOInterface
      */
     private IOInterface $io;
-
-    private PackageFinder $packageFinder;
 
     private AliasesCollector $aliasesCollector;
 
@@ -63,9 +58,9 @@ final class Plugin
     {
         $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
         $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
-        $this->packageFinder = new PackageFinder($composer);
         $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->io = $io;
+        $this->collectPackages($composer);
     }
 
     public function build(): void
@@ -90,7 +85,7 @@ final class Plugin
 
     private function scanPackages(): void
     {
-        foreach ($this->getPackages() as $package) {
+        foreach ($this->packages as $package) {
             if ($package->isComplete()) {
                 $this->processPackage($package);
             }
@@ -110,7 +105,7 @@ final class Plugin
     private function getAllFiles(string $name, array $stack = []): array
     {
         if (empty($this->files[$name])) {
-            return[];
+            return [];
         }
         $res = [];
         foreach ($this->files[$name] as $file) {
@@ -128,13 +123,13 @@ final class Plugin
 
     private function orderFiles(array $files): array
     {
-        if (empty($files)) {
+        if ($files === []) {
             return [];
         }
         $keys = array_combine($files, $files);
         $res = [];
         foreach ($this->orderedFiles as $file) {
-            if (isset($keys[$file])) {
+            if (array_key_exists($file, $keys)) {
                 $res[$file] = $file;
             }
         }
@@ -144,9 +139,10 @@ final class Plugin
 
     /**
      * Scans the given package and collects packages data.
+     *
      * @param Package $package
      */
-    private function processPackage(Package $package)
+    private function processPackage(Package $package): void
     {
         $files = $package->getFiles();
         $this->originalFiles[$package->getPrettyName()] = $files;
@@ -198,14 +194,15 @@ final class Plugin
     {
         $path = $package->preparePath('.env');
         if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
-            $this->addFile($package, 'dotenv', $path);
+            $this->addFile($package, 'envs', $path);
         }
     }
 
     /**
      * Adds given files to the list of files to be processed.
-     * Prepares `defines` in reversed order (outer package first) because
+     * Prepares `constants` in reversed order (outer package first) because
      * constants cannot be redefined.
+     *
      * @param Package $package
      * @param array $files
      */
@@ -213,7 +210,7 @@ final class Plugin
     {
         foreach ($files as $name => $paths) {
             $paths = (array) $paths;
-            if ('defines' === $name) {
+            if ('constants' === $name) {
                 $paths = array_reverse($paths);
             }
             foreach ($paths as $path) {
@@ -233,7 +230,7 @@ final class Plugin
         if (in_array($path, $this->files[$name], true)) {
             return;
         }
-        if ('defines' === $name) {
+        if ('constants' === $name) {
             array_unshift($this->orderedFiles, $path);
             array_unshift($this->files[$name], $path);
         } else {
@@ -242,16 +239,13 @@ final class Plugin
         }
     }
 
-    /**
-     * Gets [[packages]].
-     * @return Package[]
-     */
-    private function getPackages(): array
+    private function collectPackages(Composer $composer): void
     {
-        if ([] === $this->packages) {
-            $this->packages = $this->packageFinder->findPackages();
-        }
+        $vendorDir = $composer->getConfig()->get('vendor-dir');
+        $rootPackage = $composer->getPackage();
+        $packages = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
+        $packageFinder = new PackageFinder($vendorDir, $rootPackage, $packages);
 
-        return $this->packages;
+        $this->packages = $packageFinder->findPackages();
     }
 }

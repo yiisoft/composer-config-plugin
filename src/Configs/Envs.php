@@ -5,19 +5,19 @@ namespace Yiisoft\Composer\Config\Configs;
 /**
  * DotEnv class represents output configuration file with ENV values.
  */
-class DotEnv extends Config
+class Envs extends Config
 {
-    public function hasEnv(): bool
+    public function envsRequired(): bool
     {
         return false;
     }
 
-    public function hasConstants(): bool
+    public function constantsRequired(): bool
     {
         return false;
     }
 
-    public function hasParams(): bool
+    public function paramsRequired(): bool
     {
         return false;
     }

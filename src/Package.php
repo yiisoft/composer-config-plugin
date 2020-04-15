@@ -2,7 +2,6 @@
 
 namespace Yiisoft\Composer\Config;
 
-use Composer\Composer;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
@@ -40,13 +39,12 @@ class Package
      */
     private Filesystem $filesystem;
 
-    public function __construct(PackageInterface $package, Composer $composer)
+    public function __construct(PackageInterface $package, string $vendorDir)
     {
         $this->package = $package;
         $this->filesystem = new Filesystem();
 
-        $dir = $composer->getConfig()->get('vendor-dir');
-        $this->vendorDir = $this->filesystem->normalizePath($dir);
+        $this->vendorDir = $this->filesystem->normalizePath($vendorDir);
         $this->baseDir = dirname($this->vendorDir);
         $this->data = $this->readRawData();
     }
