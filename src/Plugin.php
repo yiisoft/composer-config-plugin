@@ -27,11 +27,13 @@ final class Plugin
 
     /**
      * @var array config name => list of files
+     * Important: defines config files processing order:
+     * envs then constants then params then other configs
      */
     private array $files = [
         'envs' => [],
-        'params' => [],
         'constants' => [],
+        'params' => [],
     ];
 
     /**
