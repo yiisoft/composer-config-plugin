@@ -23,7 +23,7 @@ How it works?
 - Scans installed packages for `config-plugin` extra option in their
   `composer.json`
 - Loads `.env` files to set `$_ENV` variables
-- Requires `defines` files to set constants
+- Requires `constants` files to set constants
 - Requires `params` files
 - Requires config files
 - Options collected during earlier steps could and should be used in later
@@ -136,8 +136,8 @@ behavior:
 - Options in outer packages override options from inner packages
 - Plugin respects the order your configs are listed in `composer.json` with
 - Different types of options are processed in the following order:
-    - Environment variables from `dotenv`
-    - Constants from `defines`
+    - Environment variables from `envs`
+    - Constants from `constants`
     - Parameters from `params`
     - Configs are processed last of all
 
