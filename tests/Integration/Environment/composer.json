@@ -62,6 +62,7 @@
     },
     "extra": {
         "config-plugin": {
+            "constants": "config/constants.php",
             "params": "config/params.php",
             "test": "config/test.php",
             "web": "config/web.php"

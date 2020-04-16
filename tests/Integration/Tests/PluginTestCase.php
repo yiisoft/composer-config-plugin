@@ -23,6 +23,6 @@ abstract class PluginTestCase extends TestCase
 
     protected function getFromConfig(string $config, string $name)
     {
-        return self::$configs[$config][$name];
+        return self::$configs[$config][$name] ?? null;
     }
 }

@@ -24,4 +24,5 @@ return [
     'object parameter' => new stdClass(),
 
     'env_parameter' => 'default',
+    'constant_based_parameter' => TEST_CONSTANT,
 ];
