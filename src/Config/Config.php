@@ -6,6 +6,7 @@ use ReflectionException;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
+use Yiisoft\Composer\Config\Util\ConfigMergeHelper;
 use Yiisoft\Composer\Config\Util\Helper;
 
 /**
@@ -127,7 +128,7 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
+        $values = call_user_func_array([ConfigMergeHelper::class, 'mergeConfig'], $sources);
         $values = Helper::fixConfig($values);
 
         return $this->substituteOutputDirs($values);
