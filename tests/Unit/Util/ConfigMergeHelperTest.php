@@ -16,6 +16,7 @@ final class ConfigMergeHelperTest extends TestCase
      * @dataProvider mergeValuesProvider()
      * @dataProvider replaceArrayValueProvider()
      * @dataProvider unsetArrayValueProvider()
+     * @dataProvider emptyValuesProvider()
      * @param array $arraysToMerge
      * @param array $expected
      */
@@ -28,13 +29,6 @@ final class ConfigMergeHelperTest extends TestCase
     public function replaceValuesProvider(): array
     {
         return [
-            [
-                [
-                    [],
-                    [],
-                ],
-                [],
-            ],
             [
                 [
                     [1],
@@ -135,6 +129,29 @@ final class ConfigMergeHelperTest extends TestCase
                 [
                     'key' => [],
                 ],
+            ],
+        ];
+    }
+
+    public function emptyValuesProvider(): array
+    {
+        return [
+            [
+                [],
+                [],
+            ],
+            [
+                [
+                    [],
+                ],
+                [],
+            ],
+            [
+                [
+                    [],
+                    [],
+                ],
+                [],
             ],
         ];
     }
