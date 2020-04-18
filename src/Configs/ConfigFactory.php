@@ -11,7 +11,6 @@ use Yiisoft\Composer\Config\Builder;
 class ConfigFactory
 {
     private const KNOWN_TYPES = [
-        '__rebuild' => Rebuild::class,
         '__files' => System::class,
         'aliases' => System::class,
         'packages' => System::class,
