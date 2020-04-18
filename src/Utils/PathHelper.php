@@ -8,7 +8,7 @@ final class PathHelper
 {
     /**
      * PHP implementation of {@see realpath()} method returns `false` when file or directory does not exist.
-     * This method prevent this behavior.
+     * This method prevents this behavior.
      *
      * @param string $path
      * @return string
