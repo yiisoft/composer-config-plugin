@@ -2,7 +2,6 @@
 
 namespace Yiisoft\Composer\Config\Config;
 
-use ReflectionException;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
@@ -139,16 +138,21 @@ class Config
         $depth = $this->findDepth();
         $baseDir = $depth > 0 ? "dirname(__DIR__, $depth)" : '__DIR__';
 
-        $content = $this->replaceMarkers(implode("\n\n", array_filter([
-            'header' => '<?php',
-            'baseDir' => "\$baseDir = $baseDir;",
-            'envs' => $this->envsRequired()
-                ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '',
-            'constants' => $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '',
-            'params' => $this->paramsRequired() ? "\$params = require __DIR__ . '/params.php';" : '',
-            'content' => $this->renderVars($data),
-        ])));
-        $this->contentWriter->write($path, $content . "\n");
+        $params = $this->paramsRequired() ? "(array) require __DIR__ . '/params.php'" : '[]';
+        $constants = $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '';
+        $envs = $this->envsRequired() ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '';
+        $variables = Helper::exportVar($data);
+
+        $content = <<<PHP
+<?php
+\$baseDir = {$baseDir};
+\$params = {$params};
+{$constants}
+{$envs}
+return {$variables};
+PHP;
+
+        $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
     }
 
     public function envsRequired(): bool
@@ -172,16 +176,6 @@ class Config
         $diff = substr($outDir, strlen(realpath($this->getBaseDir())));
 
         return substr_count($diff, '/');
-    }
-
-    /**
-     * @param array $vars array to be exported
-     * @return string
-     * @throws ReflectionException
-     */
-    private function renderVars(array $vars): string
-    {
-        return 'return ' . Helper::exportVar($vars) . ';';
     }
 
     private function replaceMarkers(string $content): string

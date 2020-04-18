@@ -161,7 +161,7 @@ class Builder
     private function buildSystemConfigs(array $files): void
     {
         $this->getConfig('__files')->setValues($files);
-        foreach (['__rebuild', '__files', 'aliases', 'packages'] as $name) {
+        foreach (['__files', 'aliases', 'packages'] as $name) {
             $this->getConfig($name)->build()->write();
         }
     }
