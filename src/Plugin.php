@@ -21,8 +21,6 @@ final class Plugin
 
     private array $alternatives = [];
 
-    private ?string $outputDir = null;
-
     private ?Package $rootPackage = null;
 
     /**
@@ -159,7 +157,6 @@ final class Plugin
             if (!empty($devFiles)) {
                 $this->addFiles($package, $devFiles);
             }
-            $this->outputDir = $package->getOutputDir();
             $alternatives = $package->getAlternatives();
             if (is_string($alternatives)) {
                 $this->alternatives = $this->readConfig($package, $alternatives);
