@@ -99,7 +99,7 @@ class Config
      * @param string $path
      * @return array configuration read from file
      */
-    protected function loadFile($path): array
+    protected function loadFile(string $path): array
     {
         $reader = ReaderFactory::get($this->builder, $path);
 

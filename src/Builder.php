@@ -166,23 +166,15 @@ class Builder
         }
     }
 
-    public function getOutputPath($name): string
+    public function getOutputPath(string $name): string
     {
         return $this->outputDir . DIRECTORY_SEPARATOR . $name . '.php';
     }
 
-    private function createConfig($name): Config
-    {
-        $config = $this->configFactory->create($this, $name);
-        $this->configs[$name] = $config;
-
-        return $config;
-    }
-
     public function getConfig(string $name)
     {
-        if (!isset($this->configs[$name])) {
-            $this->configs[$name] = $this->createConfig($name);
+        if (!array_key_exists($name, $this->configs)) {
+            $this->configs[$name] = $this->configFactory->create($this, $name);
         }
 
         return $this->configs[$name];

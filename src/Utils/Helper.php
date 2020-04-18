@@ -90,9 +90,9 @@ class Helper
         return static::getEncoder()->encode($value);
     }
 
-    private static $encoder;
+    private static ?PHPEncoder $encoder = null;
 
-    private static function getEncoder()
+    private static function getEncoder(): PHPEncoder
     {
         if (self::$encoder === null) {
             self::$encoder = static::createEncoder();
@@ -101,7 +101,7 @@ class Helper
         return self::$encoder;
     }
 
-    private static function createEncoder()
+    private static function createEncoder(): PHPEncoder
     {
         $encoder = new PHPEncoder([
             'object.format' => 'serialize',
