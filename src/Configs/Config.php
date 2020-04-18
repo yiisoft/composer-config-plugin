@@ -150,17 +150,17 @@ class Config
         $this->contentWriter->write($path, $content . "\n");
     }
 
-    public function envsRequired(): bool
+    protected function envsRequired(): bool
     {
         return true;
     }
 
-    public function constantsRequired(): bool
+    protected function constantsRequired(): bool
     {
         return true;
     }
 
-    public function paramsRequired(): bool
+    protected function paramsRequired(): bool
     {
         return true;
     }

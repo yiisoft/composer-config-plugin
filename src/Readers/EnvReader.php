@@ -10,7 +10,7 @@ use Yiisoft\Composer\Config\Exceptions\UnsupportedFileTypeException;
  */
 class EnvReader extends AbstractReader
 {
-    protected function readRaw($path)
+    protected function readRaw(string $path)
     {
         if (!class_exists(Dotenv::class)) {
             throw new UnsupportedFileTypeException('for .env support require `vlucas/phpdotenv` in your composer.json');
@@ -27,7 +27,7 @@ class EnvReader extends AbstractReader
      * @param mixed $dir
      * @param mixed $file
      */
-    private function loadDotenv($dir, $file)
+    private function loadDotenv($dir, $file): void
     {
         if (method_exists(Dotenv::class, 'createMutable')) {
             Dotenv::createMutable($dir, $file)->load();

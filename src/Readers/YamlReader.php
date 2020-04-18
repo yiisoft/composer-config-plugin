@@ -10,10 +10,10 @@ use Yiisoft\Composer\Config\Exceptions\UnsupportedFileTypeException;
  */
 class YamlReader extends AbstractReader
 {
-    protected function readRaw($path)
+    protected function readRaw(string $path)
     {
         if (!class_exists(Yaml::class)) {
-            throw new UnsupportedFileTypeException("for YAML support require `symfony/yaml` in your composer.json (reading $path)");
+            throw new UnsupportedFileTypeException("For YAML support require `symfony/yaml` in your composer.json (reading $path)");
         }
 
         return Yaml::parse($this->getFileContents($path));

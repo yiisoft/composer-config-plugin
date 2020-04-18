@@ -7,17 +7,17 @@ namespace Yiisoft\Composer\Config\Configs;
  */
 class Envs extends Config
 {
-    public function envsRequired(): bool
+    protected function envsRequired(): bool
     {
         return false;
     }
 
-    public function constantsRequired(): bool
+    protected function constantsRequired(): bool
     {
         return false;
     }
 
-    public function paramsRequired(): bool
+    protected function paramsRequired(): bool
     {
         return false;
     }
