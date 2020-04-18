@@ -19,35 +19,35 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./repositories/first-vendor/first-package"
+            "url": "../Packages/first-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/first-vendor/second-package"
+            "url": "../Packages/first-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-vendor/first-package"
+            "url": "../Packages/second-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-vendor/second-package"
+            "url": "../Packages/second-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "./repositories/first-dev-vendor/first-package"
+            "url": "../Packages/first-dev-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/first-dev-vendor/second-package"
+            "url": "../Packages/first-dev-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-dev-vendor/first-package"
+            "url": "../Packages/second-dev-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-dev-vendor/second-package"
+            "url": "../Packages/second-dev-vendor/second-package"
         }
     ],
     "autoload": {
