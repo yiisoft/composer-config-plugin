@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config\Utils;
 final class PathHelper
 {
     /**
-     * PHP implementation of {@see realpath()} method returns `false` when object is not exists.
+     * PHP implementation of {@see realpath()} method returns `false` when file or directory does not exist.
      * This method prevent this behavior.
      *
      * @param string $path
