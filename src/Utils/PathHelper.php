@@ -33,6 +33,12 @@ final class PathHelper
 
     public static function normalize(string $path): string
     {
-        return rtrim(str_replace('//', '/', strtr($path, '/\\', '//')), '/');
+        $search = ['//', '\\\\', '\\'];
+        $replace = ['/', '\\', '/'];
+        while (($processedPath = str_replace($search, $replace, $path)) !== $path) {
+            $path = $processedPath;
+        }
+
+        return rtrim($path, '/');
     }
 }
