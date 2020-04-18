@@ -14,8 +14,6 @@ use function dirname;
  */
 class Builder
 {
-    private const OUTPUT_DIR_SUFFIX = '-output';
-
     /**
      * @var string path to the Composer project root
      */
@@ -76,13 +74,14 @@ class Builder
      *
      * @param string|null $baseDir path to the root Composer package. When `null`,
      * {@see findBaseDir()} will be called to find a base dir.
-     *
      * @return string
      * @throws JsonException
      */
     private static function findOutputDir(string $baseDir = null): string
     {
-        $baseDir = $baseDir ?: static::findBaseDir();
+        if ($baseDir === null) {
+            $baseDir = static::findBaseDir();
+        }
         $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
         $data = @json_decode(file_get_contents($path), true);
         $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
@@ -101,15 +100,9 @@ class Builder
      * @param string $baseDir path to base directory
      * @return string
      */
-    private static function defaultOutputDir(string $baseDir = null): string
+    private static function defaultOutputDir(string $baseDir): string
     {
-        if ($baseDir) {
-            $dir = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . basename(dirname(__DIR__));
-        } else {
-            $dir = dirname(__DIR__);
-        }
-
-        return $dir . static::OUTPUT_DIR_SUFFIX;
+        return "{$baseDir}/runtime/build/config";
     }
 
     /**
