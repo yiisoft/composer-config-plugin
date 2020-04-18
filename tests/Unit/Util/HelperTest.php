@@ -4,7 +4,6 @@ namespace Yiisoft\Composer\Config\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Composer\Config\Util\Helper;
-use Yiisoft\Composer\Config\Util\RemoveArrayKeys;
 
 final class HelperTest extends TestCase
 {
@@ -25,24 +24,5 @@ final class HelperTest extends TestCase
         $expected = preg_replace('/\R/', "\n", $expected);
         $actual = preg_replace('/\R/', "\n", $actual);
         $this->assertSame($expected, $actual, $message);
-    }
-
-    public function testFixRemoveArrayKeys(): void
-    {
-        $config = [
-            'a' => '1',
-            'b' => '2',
-            'c' => [
-                'd' => 4,
-                'remove' => new RemoveArrayKeys(),
-                'e' => 5,
-            ],
-        ];
-
-        $fixed = $config;
-        unset($fixed['c']['remove']);
-        $fixed['c'] = array_values($fixed['c']);
-
-        $this->assertEquals($fixed, Helper::fixConfig($config));
     }
 }

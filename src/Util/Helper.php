@@ -9,35 +9,6 @@ use Riimu\Kit\PHPEncoder\PHPEncoder;
  */
 class Helper
 {
-    public static function fixConfig(array $config): array
-    {
-        $remove = false;
-        foreach ($config as $key => &$value) {
-            if (is_array($value)) {
-                $value = static::fixConfig($value);
-            } elseif ($value instanceof RemoveArrayKeys) {
-                $remove = true;
-                unset($config[$key]);
-            }
-        }
-        if ($remove) {
-            return array_values($config);
-        }
-
-        return $config;
-    }
-
-    public static function exportDefines(array $defines): string
-    {
-        $res = '';
-        foreach ($defines as $key => $value) {
-            $var = static::exportVar($value);
-            $res .= "defined('$key') or define('$key', $var);\n";
-        }
-
-        return $res;
-    }
-
     /**
      * Returns PHP-executable string representation of given value.
      * Uses Riimu/Kit-PHPEncoder based `var_export` alternative.
