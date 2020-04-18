@@ -6,6 +6,7 @@ use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Yiisoft\Composer\Config\Utils\Helper;
+use Yiisoft\Composer\Config\Utils\PathHelper;
 
 /**
  * Config class represents output configuration file.
@@ -151,7 +152,7 @@ class Config
 return {$variables};
 PHP;
 
-        $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
+        $this->contentWriter->write($path, $this->replaceMarkers($content) . PHP_EOL);
     }
 
     public function envsRequired(): bool
@@ -171,8 +172,8 @@ PHP;
 
     private function findDepth(): int
     {
-        $outDir = realpath(dirname($this->normalizePath($this->getOutputPath())));
-        $diff = substr($outDir, strlen(realpath($this->getBaseDir())));
+        $outDir = PathHelper::realpath(dirname($this->getOutputPath()));
+        $diff = substr($outDir, strlen(PathHelper::realpath($this->getBaseDir())));
 
         return substr_count($diff, '/');
     }
@@ -194,22 +195,9 @@ PHP;
      */
     protected function substituteOutputDirs(array $data): array
     {
-        $dir = $this->normalizePath($this->getBaseDir());
+        $dir = PathHelper::normalize($this->getBaseDir());
 
         return $this->substitutePaths($data, $dir, self::BASE_DIR_MARKER);
-    }
-
-    /**
-     * Normalizes given path with given directory separator.
-     * Default forced to Unix directory separator for substitutePaths to work properly in Windows.
-     *
-     * @param string $path path to be normalized
-     * @param string $ds directory separator
-     * @return string
-     */
-    private function normalizePath($path): string
-    {
-        return rtrim(strtr($path, '/\\', '//'), '/');
     }
 
     /**
