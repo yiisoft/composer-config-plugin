@@ -24,13 +24,13 @@ class Params extends Config
             if (is_array($value)) {
                 foreach (array_keys($value) as $subkey) {
                     $envKey = $this->getEnvKey($key . '_' . $subkey);
-                    if (isset($env[$envKey])) {
+                    if (array_key_exists($envKey, $env)) {
                         $value[$subkey] = $env[$envKey];
                     }
                 }
             } else {
                 $envKey = $this->getEnvKey($key);
-                if (isset($env[$envKey])) {
+                if (array_key_exists($envKey, $env)) {
                     $vars[$key] = $env[$envKey];
                 }
             }
@@ -44,7 +44,7 @@ class Params extends Config
         return strtoupper(strtr($key, '.-', '__'));
     }
 
-    public function paramsRequired(): bool
+    protected function paramsRequired(): bool
     {
         return false;
     }

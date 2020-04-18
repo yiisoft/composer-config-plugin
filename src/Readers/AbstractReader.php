@@ -31,21 +31,21 @@ abstract class AbstractReader implements ReaderInterface
         }
 
         if (!$skippable) {
-            throw new FailedReadException("failed read file: $path");
+            throw new FailedReadException("Failed read file: $path");
         }
 
         return [];
     }
 
-    protected function getFileContents($path): string
+    protected function getFileContents(string $path): string
     {
         $res = file_get_contents($path);
         if (false === $res) {
-            throw new FailedReadException("failed read file: $path");
+            throw new FailedReadException("Failed read file: $path");
         }
 
         return $res;
     }
 
-    abstract protected function readRaw($path);
+    abstract protected function readRaw(string $path);
 }
