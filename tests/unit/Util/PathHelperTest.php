@@ -76,5 +76,4 @@ final class PathHelperTest extends TestCase
             ],
         ];
     }
-
 }
