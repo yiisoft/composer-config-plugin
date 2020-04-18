@@ -8,28 +8,28 @@ namespace Yiisoft\Composer\Config\Configs;
  */
 class System extends Config
 {
-    public function setValue(string $name, $value): Config
+    public function setValue(string $name, $value): self
     {
         $this->values[$name] = $value;
 
         return $this;
     }
 
-    public function setValues(array $values): Config
+    public function setValues(array $values): self
     {
         $this->values = $values;
 
         return $this;
     }
 
-    public function mergeValues(array $values): Config
+    public function mergeValues(array $values): self
     {
         $this->values = array_merge($this->values, $values);
 
         return $this;
     }
 
-    public function load(array $paths = []): Config
+    public function load(array $paths = []): self
     {
         $path = $this->getOutputPath();
         if (!file_exists($path)) {
@@ -41,7 +41,7 @@ class System extends Config
         return $this;
     }
 
-    public function build(): Config
+    public function build(): self
     {
         $this->values = $this->substituteOutputDirs($this->values);
 
