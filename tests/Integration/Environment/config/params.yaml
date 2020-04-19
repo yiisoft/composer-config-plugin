@@ -1,0 +1,4 @@
+parameters from YAML:
+  string value: string
+  boolean value: true
+  int value: 42
