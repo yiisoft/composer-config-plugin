@@ -15,4 +15,7 @@ return [
     'array parameter with ReplaceArrayValue' => [
         'first-vendor/first-package' => true,
     ],
+    'array parameter with RemoveArrayKeys' => [
+        'first-vendor/first-package' => 'first-vendor/first-package',
+    ],
 ];
