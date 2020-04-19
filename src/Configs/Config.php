@@ -2,6 +2,7 @@
 
 namespace Yiisoft\Composer\Config\Configs;
 
+use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
@@ -127,8 +128,7 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
-        $values = Helper::fixConfig($values);
+        $values = ArrayHelper::merge(...$sources);
 
         return $this->substituteOutputDirs($values);
     }
