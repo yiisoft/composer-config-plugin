@@ -26,23 +26,4 @@ class HelperTest extends TestCase
         $actual = preg_replace('/\R/', "\n", $actual);
         $this->assertSame($expected, $actual, $message);
     }
-
-    public function testFixRemoveArrayKeys(): void
-    {
-        $config = [
-            'a' => '1',
-            'b' => '2',
-            'c' => [
-                'd' => 4,
-                'remove' => new RemoveArrayKeys(),
-                'e' => 5,
-            ],
-        ];
-
-        $fixed = $config;
-        unset($fixed['c']['remove']);
-        $fixed['c'] = array_values($fixed['c']);
-
-        $this->assertEquals($fixed, Helper::fixConfig($config));
-    }
 }

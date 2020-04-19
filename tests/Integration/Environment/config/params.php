@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Yiisoft\Arrays\ReplaceArrayValue;
-use Yiisoft\Arrays\UnsetArrayValue;
-use Yiisoft\Composer\Config\Utils\RemoveArrayKeys;
+use Yiisoft\Arrays\Modifier\RemoveKeys;
+use Yiisoft\Arrays\Modifier\ReplaceValue;
+use Yiisoft\Arrays\Modifier\UnsetValue;
 
 return [
     'boolean parameter' => true,
@@ -19,12 +19,12 @@ return [
         [[[[[]]]]]
     ],
     'array parameter with UnsetArrayValue' => [
-        'first-vendor/first-package' => new UnsetArrayValue(),
+        'first-vendor/first-package' => new UnsetValue(),
     ],
-    'array parameter with ReplaceArrayValue' => new ReplaceArrayValue(['replace']),
+    'array parameter with ReplaceArrayValue' => new ReplaceValue(['replace']),
     'array parameter with RemoveArrayKeys' => [
         'root key' => 'root value',
-        new RemoveArrayKeys(),
+        new RemoveKeys(),
     ],
     'callable parameter' => function () {
         return 'I am callable';
