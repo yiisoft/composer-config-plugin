@@ -12,6 +12,19 @@ final class ParamsConfigTest extends ConfigTest
     public function configProvider(): array
     {
         return [
+            ...$this->phpFilesProvider(),
+            ...$this->yamlFilesProvider(),
+        ];
+    }
+
+    protected function getDefaultConfigName(): string
+    {
+        return 'params';
+    }
+
+    private function phpFilesProvider(): array
+    {
+        return [
             ['boolean parameter', true],
             ['string parameter', 'value of param 1'],
             ['NAN parameter', 'NAN'],
@@ -48,8 +61,17 @@ final class ParamsConfigTest extends ConfigTest
         ];
     }
 
-    protected function getDefaultConfigName(): string
+    private function yamlFilesProvider(): array
     {
-        return 'params';
+        return [
+            [
+                'parameters',
+                [
+                    'param1' => 'value1',
+                    'param2' => true,
+                    'param3' => [1, 'value2'],
+                ],
+            ],
+        ];
     }
 }

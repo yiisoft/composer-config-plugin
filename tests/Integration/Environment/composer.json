@@ -14,7 +14,8 @@
         "first-dev-vendor/second-package": "*",
         "second-dev-vendor/first-package": "*",
         "second-dev-vendor/second-package": "*",
-        "vlucas/phpdotenv": "*"
+        "vlucas/phpdotenv": "*",
+        "symfony/yaml": "^5.1@dev"
     },
     "repositories": [
         {
@@ -63,7 +64,10 @@
     "extra": {
         "config-plugin": {
             "constants": "config/constants.php",
-            "params": "config/params.php",
+            "params": [
+                "config/params.php",
+                "config/params.yaml"
+            ],
             "test": "config/test.php",
             "web": "config/web.php"
         },

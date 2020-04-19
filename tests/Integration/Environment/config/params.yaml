@@ -1,0 +1,4 @@
+parameters:
+    param1: value1
+    param2: true
+    param3: [1, value2]
