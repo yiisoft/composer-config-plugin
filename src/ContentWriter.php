@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config;
 
-use Yiisoft\Composer\Config\Exceptions\FailedWriteException;
+use Yiisoft\Composer\Config\Exception\FailedWriteException;
 
 class ContentWriter
 {

@@ -3,9 +3,9 @@
 namespace Yiisoft\Composer\Config;
 
 use JsonException;
-use Yiisoft\Composer\Config\Configs\Config;
-use Yiisoft\Composer\Config\Configs\ConfigFactory;
-use Yiisoft\Composer\Config\Utils\Resolver;
+use Yiisoft\Composer\Config\Config\Config;
+use Yiisoft\Composer\Config\Config\ConfigFactory;
+use Yiisoft\Composer\Config\Util\Resolver;
 
 use function dirname;
 
