@@ -3,6 +3,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4",
+        "symfony/yaml": "^5.1",
         "first-vendor/first-package": "*",
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
@@ -63,7 +64,11 @@
     "extra": {
         "config-plugin": {
             "constants": "config/constants.php",
-            "params": "config/params.php",
+            "params": [
+                "config/params.php",
+                "config/params.yaml",
+                "config/params.json"
+            ],
             "test": "config/test.php",
             "web": "config/web.php"
         },

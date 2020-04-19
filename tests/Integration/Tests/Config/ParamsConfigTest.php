@@ -65,6 +65,16 @@ final class ParamsConfigTest extends ConfigTest
             ['second-dev-vendor/second-package', true],
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
+            ['parameters from YAML', [
+                'string value' => 'string',
+                'boolean value' => true,
+                'int value' => 42,
+            ]],
+            ['parameters from JSON', [
+                'string value' => 'string',
+                'boolean value' => true,
+                'int value' => 42,
+            ]],
         ];
     }
 
