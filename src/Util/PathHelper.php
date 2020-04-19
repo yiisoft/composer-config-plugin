@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Utils;
+namespace Yiisoft\Composer\Config\Util;
 
 final class PathHelper
 {

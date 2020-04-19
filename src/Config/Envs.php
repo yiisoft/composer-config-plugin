@@ -2,7 +2,7 @@
 
 namespace Yiisoft\Composer\Config\Config;
 
-use Yiisoft\Composer\Config\Utils\Helper;
+use Yiisoft\Composer\Config\Util\Helper;
 
 /**
  * DotEnv class represents output configuration file with ENV values.
