@@ -32,6 +32,13 @@ final class ParamsConfigTest extends ConfigTest
                 'second-vendor/second-package' => true,
             ]],
             ['array parameter with ReplaceArrayValue', ['replace']],
+            ['array parameter with RemoveArrayKeys', [
+                'first-vendor/first-package',
+                'first-vendor/second-package',
+                'second-vendor/first-package',
+                'second-vendor/second-package',
+                'root value',
+            ]],
             [
                 'callable parameter',
                 new LiterallyCallback(function () {

@@ -14,4 +14,7 @@ return [
     'array parameter with ReplaceArrayValue' => [
         'second-vendor/second-package' => true,
     ],
+    'array parameter with RemoveArrayKeys' => [
+        'second-vendor/second-package' => 'second-vendor/second-package',
+    ],
 ];
