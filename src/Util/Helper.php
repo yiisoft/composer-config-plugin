@@ -9,24 +9,6 @@ use Riimu\Kit\PHPEncoder\PHPEncoder;
  */
 class Helper
 {
-    public static function fixConfig(array $config): array
-    {
-        $remove = false;
-        foreach ($config as $key => &$value) {
-            if (is_array($value)) {
-                $value = static::fixConfig($value);
-            } elseif ($value instanceof RemoveArrayKeys) {
-                $remove = true;
-                unset($config[$key]);
-            }
-        }
-        if ($remove) {
-            return array_values($config);
-        }
-
-        return $config;
-    }
-
     public static function exportDefines(array $defines): string
     {
         $res = '';
