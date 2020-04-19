@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Arrays\ReplaceArrayValue;
-use Yiisoft\Arrays\UnsetArrayValue;
-use Yiisoft\Composer\Config\Util\ConfigMergeHelper;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Arrays\Modifier\ReplaceValue;
+use Yiisoft\Arrays\Modifier\UnsetValue;
 
 final class ConfigMergeHelperTest extends TestCase
 {
@@ -22,7 +22,7 @@ final class ConfigMergeHelperTest extends TestCase
      */
     public function testMerge(array $arraysToMerge, array $expected): void
     {
-        $actual = ConfigMergeHelper::mergeConfig(...$arraysToMerge);
+        $actual = ArrayHelper::merge(...$arraysToMerge);
         $this->assertEquals($expected, $actual);
     }
 
@@ -93,7 +93,7 @@ final class ConfigMergeHelperTest extends TestCase
             [
                 [
                     ['key' => ['value']],
-                    ['key' => new ReplaceArrayValue('replaced')],
+                    ['key' => new ReplaceValue('replaced')],
                 ],
                 [
                     'key' => 'replaced',
@@ -102,7 +102,7 @@ final class ConfigMergeHelperTest extends TestCase
             [
                 [
                     ['key' => ['value']],
-                    ['key' => [new ReplaceArrayValue('replaced')]],
+                    ['key' => [new ReplaceValue('replaced')]],
                 ],
                 [
                     'key' => ['replaced'],
@@ -117,14 +117,14 @@ final class ConfigMergeHelperTest extends TestCase
             [
                 [
                     ['key' => ['value']],
-                    ['key' => new UnsetArrayValue()],
+                    ['key' => new UnsetValue()],
                 ],
                 [],
             ],
             [
                 [
                     ['key' => ['value']],
-                    ['key' => [new UnsetArrayValue()]],
+                    ['key' => [new UnsetValue()]],
                 ],
                 [
                     'key' => [],
