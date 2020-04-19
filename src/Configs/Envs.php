@@ -4,8 +4,6 @@ namespace Yiisoft\Composer\Config\Configs;
 
 use Yiisoft\Composer\Config\Utils\Helper;
 
-use Yiisoft\Composer\Config\Utils\Helper;
-
 /**
  * DotEnv class represents output configuration file with ENV values.
  */
