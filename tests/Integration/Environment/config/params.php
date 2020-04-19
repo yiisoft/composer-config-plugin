@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Yiisoft\Arrays\Modifier\RemoveKeys;
+use Yiisoft\Arrays\Modifier\ReplaceValue;
+use Yiisoft\Arrays\Modifier\UnsetValue;
+
 return [
     'boolean parameter' => true,
     'string parameter' => 'value of param 1',
@@ -10,7 +14,18 @@ return [
     'float parameter' => 1.0000001,
     'int parameter' => 123,
     'long int parameter' => 123_000,
-    'array parameter' => [[[[[[]]]]]],
+    'array parameter' => [
+        'changed value' => 'from root config',
+        [[[[[]]]]]
+    ],
+    'array parameter with UnsetArrayValue' => [
+        'first-vendor/first-package' => new UnsetValue(),
+    ],
+    'array parameter with ReplaceArrayValue' => new ReplaceValue(['replace']),
+    'array parameter with RemoveArrayKeys' => [
+        'root key' => 'root value',
+        new RemoveKeys(),
+    ],
     'callable parameter' => function () {
         return 'I am callable';
     },

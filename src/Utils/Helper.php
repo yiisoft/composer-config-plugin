@@ -9,63 +9,6 @@ use Riimu\Kit\PHPEncoder\PHPEncoder;
  */
 class Helper
 {
-    /**
-     * Merges two or more arrays into one recursively.
-     * Based on Yii2 yii\helpers\BaseArrayHelper::merge.
-     * @return array the merged array
-     */
-    public static function mergeConfig(): array
-    {
-        $args = \func_get_args();
-        $res = array_shift($args) ?: [];
-        foreach ($args as $items) {
-            if (!\is_array($items)) {
-                continue;
-            }
-            foreach ($items as $k => $v) {
-                if ($v instanceof \yii\helpers\UnsetArrayValue || $v instanceof \Yiisoft\Arrays\UnsetArrayValue) {
-                    unset($res[$k]);
-                } elseif ($v instanceof \yii\helpers\ReplaceArrayValue || $v instanceof \Yiisoft\Arrays\ReplaceArrayValue) {
-                    $res[$k] = $v->value;
-                } elseif (\is_int($k)) {
-                    /// XXX skip repeated values
-                    if (\in_array($v, $res, true)) {
-                        continue;
-                    }
-                    if (isset($res[$k])) {
-                        $res[] = $v;
-                    } else {
-                        $res[$k] = $v;
-                    }
-                } elseif (\is_array($v) && isset($res[$k]) && \is_array($res[$k])) {
-                    $res[$k] = self::mergeConfig($res[$k], $v);
-                } else {
-                    $res[$k] = $v;
-                }
-            }
-        }
-
-        return $res;
-    }
-
-    public static function fixConfig(array $config): array
-    {
-        $remove = false;
-        foreach ($config as $key => &$value) {
-            if (is_array($value)) {
-                $value = static::fixConfig($value);
-            } elseif ($value instanceof RemoveArrayKeys) {
-                $remove = true;
-                unset($config[$key]);
-            }
-        }
-        if ($remove) {
-            return array_values($config);
-        }
-
-        return $config;
-    }
-
     public static function exportDefines(array $defines): string
     {
         $res = '';

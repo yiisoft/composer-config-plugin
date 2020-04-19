@@ -2,11 +2,12 @@
 
 namespace Yiisoft\Composer\Config\Configs;
 
-use ReflectionException;
+use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Readers\ReaderFactory;
 use Yiisoft\Composer\Config\Utils\Helper;
+use Yiisoft\Composer\Config\Utils\PathHelper;
 
 /**
  * Config class represents output configuration file.
@@ -127,8 +128,7 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $values = call_user_func_array([Helper::class, 'mergeConfig'], $sources);
-        $values = Helper::fixConfig($values);
+        $values = ArrayHelper::merge(...$sources);
 
         return $this->substituteOutputDirs($values);
     }
@@ -138,16 +138,21 @@ class Config
         $depth = $this->findDepth();
         $baseDir = $depth > 0 ? "dirname(__DIR__, $depth)" : '__DIR__';
 
-        $content = $this->replaceMarkers(implode("\n\n", array_filter([
-            'header' => '<?php',
-            'baseDir' => "\$baseDir = $baseDir;",
-            'envs' => $this->envsRequired()
-                ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '',
-            'constants' => $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '',
-            'params' => $this->paramsRequired() ? "\$params = require __DIR__ . '/params.php';" : '',
-            'content' => $this->renderVars($data),
-        ])));
-        $this->contentWriter->write($path, $content . "\n");
+        $params = $this->paramsRequired() ? "(array) require __DIR__ . '/params.php'" : '[]';
+        $constants = $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '';
+        $envs = $this->envsRequired() ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '';
+        $variables = Helper::exportVar($data);
+
+        $content = <<<PHP
+<?php
+\$baseDir = {$baseDir};
+\$params = {$params};
+{$constants}
+{$envs}
+return {$variables};
+PHP;
+
+        $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
     }
 
     protected function envsRequired(): bool
@@ -167,20 +172,10 @@ class Config
 
     private function findDepth(): int
     {
-        $outDir = realpath(dirname($this->normalizePath($this->getOutputPath())));
-        $diff = substr($outDir, strlen(realpath($this->getBaseDir())));
+        $outDir = PathHelper::realpath(dirname($this->getOutputPath()));
+        $diff = substr($outDir, strlen(PathHelper::realpath($this->getBaseDir())));
 
         return substr_count($diff, '/');
-    }
-
-    /**
-     * @param array $vars array to be exported
-     * @return string
-     * @throws ReflectionException
-     */
-    private function renderVars(array $vars): string
-    {
-        return 'return ' . Helper::exportVar($vars) . ';';
     }
 
     private function replaceMarkers(string $content): string
@@ -200,22 +195,9 @@ class Config
      */
     protected function substituteOutputDirs(array $data): array
     {
-        $dir = $this->normalizePath($this->getBaseDir());
+        $dir = PathHelper::normalize($this->getBaseDir());
 
         return $this->substitutePaths($data, $dir, self::BASE_DIR_MARKER);
-    }
-
-    /**
-     * Normalizes given path with given directory separator.
-     * Default forced to Unix directory separator for substitutePaths to work properly in Windows.
-     *
-     * @param string $path path to be normalized
-     * @param string $ds directory separator
-     * @return string
-     */
-    private function normalizePath($path): string
-    {
-        return rtrim(strtr($path, '/\\', '//'), '/');
     }
 
     /**
