@@ -9,17 +9,6 @@ use Riimu\Kit\PHPEncoder\PHPEncoder;
  */
 class Helper
 {
-    public static function exportDefines(array $defines): string
-    {
-        $res = '';
-        foreach ($defines as $key => $value) {
-            $var = static::exportVar($value);
-            $res .= "defined('$key') or define('$key', $var);\n";
-        }
-
-        return $res;
-    }
-
     /**
      * Returns PHP-executable string representation of given value.
      * Uses Riimu/Kit-PHPEncoder based `var_export` alternative.
