@@ -4,6 +4,7 @@ namespace Yiisoft\Composer\Config\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Composer\Config\Util\Helper;
+use Yiisoft\Composer\Config\Util\RemoveArrayKeys;
 
 final class HelperTest extends TestCase
 {

@@ -3,6 +3,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4",
+        "symfony/yaml": "^5.1",
         "first-vendor/first-package": "*",
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
@@ -19,35 +20,35 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./repositories/first-vendor/first-package"
+            "url": "../Packages/first-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/first-vendor/second-package"
+            "url": "../Packages/first-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-vendor/first-package"
+            "url": "../Packages/second-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-vendor/second-package"
+            "url": "../Packages/second-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "./repositories/first-dev-vendor/first-package"
+            "url": "../Packages/first-dev-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/first-dev-vendor/second-package"
+            "url": "../Packages/first-dev-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-dev-vendor/first-package"
+            "url": "../Packages/second-dev-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "./repositories/second-dev-vendor/second-package"
+            "url": "../Packages/second-dev-vendor/second-package"
         }
     ],
     "autoload": {
@@ -63,7 +64,11 @@
     "extra": {
         "config-plugin": {
             "constants": "config/constants.php",
-            "params": "config/params.php",
+            "params": [
+                "config/params.php",
+                "config/params.yaml",
+                "config/params.json"
+            ],
             "test": "config/test.php",
             "web": "config/web.php"
         },
