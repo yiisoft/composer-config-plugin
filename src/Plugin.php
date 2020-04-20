@@ -5,12 +5,12 @@ namespace Yiisoft\Composer\Config;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
-use Yiisoft\Composer\Config\Configs\ConfigFactory;
-use Yiisoft\Composer\Config\Exceptions\BadConfigurationException;
-use Yiisoft\Composer\Config\Exceptions\FailedReadException;
+use Yiisoft\Composer\Config\Config\ConfigFactory;
+use Yiisoft\Composer\Config\Exception\BadConfigurationException;
+use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 use Yiisoft\Composer\Config\Package\PackageFinder;
-use Yiisoft\Composer\Config\Readers\ReaderFactory;
+use Yiisoft\Composer\Config\Reader\ReaderFactory;
 
 final class Plugin
 {

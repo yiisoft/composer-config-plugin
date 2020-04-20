@@ -1,0 +1,7 @@
+{
+    "parameters from JSON": {
+        "string value": "string",
+        "boolean value": true,
+        "int value": 42
+    }
+}
