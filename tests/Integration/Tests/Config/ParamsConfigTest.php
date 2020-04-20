@@ -65,6 +65,11 @@ final class ParamsConfigTest extends ConfigTest
             ['second-dev-vendor/second-package', true],
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
+            ['parameters from .env', [
+                'ENV_STRING' => 'string',
+                'ENV_NUMBER' => '42',
+                'ENV_TEXT' => 'Some text with several words',
+            ]],
             ['parameters from YAML', [
                 'string value' => 'string',
                 'boolean value' => true,

@@ -40,4 +40,10 @@ return [
 
     'env_parameter' => 'default',
     'constant_based_parameter' => TEST_CONSTANT,
+
+    'parameters from .env' => [
+        'ENV_STRING' => $_ENV['ENV_STRING'] ?? null,
+        'ENV_NUMBER' => $_ENV['ENV_NUMBER'] ?? null,
+        'ENV_TEXT' => $_ENV['ENV_TEXT'] ?? null,
+    ],
 ];
