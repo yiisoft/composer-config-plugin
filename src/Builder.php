@@ -127,7 +127,12 @@ class Builder
 
     private static function buildAbsPath(string $dir, string $file): string
     {
-        return strncmp($file, DIRECTORY_SEPARATOR, 1) === 0 ? $file : $dir . DIRECTORY_SEPARATOR . $file;
+        return self::isAbsolutePath($file) ? $file : $dir . DIRECTORY_SEPARATOR . $file;
+    }
+
+    private static function isAbsolutePath(string $path): string
+    {
+        return strpos($path, '/') === 0 || strpos($path, ':') === 1 || strpos($path, '\\\\') === 0;
     }
 
     /**
