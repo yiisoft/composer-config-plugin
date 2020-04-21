@@ -46,4 +46,10 @@ return [
         'ENV_NUMBER' => $_ENV['ENV_NUMBER'] ?? null,
         'ENV_TEXT' => $_ENV['ENV_TEXT'] ?? null,
     ],
+
+    'parameters from .env through constants' => [
+        'ENV_STRING' => ENV_STRING,
+        'ENV_NUMBER' => ENV_NUMBER,
+        'ENV_TEXT' => ENV_TEXT,
+    ],
 ];

@@ -138,17 +138,22 @@ class Config
         $depth = $this->findDepth();
         $baseDir = $depth > 0 ? "dirname(__DIR__, $depth)" : '__DIR__';
 
-        $params = $this->paramsRequired() ? "(array) require __DIR__ . '/params.php'" : '[]';
-        $constants = $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '';
         $envs = $this->envsRequired() ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '';
+        $constants = $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '';
+        $params = $this->paramsRequired() ? "\$params = (array) require __DIR__ . '/params.php';" : '';
         $variables = Helper::exportVar($data);
 
         $content = <<<PHP
 <?php
+
 \$baseDir = {$baseDir};
-\$params = {$params};
-{$constants}
+
 {$envs}
+
+{$constants}
+
+{$params}
+
 return {$variables};
 PHP;
 

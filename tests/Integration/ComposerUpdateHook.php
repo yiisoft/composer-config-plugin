@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Tests\Integration;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
+use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class ComposerUpdateHook implements BeforeFirstTestHook
 {
@@ -22,7 +23,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     {
         return sprintf(
             'cd %s',
-            __DIR__ . '/Environment',
+            PathHelper::realpath(__DIR__) . '/Environment',
         );
     }
 
@@ -38,7 +39,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     {
         $res = exec($command, $_, $returnCode);
         if ((int) $returnCode !== 0) {
-            throw new \RuntimeException($res);
+            throw new \RuntimeException("$command return code was $returnCode. $res");
         }
     }
 }
