@@ -6,7 +6,7 @@ matrix:
       language: sh
       os: windows
       before_install:
-        - choco install php --version 7.4.4 --package-parameters='"/InstallDir:C:\php"'
+        - choco install php --package-parameters='"/InstallDir:C:\php"'
         - export PATH=/c/php:$PATH
         - wget http://getcomposer.org/composer.phar
         - php composer.phar install
