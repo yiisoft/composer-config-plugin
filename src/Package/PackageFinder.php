@@ -75,7 +75,7 @@ final class PackageFinder
 
         // prevent infinite loop in case of circular dependencies
         static $processed = [];
-        if (isset($processed[$name])) {
+        if (array_key_exists($name, $processed)) {
             return;
         }
 
@@ -89,7 +89,7 @@ final class PackageFinder
         if ($includingDev) {
             $this->iterateDependencies($package, true);
         }
-        if (!isset($this->orderedList[$name])) {
+        if (!array_key_exists($name, $this->orderedList)) {
             $this->orderedList[$name] = $depth;
         }
 
@@ -106,7 +106,7 @@ final class PackageFinder
     {
         $dependencies = $dev ? $package->getDevRequires() : $package->getRequires();
         foreach (array_keys($dependencies) as $target) {
-            if (isset($this->plainList[$target]) && empty($this->orderedList[$target])) {
+            if (array_key_exists($target, $this->plainList) && empty($this->orderedList[$target])) {
                 $this->iteratePackage($this->plainList[$target]);
             }
         }

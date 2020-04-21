@@ -41,12 +41,12 @@ final class ComposerEventHandler implements PluginInterface, EventSubscriberInte
         $this->plugin->build();
     }
 
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
         // do nothing
     }
 
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
         // do nothing
     }

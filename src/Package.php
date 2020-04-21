@@ -122,7 +122,7 @@ class Package
     }
 
     /**
-     * @return array requre-dev configuration array
+     * @return array require-dev configuration array
      */
     public function getDevRequires(): array
     {
@@ -146,14 +146,6 @@ class Package
     }
 
     /**
-     * @return array output-dir option
-     */
-    public function getOutputDir(): ?string
-    {
-        return $this->getExtraValue(self::EXTRA_OUTPUT_DIR_OPTION_NAME);
-    }
-
-    /**
      * @return mixed alternatives array or path to config
      */
     public function getAlternatives()
@@ -162,9 +154,13 @@ class Package
     }
 
     /**
-     * @return array alternatives array
+     * Get extra configuration value or default
+     *
+     * @param string $key key to look for in extra configuration
+     * @param mixed $default default to return if there's no extra configuration value
+     * @return mixed extra configuration value or default
      */
-    private function getExtraValue($key, $default = null)
+    private function getExtraValue(string $key, $default = null)
     {
         return $this->getExtra()[$key] ?? $default;
     }

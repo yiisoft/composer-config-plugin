@@ -11,6 +11,7 @@ use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
+use Dotenv\Dotenv;
 
 final class Plugin
 {
@@ -20,8 +21,6 @@ final class Plugin
     private array $packages;
 
     private array $alternatives = [];
-
-    private ?string $outputDir = null;
 
     private ?Package $rootPackage = null;
 
@@ -159,7 +158,6 @@ final class Plugin
             if (!empty($devFiles)) {
                 $this->addFiles($package, $devFiles);
             }
-            $this->outputDir = $package->getOutputDir();
             $alternatives = $package->getAlternatives();
             if (is_string($alternatives)) {
                 $this->alternatives = $this->readConfig($package, $alternatives);
@@ -195,7 +193,7 @@ final class Plugin
     private function loadDotEnv(Package $package): void
     {
         $path = $package->preparePath('.env');
-        if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
+        if (file_exists($path) && class_exists(Dotenv::class)) {
             $this->addFile($package, 'envs', $path);
         }
     }
@@ -226,7 +224,7 @@ final class Plugin
     private function addFile(Package $package, string $name, string $path): void
     {
         $path = $package->preparePath($path);
-        if (!isset($this->files[$name])) {
+        if (!array_key_exists($name, $this->files)) {
             $this->files[$name] = [];
         }
         if (in_array($path, $this->files[$name], true)) {

@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config\Reader;
  */
 class JsonReader extends AbstractReader
 {
-    protected function readRaw($path)
+    protected function readRaw(string $path)
     {
         return json_decode($this->getFileContents($path), true, 512, JSON_THROW_ON_ERROR);
     }

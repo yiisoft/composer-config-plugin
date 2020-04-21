@@ -14,7 +14,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         $command = sprintf(
             '%s && %s',
             $this->cwdToEnvironment(),
-            '[ -d vendor ] && composer dump || composer upd -n --prefer-dist --no-progress --no-suggest --ignore-platform-reqs ' . $this->suppressLogs(),
+            '[ -d vendor ] && composer dump || composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs(),
         );
         $this->exec($command);
     }
