@@ -1,12 +1,17 @@
-language: php
-
-os:
-  - linux
-  - osx
-  - windows
-
-php:
-  - 7.4
+matrix:
+  include:
+    - language: php
+      php: 7.4
+    - name: "PHP: 7.4"
+      language: sh
+      os: windows
+      before_script:
+        - choco install php --version 7.4.4 --package-parameters='"/InstallDir:C:\php"'
+        - export PATH=/c/php:$PATH
+        - sed -i 's/;extension=openssl/extension=openssl/g' /c/php/php.ini
+        - sed -i 's/;extension=mbstring/extension=mbstring/g' /c/php/php.ini
+        - wget http://getcomposer.org/composer.phar
+        - php composer.phar install
 
 # faster builds on new travis setup not using sudo
 sudo: false
