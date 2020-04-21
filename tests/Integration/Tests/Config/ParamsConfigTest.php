@@ -70,6 +70,11 @@ final class ParamsConfigTest extends ConfigTest
                 'ENV_NUMBER' => '42',
                 'ENV_TEXT' => 'Some text with several words',
             ]],
+            ['parameters from .env through constants', [
+                'ENV_STRING' => 'string',
+                'ENV_NUMBER' => '42',
+                'ENV_TEXT' => 'Some text with several words',
+            ]],
             ['parameters from YAML', [
                 'string value' => 'string',
                 'boolean value' => true,
@@ -86,5 +91,13 @@ final class ParamsConfigTest extends ConfigTest
     protected function getDefaultConfigName(): string
     {
         return 'params';
+    }
+
+    public function testConstants()
+    {
+        $values = $this->getConfigValue('parameters from .env through constants');
+        foreach ($values as $k => $v) {
+            $this->assertSame($v, constant($k));
+        }
     }
 }
