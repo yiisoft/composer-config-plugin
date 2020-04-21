@@ -7,9 +7,10 @@ matrix:
       os: windows
       before_install:
         - choco install php --package-parameters='"/InstallDir:C:\php"'
+        - sed -i 's/;extension=openssl/extension=openssl/g' /c/php/php.ini
+        - sed -i 's/;extension=mbstring/extension=mbstring/g' /c/php/php.ini
         - export PATH=/c/php:$PATH
-        - wget http://getcomposer.org/composer.phar
-        - php composer.phar install
+        - choco install composer
 
 # faster builds on new travis setup not using sudo
 sudo: false
