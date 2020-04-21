@@ -10,7 +10,8 @@ matrix:
         - sed -i 's/;extension=openssl/extension=openssl/g' /c/php/php.ini
         - sed -i 's/;extension=mbstring/extension=mbstring/g' /c/php/php.ini
         - export PATH=/c/php:$PATH
-        - choco install composer
+        - choco install composer --ia '"/DEV=C:\tools\php /PHP=C:\php"'
+        - export PATH=/c/tools/php:$PATH
 
 # faster builds on new travis setup not using sudo
 sudo: false
