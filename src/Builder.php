@@ -64,9 +64,9 @@ class Builder
             : static::findOutputDir($this->getBaseDir());
     }
 
-    public static function rebuild(string $outputDir = null): void
+    public static function rebuild(): void
     {
-        $builder = new self(new ConfigFactory(), static::findOutputDir($outputDir));
+        $builder = new self(new ConfigFactory(), static::findBaseDir());
         $files = $builder->getConfig('__files')->load();
         $builder->buildUserConfigs($files->getValues());
     }
