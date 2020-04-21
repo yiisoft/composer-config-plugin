@@ -146,14 +146,6 @@ class Package
     }
 
     /**
-     * @return array output-dir option
-     */
-    public function getOutputDir(): ?string
-    {
-        return $this->getExtraValue(self::EXTRA_OUTPUT_DIR_OPTION_NAME);
-    }
-
-    /**
      * @return mixed alternatives array or path to config
      */
     public function getAlternatives()
