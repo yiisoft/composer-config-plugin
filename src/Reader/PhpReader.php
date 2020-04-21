@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config\Reader;
  */
 class PhpReader extends AbstractReader
 {
-    protected function readRaw($path)
+    protected function readRaw(string $path)
     {
         $result = static function () {
             /** @noinspection NonSecureExtractUsageInspection */

@@ -223,7 +223,7 @@ final class Plugin
     private function addFile(Package $package, string $name, string $path): void
     {
         $path = $package->preparePath($path);
-        if (!isset($this->files[$name])) {
+        if (!array_key_exists($name, $this->files)) {
             $this->files[$name] = [];
         }
         if (in_array($path, $this->files[$name], true)) {

@@ -20,13 +20,6 @@ class ReaderFactory
         'yml' => YamlReader::class,
     ];
 
-    private Builder $builder;
-
-    public function __construct(Builder $builder)
-    {
-        $this->builder = $builder;
-    }
-
     public static function get(Builder $builder, string $path): ReaderInterface
     {
         $type = static::detectType($path);
@@ -34,7 +27,7 @@ class ReaderFactory
 
         $uniqid = $class . ':' . spl_object_hash($builder);
         if (empty(self::$loaders[$uniqid])) {
-            self::$loaders[$uniqid] = static::create($builder, $type);
+            self::$loaders[$uniqid] = new $class($builder);
         }
 
         return self::$loaders[$uniqid];
@@ -47,13 +40,6 @@ class ReaderFactory
         }
 
         return pathinfo($path, PATHINFO_EXTENSION);
-    }
-
-    private static function create(Builder $builder, string $type): ReaderInterface
-    {
-        $class = static::findClass($type);
-
-        return new $class($builder);
     }
 
     private static function findClass(string $type): string

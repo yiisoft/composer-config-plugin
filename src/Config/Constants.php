@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config\Config;
  */
 class Constants extends Config
 {
-    protected function loadFile($path): array
+    protected function loadFile(string $path): array
     {
         parent::loadFile($path);
         if (pathinfo($path, PATHINFO_EXTENSION) !== 'php') {
@@ -27,12 +27,12 @@ class Constants extends Config
         return implode("\n", $res);
     }
 
-    public function constantsRequired(): bool
+    protected function constantsRequired(): bool
     {
         return false;
     }
 
-    public function paramsRequired(): bool
+    protected function paramsRequired(): bool
     {
         return false;
     }

@@ -100,7 +100,7 @@ class Config
      * @param string $path
      * @return array configuration read from file
      */
-    protected function loadFile($path): array
+    protected function loadFile(string $path): array
     {
         $reader = ReaderFactory::get($this->builder, $path);
 
@@ -160,17 +160,17 @@ PHP;
         $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
     }
 
-    public function envsRequired(): bool
+    protected function envsRequired(): bool
     {
         return true;
     }
 
-    public function constantsRequired(): bool
+    protected function constantsRequired(): bool
     {
         return true;
     }
 
-    public function paramsRequired(): bool
+    protected function paramsRequired(): bool
     {
         return true;
     }
