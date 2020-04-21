@@ -11,6 +11,7 @@ use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
+use Dotenv\Dotenv;
 
 final class Plugin
 {
@@ -192,7 +193,7 @@ final class Plugin
     private function loadDotEnv(Package $package): void
     {
         $path = $package->preparePath('.env');
-        if (file_exists($path) && class_exists('Dotenv\Dotenv')) {
+        if (file_exists($path) && class_exists(Dotenv::class)) {
             $this->addFile($package, 'envs', $path);
         }
     }

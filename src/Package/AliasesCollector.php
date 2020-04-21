@@ -19,6 +19,7 @@ class AliasesCollector
     /**
      * Collects package aliases.
      *
+     * @param Package $package
      * @return array collected aliases
      */
     public function collect(Package $package): array
@@ -74,6 +75,7 @@ class AliasesCollector
     /**
      * Builds path inside of a package.
      *
+     * @param Package $package
      * @param string $file
      * @return string absolute paths will stay untouched
      */
