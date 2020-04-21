@@ -12,6 +12,9 @@ matrix:
         - export PATH=/c/php:$PATH
         - choco install composer --ia '"/DEV=C:\tools\php /PHP=C:\php"'
         - export PATH=/c/tools/php:$PATH
+        - mkdir -p /c/php/ext/xdebug
+        - wget -O /c/php/ext/xdebug 'https://xdebug.org/files/php_xdebug-2.9.4-7.4-vc15-nts-x86_64.dll'
+        - echo 'zend_extension="C:\php\ext\php_xdebug-2.9.4-7.4-vc15-nts-x86_64.dll"' >> /c/php/php.ini
 
 # faster builds on new travis setup not using sudo
 sudo: false
