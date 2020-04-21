@@ -38,7 +38,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     {
         $res = exec($command, $_, $returnCode);
         if ((int) $returnCode !== 0) {
-            throw new \RuntimeException($res);
+            throw new \RuntimeException("$command return code was $returnCode. $res");
         }
     }
 }
