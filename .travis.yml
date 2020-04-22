@@ -17,8 +17,8 @@ install:
   - travis_retry composer install --prefer-dist --no-interaction
 
 script:
-  - |
-    vendor/bin/phpunit $PHPUNIT_FLAGS --coverage-clover=coverage.clover
+  - REBUILD=0 vendor/bin/phpunit --debug --coverage-clover=coverage.clover
+  - REBUILD=1 vendor/bin/phpunit --debug --coverage-clover=coverage.clover
 
 after_script:
   - wget -c https://scrutinizer-ci.com/ocular.phar
