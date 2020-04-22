@@ -100,7 +100,12 @@ class Builder
             return $cwd;
         }
 
-        return static::findDirContainsComposerJsonRecursively(dirname($cwd));
+        $candidateDirectory = dirname($cwd);
+        if ($cwd === $candidateDirectory) {
+            throw new \RuntimeException('Cannot find directory contains composer.json');
+        }
+
+        return static::findDirContainsComposerJsonRecursively($candidateDirectory);
     }
 
     /**
