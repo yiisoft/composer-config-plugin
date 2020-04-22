@@ -28,11 +28,11 @@ class Params extends Config
                         $value[$subkey] = $env[$envKey];
                     }
                 }
-            } else {
-                $envKey = $this->getEnvKey($key);
-                if (array_key_exists($envKey, $env)) {
-                    $vars[$key] = $env[$envKey];
-                }
+            }
+
+            $envKey = $this->getEnvKey($key);
+            if (isset($env[$envKey])) {
+                $vars[$key] = $env[$envKey];
             }
         }
 
