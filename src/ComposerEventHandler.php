@@ -13,7 +13,8 @@ use Composer\Script\ScriptEvents;
 
 final class ComposerEventHandler implements PluginInterface, EventSubscriberInterface
 {
-    private Plugin $plugin;
+    private Composer $composer;
+    private IOInterface $io;
 
     /**
      * Returns list of events the plugin is subscribed to.
@@ -31,14 +32,16 @@ final class ComposerEventHandler implements PluginInterface, EventSubscriberInte
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->plugin = new Plugin($composer, $io);
+        $this->composer = $composer;
+        $this->io = $io;
     }
 
     public function onPostAutoloadDump(Event $event): void
     {
         require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
 
-        $this->plugin->build();
+        $plugin = new Plugin($this->composer, $this->io);
+        $plugin->build();
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
