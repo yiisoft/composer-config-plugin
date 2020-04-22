@@ -21,6 +21,7 @@ final class RebuildHook implements BeforeFirstTestHook
         chdir($directory);
 
         require_once 'vendor/autoload.php';
+        echo 'Rebuild configs...' . PHP_EOL;
         Builder::rebuild();
     }
 }
