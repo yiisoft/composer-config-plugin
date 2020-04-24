@@ -68,6 +68,7 @@ List your config files in `composer.json` like the following:
 "extra": {
     "config-plugin-output-dir": "path/relative-to-composer-json",
     "config-plugin": {
+        "envs": "db.env",
         "params": [
             "config/params.php",
             "?config/params-local.php"
