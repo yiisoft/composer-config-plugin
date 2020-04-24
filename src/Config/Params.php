@@ -12,34 +12,35 @@ class Params extends Config
         return $this->pushEnvVars(parent::calcValues($sources));
     }
 
-    protected function pushEnvVars(array $vars): array
+    protected function pushEnvVars(array $data): array
     {
-        if (empty($vars)) {
+        if (empty($data)) {
             return [];
         }
 
         $env = $this->builder->getConfig('envs')->getValues();
 
-        foreach ($vars as $key => &$value) {
-            if (is_array($value)) {
-                foreach (array_keys($value) as $subkey) {
-                    $envKey = $this->getEnvKey($key . '_' . $subkey);
-                    if (array_key_exists($envKey, $env)) {
-                        $value[$subkey] = $env[$envKey];
-                    }
-                }
-            }
+        return self::pushValues($data, $env);
+    }
 
-            $envKey = $this->getEnvKey($key);
-            if (isset($env[$envKey])) {
-                $vars[$key] = $env[$envKey];
+    public static function pushValues(array $data, array $values, string $prefix = null)
+    {
+        foreach ($data as $key => &$value) {
+            $subkey = $prefix===null ? $key : "${prefix}_$key";
+
+            $envkey = self::getEnvKey($subkey);
+            if (isset($values[$envkey])) {
+                $value = $values[$envkey];
+            } elseif (is_array($value)) {
+                $value = self::pushValues($value, $values, $subkey);
             }
         }
 
-        return $vars;
+        return $data;
+
     }
 
-    private function getEnvKey(string $key): string
+    private static function getEnvKey(string $key): string
     {
         return strtoupper(strtr($key, '.-', '__'));
     }

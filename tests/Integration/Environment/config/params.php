@@ -41,6 +41,19 @@ return [
     'env_parameter' => 'default',
     'constant_based_parameter' => TEST_CONSTANT,
 
+    'env.string' => 'old value',
+    'env.number' => 'old value',
+    'env.text' => 'old value',
+    'env.params' => [
+        'first' => 'old value',
+        'deeper' => [
+            'second' => 'old value',
+            'and' => [
+                'deepest' => 'old value',
+            ],
+        ],
+    ],
+
     'parameters from .env' => [
         'ENV_STRING' => $_ENV['ENV_STRING'] ?? null,
         'ENV_NUMBER' => $_ENV['ENV_NUMBER'] ?? null,
