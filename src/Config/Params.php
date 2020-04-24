@@ -37,7 +37,6 @@ class Params extends Config
         }
 
         return $data;
-
     }
 
     private static function getEnvKey(string $key): string

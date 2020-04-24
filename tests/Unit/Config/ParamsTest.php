@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Composer\Config\Config\Params;
 
 /**
- * ParamsTest 
+ * ParamsTest
  */
 final class ParamsTest extends TestCase
 {
