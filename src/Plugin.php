@@ -192,9 +192,12 @@ final class Plugin
 
     private function loadDotEnv(Package $package): void
     {
-        $path = $package->preparePath('.env');
-        if (file_exists($path) && class_exists(Dotenv::class)) {
-            $this->addFile($package, 'envs', $path);
+        if (class_exists(Dotenv::class)) {
+            $dir = $package->getBaseDir();
+            $files = glob("{$dir}/{.env,*.env}", GLOB_BRACE);
+            foreach ($files as $file) {
+                $this->addFile($package, 'envs', $file);
+            }
         }
     }
 
