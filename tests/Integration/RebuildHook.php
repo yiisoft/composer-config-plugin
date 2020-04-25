@@ -15,13 +15,10 @@ final class RebuildHook implements BeforeFirstTestHook
         if (!(bool) ($_SERVER['REBUILD'] ?? false)) {
             return;
         }
-        $directory = PathHelper::realpath(__DIR__) . '/Environment';
+        $baseDir = PathHelper::realpath(__DIR__) . '/Environment';
 
-        echo "Changing CWD to {$directory}" . PHP_EOL;
-        chdir($directory);
-
-        require_once 'vendor/autoload.php';
+        require_once $baseDir . '/vendor/autoload.php';
         echo 'Rebuild configs...' . PHP_EOL;
-        Builder::rebuild();
+        Builder::rebuild($baseDir);
     }
 }

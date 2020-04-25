@@ -64,11 +64,8 @@ class Builder
             : static::findOutputDir($this->getBaseDir());
     }
 
-    public static function rebuild(string $baseDir = null): void
+    public static function rebuild(string $baseDir): void
     {
-        if ($baseDir === null) {
-            $baseDir = static::findDirContainsComposerJsonRecursively(getcwd());
-        }
         $builder = new self(new ConfigFactory(), $baseDir);
         $files = $builder->getConfig('__files')->load();
 
