@@ -75,34 +75,16 @@ class Builder
     /**
      * Returns default output dir.
      *
-     * @param string|null $baseDir path to the root Composer package. When `null`,
+     * @param string|null $baseDir path to the root Composer package
      * @return string
-     * @throws JsonException
      */
-    private static function findOutputDir(string $baseDir = null): string
+    private static function findOutputDir(string $baseDir): string
     {
-        if ($baseDir === null) {
-            $baseDir = static::findDirContainsComposerJsonRecursively(getcwd());
-        }
         $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
         $data = @json_decode(file_get_contents($path), true);
         $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
 
         return $dir ? static::buildAbsPath($baseDir, $dir) : static::defaultOutputDir($baseDir);
-    }
-
-    private static function findDirContainsComposerJsonRecursively(string $cwd): string
-    {
-        if (file_exists($cwd . DIRECTORY_SEPARATOR . 'composer.json')) {
-            return $cwd;
-        }
-
-        $candidateDirectory = dirname($cwd);
-        if ($cwd === $candidateDirectory) {
-            throw new \RuntimeException('Cannot find directory contains composer.json');
-        }
-
-        return static::findDirContainsComposerJsonRecursively($candidateDirectory);
     }
 
     /**
@@ -128,9 +110,8 @@ class Builder
      * @param string $filename name of config
      * @param string $baseDir path to base dir
      * @return string absolute path
-     * @throws JsonException
      */
-    public static function path(string $filename, string $baseDir = null): string
+    public static function path(string $filename, string $baseDir): string
     {
         return static::buildAbsPath(static::findOutputDir($baseDir), $filename . '.php');
     }
