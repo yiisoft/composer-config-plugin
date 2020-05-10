@@ -21,21 +21,21 @@ holding both the code and its configuration.
 How it works?
 
 - Scans installed packages for `config-plugin` extra option in their
-  `composer.json`
-- Loads `.env` files to set `$_ENV` variables
-- Requires `constants` files to set constants
-- Requires `params` files
-- Requires config files
+  `composer.json`.
+- Loads `.env` files to set `$_ENV` variables.
+- Requires `constants` files to set constants.
+- Requires `params` files.
+- Requires config files.
 - Options collected during earlier steps could and should be used in later
   steps, e.g. `$_ENV` should be used for constants and parameters, which
-  in turn should be used for configs
+  in turn should be used for configs.
 - File processing order is crucial to achieve expected behavior: options
   in root package have priority over options from included packages. It is described
   below in **File processing order** section.
 - Collected configs are written as PHP files in
   `vendor/yiisoft/composer-config-plugin-output`
-  directory along with information needed to rebuild configs on demand
-- Then assembled configs are ready to be loaded into application using `require`
+  directory along with information needed to rebuild configs on demand.
+- Then assembled configs are ready to be loaded into application using `require`.
 
 **Read more** about the general idea behind this plugin in [English] or
 [Russian].
@@ -54,8 +54,8 @@ Out of the box this plugin supports configs in PHP and JSON formats.
 
 To enable additional formats require:
 
-- [vlucas/phpdotenv] - for `.env` files
-- [symfony/yaml] - for YAML files, `.yml` and `.yaml`
+- [vlucas/phpdotenv] - for `.env` files.
+- [symfony/yaml] - for YAML files, `.yml` and `.yaml`.
 
 [vlucas/phpdotenv]: https://github.com/vlucas/phpdotenv
 [symfony/yaml]: https://github.com/symfony/yaml
@@ -120,7 +120,7 @@ composer dump-autoload
 
 Above can be shortened to `composer du`.
 
-If you need to force config rebuildign from your application, you can do it like the following:
+If you need to force config rebuilding from your application, you can do it like the following:
 
 ```php
 // Don't do it in production, assembling takes it's time
@@ -134,13 +134,13 @@ if (ENVIRONMENT === 'dev') {
 Config files are processed in proper order to achieve naturally expected
 behavior:
 
-- Options in outer packages override options from inner packages
-- Plugin respects the order your configs are listed in `composer.json` with
+- Options in outer packages override options from inner packages.
+- Plugin respects the order your configs are listed in `composer.json` with.
 - Different types of options are processed in the following order:
-    - Environment variables from `envs`
-    - Constants from `constants`
-    - Parameters from `params`
-    - Configs are processed last of all
+    - Environment variables from `envs`.
+    - Constants from `constants`.
+    - Parameters from `params`.
+    - Configs are processed last of all.
 
 ### Debugging
 
