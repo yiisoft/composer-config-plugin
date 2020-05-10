@@ -125,7 +125,7 @@ If you need to force config rebuildign from your application, you can do it like
 ```php
 // Don't do it in production, assembling takes it's time
 if (ENVIRONMENT === 'dev') {
-    Yiisoft\Composer\Config\Builder::rebuild();
+    Yiisoft\Composer\Config\Builder::rebuild(dirname(__DIR__));
 }
 ```
 

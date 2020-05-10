@@ -12,6 +12,7 @@
     </testsuites>
     <extensions>
         <extension class="Yiisoft\Composer\Config\Tests\Integration\ComposerUpdateHook"/>
+        <extension class="Yiisoft\Composer\Config\Tests\Integration\RebuildHook"/>
     </extensions>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
