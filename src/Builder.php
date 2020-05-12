@@ -82,7 +82,7 @@ class Builder
     private static function findOutputDir(string $baseDir = null): string
     {
         if ($baseDir === null) {
-            $baseDir = static::findDirContainsComposerJsonRecursively(getcwd());
+            $baseDir = static::findBaseDir();
         }
         $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
         $data = @json_decode(file_get_contents($path), true);
@@ -91,18 +91,19 @@ class Builder
         return $dir ? static::buildAbsPath($baseDir, $dir) : static::defaultOutputDir($baseDir);
     }
 
-    private static function findDirContainsComposerJsonRecursively(string $cwd): string
+    private static function findBaseDir(): string
     {
-        if (file_exists($cwd . DIRECTORY_SEPARATOR . 'composer.json')) {
-            return $cwd;
+        $baseDir = dirname(__DIR__, 4);
+        if (file_exists($baseDir . DIRECTORY_SEPARATOR . 'composer.json')) {
+            return $baseDir;
         }
 
-        $candidateDirectory = dirname($cwd);
-        if ($cwd === $candidateDirectory) {
-            throw new \RuntimeException('Cannot find directory contains composer.json');
+        $baseDir = getcwd();
+        if (file_exists($baseDir . DIRECTORY_SEPARATOR . 'composer.json')) {
+            return $baseDir;
         }
 
-        return static::findDirContainsComposerJsonRecursively($candidateDirectory);
+        throw new \RuntimeException('Cannot find directory that contains composer.json');
     }
 
     /**
