@@ -64,9 +64,9 @@ class Builder
             : static::findOutputDir($this->getBaseDir());
     }
 
-    public static function rebuild(string $baseDir): void
+    public static function rebuild(?string $baseDir = null): void
     {
-        $builder = new self(new ConfigFactory(), $baseDir);
+        $builder = new self(new ConfigFactory(), $baseDir ?? self::findBaseDir());
         $files = $builder->getConfig('__files')->load();
 
         $builder->buildUserConfigs($files->getValues());
@@ -93,14 +93,19 @@ class Builder
 
     private static function findBaseDir(): string
     {
-        $baseDir = dirname(__DIR__, 4);
-        if (file_exists($baseDir . DIRECTORY_SEPARATOR . 'composer.json')) {
-            return $baseDir;
-        }
+        $candidates = [
+            // normal relative path
+            dirname(__DIR__, 4),
+            // console
+            getcwd(),
+            // symlinked web
+            dirname(getcwd())
+        ];
 
-        $baseDir = getcwd();
-        if (file_exists($baseDir . DIRECTORY_SEPARATOR . 'composer.json')) {
-            return $baseDir;
+        foreach ($candidates as $baseDir) {
+            if (file_exists($baseDir . DIRECTORY_SEPARATOR . 'composer.json')) {
+                return $baseDir;
+            }
         }
 
         throw new \RuntimeException('Cannot find directory that contains composer.json');
