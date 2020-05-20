@@ -8,6 +8,6 @@ class Env
 {
     public static function get(string $key): callable
     {
-        return fn() => $_ENV[$key];
+        return static fn() => $_ENV[$key];
     }
 }
