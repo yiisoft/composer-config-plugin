@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Yiisoft\Arrays\Modifier\RemoveKeys;
 use Yiisoft\Arrays\Modifier\ReplaceValue;
 use Yiisoft\Arrays\Modifier\UnsetValue;
+use Yiisoft\Composer\Config\Env;
 
 return [
     'boolean parameter' => true,
@@ -41,6 +42,7 @@ return [
     'env_parameter' => 'default',
     'constant_based_parameter' => TEST_CONSTANT,
 
+    'env.raw' => Env::get('ENV_STRING'),
     'env.string' => 'old value',
     'env.number' => 'old value',
     'env.text' => 'old value',
