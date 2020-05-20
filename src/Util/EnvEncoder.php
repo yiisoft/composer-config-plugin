@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config\Util;
 
 use Closure;
@@ -21,10 +23,10 @@ class EnvEncoder implements Encoder
         }
         $reflection = new ReflectionClosure($value);
 
-        $closureReflection = ($reflection)->getClosureScopeClass();
+        $closureReflection = $reflection->getClosureScopeClass();
         $closureClassOwnerName = $closureReflection->getName();
 
-        if ($closureClassOwnerName !== Env::class && !is_subclass_of($closureClassOwnerName, Env::class)) {
+        if (!is_a($closureClassOwnerName, Env::class, true)) {
             return false;
         }
 
