@@ -3,21 +3,70 @@
 namespace Yiisoft\Composer\Config\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Composer\Config\Env;
 use Yiisoft\Composer\Config\Util\Helper;
-use Yiisoft\Composer\Config\Util\RemoveArrayKeys;
 
 final class HelperTest extends TestCase
 {
-    public function testExportClosure(): void
+    /**
+     * @dataProvider variablesProvider()
+     */
+    public function testExportClosure($variable, $exportedVariable): void
+    {
+        $exportedClosure = Helper::exportVar($variable);
+
+        $this->assertSameWithoutLE($exportedVariable, $exportedClosure);
+    }
+
+    public function variablesProvider(): array
     {
         $params = ['test' => 42];
-        $closure = static function () use ($params) {
-            return $params['test'];
-        };
+        $_ENV['value'] = 1;
+        $key = 'test key';
 
-        $exportedClosure = Helper::exportVar($closure);
-
-        $this->assertSameWithoutLE("static function () use (\$params) {\n            return \$params['test'];\n        }", $exportedClosure);
+        return [
+            [
+                Env::get('value'),
+                "\$_ENV['value']",
+            ],
+            [
+                $_ENV['value'],
+                "1",
+            ],
+            [
+                fn() => $_ENV[$key],
+                'fn() => $_ENV[$key];',
+            ],
+            [
+                fn() => $params['test'],
+                "fn() => \$params['test'];",
+            ],
+            [
+                // TODO: Fix this case and two above - remove ending ";"
+                [fn() => $params['test']],
+                "[fn() => \$params['test'];]",
+            ],
+            [
+                static function () use ($params) {
+                    return $params['test'];
+                },
+                "static function () use (\$params) {\n                    return \$params['test'];\n                }",
+            ],
+            [
+                [
+                    'function' => static function () use ($params) {
+                        return $params['test'];
+                    },
+                ],
+                <<<PHP
+[
+    'function' => static function () use (\$params) {
+                        return \$params['test'];
+                    },
+]
+PHP,
+            ],
+        ];
     }
 
     private function assertSameWithoutLE($expected, $actual, string $message = ''): void
