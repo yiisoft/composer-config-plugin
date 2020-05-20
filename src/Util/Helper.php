@@ -39,6 +39,7 @@ class Helper
             'object.format' => 'serialize',
         ]);
         $encoder->addEncoder(new ClosureEncoder(), true);
+        $encoder->addEncoder(new EnvEncoder(), true);
 
         return $encoder;
     }
