@@ -33,7 +33,7 @@ return [
         return 'I am callable';
     },
 
-    'short callable parameter' => fn() => 'I am callable',
+    'short callable parameter' => fn () => 'I am callable',
 
     'object parameter' => new stdClass(),
 
