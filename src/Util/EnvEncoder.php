@@ -38,10 +38,13 @@ class EnvEncoder implements Encoder
         $reflection = new ReflectionClosure($value);
         $value = current($reflection->getStaticVariables());
 
-        return substr(
-            str_replace('$key', "'$value'", $reflection->getCode()),
-            15,
-            -1
+        return str_replace(
+            '$key',
+            "'$value'",
+            substr(
+                $reflection->getCode(),
+                15
+            ),
         );
     }
 }

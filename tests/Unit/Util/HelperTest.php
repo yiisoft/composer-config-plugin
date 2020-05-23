@@ -35,16 +35,15 @@ final class HelperTest extends TestCase
             ],
             [
                 fn() => $_ENV[$key],
-                'fn() => $_ENV[$key];',
+                'fn() => $_ENV[$key]',
             ],
             [
                 fn() => $params['test'],
-                "fn() => \$params['test'];",
+                "fn() => \$params['test']",
             ],
             [
-                // TODO: Fix this case and two above - remove ending ";"
                 [fn() => $params['test']],
-                "[fn() => \$params['test'];]",
+                "[fn() => \$params['test']]",
             ],
             [
                 static function () use ($params) {
