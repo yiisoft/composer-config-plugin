@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config;
 
-class Env
+final class Env
 {
     public static function get(string $key): callable
     {
