@@ -34,8 +34,7 @@ return [
         return 'I am callable';
     },
 
-    // temporary not working
-    // 'short callable parameter' => fn() => 'I am callable',
+    'short callable parameter' => fn () => 'I am callable',
 
     'object parameter' => new stdClass(),
 

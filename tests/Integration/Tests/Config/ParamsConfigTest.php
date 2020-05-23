@@ -51,6 +51,7 @@ final class ParamsConfigTest extends ConfigTest
                     return 'I am callable';
                 }),
             ],
+            ['short callable parameter', new LiterallyCallback(fn () => 'I am callable')],
             ['object parameter', new stdClass()],
             /**
              * Test for subpackages parameters
