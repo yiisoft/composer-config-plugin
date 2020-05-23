@@ -30,6 +30,22 @@ final class HelperTest extends TestCase
                 "\$_ENV['value']",
             ],
             [
+                Env::get('value', null),
+                "\$_ENV['value'] ?? null",
+            ],
+            [
+                Env::get('value', 'string'),
+                "\$_ENV['value'] ?? 'string'",
+            ],
+            [
+                Env::get('value', 123),
+                "\$_ENV['value'] ?? 123",
+            ],
+            [
+                Env::get('value', new \stdClass()),
+                "\$_ENV['value'] ?? unserialize('O:8:\"stdClass\":0:{}')",
+            ],
+            [
                 $_ENV['value'],
                 "1",
             ],

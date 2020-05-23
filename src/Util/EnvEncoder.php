@@ -36,11 +36,13 @@ class EnvEncoder implements Encoder
     public function encode($value, $depth, array $options, callable $encode)
     {
         $reflection = new ReflectionClosure($value);
-        $value = current($reflection->getStaticVariables());
+        $variables = $reflection->getStaticVariables();
+        $key = $variables['key'];
+        $default = $variables['default'] ?? null;
 
         return str_replace(
-            '$key',
-            "'$value'",
+            ['$key', '$default'],
+            ["'$key'", Helper::exportVar($default)],
             substr(
                 $reflection->getCode(),
                 15

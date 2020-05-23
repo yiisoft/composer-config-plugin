@@ -6,8 +6,12 @@ namespace Yiisoft\Composer\Config;
 
 final class Env
 {
-    public static function get(string $key): callable
+    public static function get(string $key, $default = null): callable
     {
+        if (count(func_get_args()) === 2) {
+            return static fn() => $_ENV[$key] ?? $default;
+        }
+
         return static fn() => $_ENV[$key];
     }
 }
