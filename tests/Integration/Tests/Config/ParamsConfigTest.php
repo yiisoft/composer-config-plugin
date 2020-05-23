@@ -67,7 +67,6 @@ final class ParamsConfigTest extends ConfigTest
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
             ['env.raw', 'string'],
-            ['env.raw.key_not_found', fn($v) => die($v)],
             ['env.raw.default_null', null],
             ['env.raw.default_string', 'default value'],
             ['env.raw.default_integer', 123],
