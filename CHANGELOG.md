@@ -2,8 +2,13 @@
 
 ## 1.0.0 under development
 
-- Chg: Changed namespace to `Yiisoft/Composer/Config` (sadmark)
+- Chg: Changed namespace to `Yiisoft/Composer/Config` (samdark)
 - Fix #1: Use Composer to determine vendor directory (roxblnfk)
+- Enh #47: Add support for runtime environment variables via Env::get() (xepozz)
+- Enh: Add Composer 2 support (samdark)
+- Bug #21: Fix merge failures on first Composer install / update (samdark)
+- Enh: Make base path detection more reliable (xepozz, samdark)
+- Bug #54: Fix failure when using short closure (xepozz)
 
 ## [0.4.0] - 2020-03-08
 
