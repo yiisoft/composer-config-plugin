@@ -50,15 +50,15 @@ final class HelperTest extends TestCase
                 "1",
             ],
             [
-                fn() => $_ENV[$key],
+                fn () => $_ENV[$key],
                 'fn() => $_ENV[$key]',
             ],
             [
-                fn() => $params['test'],
+                fn () => $params['test'],
                 "fn() => \$params['test']",
             ],
             [
-                [fn() => $params['test']],
+                [fn () => $params['test']],
                 "[fn() => \$params['test']]",
             ],
             [
