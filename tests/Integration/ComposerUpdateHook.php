@@ -11,20 +11,20 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        $command = sprintf(
-            '%s && %s',
-            $this->cwdToEnvironment(),
-            '[ -d vendor ] && composer dump || composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs(),
-        );
-        $this->exec($command);
-    }
+        $originDir = getcwd();
+        $newDir = PathHelper::realpath(__DIR__) . '/Environment';
 
-    private function cwdToEnvironment(): string
-    {
-        return sprintf(
-            'cd %s',
-            PathHelper::realpath(__DIR__) . '/Environment',
-        );
+        chdir($newDir);
+
+        if (is_dir(__DIR__ . '/vendor')) {
+            $command = 'composer dump';
+        } else {
+            $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
+        }
+
+        $this->exec($command);
+
+        chdir($originDir);
     }
 
     private function suppressLogs(): string
