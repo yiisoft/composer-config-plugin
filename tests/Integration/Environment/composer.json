@@ -2,8 +2,8 @@
     "name": "test-yiisoft/composer-config-plugin",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.4",
-        "symfony/yaml": ">=5.1",
+        "php": "^7.4",
+        "symfony/yaml": "^5.1",
         "first-vendor/first-package": "*",
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
