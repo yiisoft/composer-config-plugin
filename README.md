@@ -8,7 +8,7 @@ Composer plugin for config assembling.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/composer-config-plugin/v/stable)](https://packagist.org/packages/yiisoft/composer-config-plugin)
 [![Total Downloads](https://poser.pugx.org/yiisoft/composer-config-plugin/downloads)](https://packagist.org/packages/yiisoft/composer-config-plugin)
-[![Build Status](https://travis-ci.com/yiisoft/composer-config-plugin.svg?branch=master)](https://travis-ci.com/yiisoft/composer-config-plugin)
+[![Build status](https://github.com/yiisoft/composer-config-plugin/workflows/build/badge.svg)](https://github.com/yiisoft/composer-config-plugin/actions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/?branch=master)
 
