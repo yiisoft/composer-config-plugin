@@ -11,12 +11,18 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
+        $originalWD = getcwd();
+        $newWD = PathHelper::realpath(__DIR__) . '/Environment';
+
+        chdir($newWD);
+
+
+
         $command = sprintf(
-            '%s && %s',
-            $this->cwdToEnvironment(),
-            ' composer update '  ,
+            ' composer update '
         );
         $this->exec($command);
+        chdir($originalWD);
     }
 
     private function cwdToEnvironment(): string
