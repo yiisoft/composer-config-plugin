@@ -73,12 +73,5 @@
             "web": "config/web.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
-    },
-    "scripts": {
-        "symlink-package": [
-            "@composer dump"
-        ],
-        "post-install-cmd": "@symlink-package",
-        "post-update-cmd": "@symlink-package"
     }
 }
