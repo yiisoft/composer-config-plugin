@@ -3,7 +3,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.4",
-        "symfony/yaml": "^5.1",
+        "symfony/yaml": ">=5.1@dev",
         "first-vendor/first-package": "*",
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
