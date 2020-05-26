@@ -9,9 +9,9 @@ final class Env
     public static function get(string $key, $default = null): callable
     {
         if (count(func_get_args()) === 2) {
-            return static fn () => $_ENV[$key] ?? $default;
+            return static fn () => getenv($key) ?? $default;
         }
 
-        return static fn () => $_ENV[$key];
+        return static fn () => getenv($key);
     }
 }
