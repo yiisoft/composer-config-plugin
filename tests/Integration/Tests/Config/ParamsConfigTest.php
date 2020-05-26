@@ -39,6 +39,13 @@ final class ParamsConfigTest extends ConfigTest
                 'second-vendor/second-package',
                 'root value',
             ]],
+            ['array parameter with ReverseValues', [
+                'root package' => 'root value',
+                'second-vendor/second-package' => 'second-vendor/second-package',
+                'second-vendor/first-package' => 'second-vendor/first-package',
+                'first-vendor/second-package' => 'first-vendor/second-package',
+                'first-vendor/first-package' => 'first-vendor/first-package',
+            ]],
             [
                 'callable parameter',
                 new LiterallyCallback(function () {
