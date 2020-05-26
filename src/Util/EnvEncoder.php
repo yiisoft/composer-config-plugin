@@ -31,6 +31,7 @@ class EnvEncoder implements Encoder
 
     public function encode($value, $depth, array $options, callable $encode)
     {
+
         $reflection = new ReflectionClosure($value);
         $variables = $reflection->getStaticVariables();
         $key = $variables['key'];
