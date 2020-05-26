@@ -12,16 +12,20 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     public function executeBeforeFirstTest(): void
     {
         $originalWD = getcwd();
+
+        echo 'Original dir: ' . $originalWD . PHP_EOL;
         $newWD = PathHelper::realpath(__DIR__) . '/Environment';
+        echo 'New dir: ' . $newWD . PHP_EOL;
 
         chdir($newWD);
 
-
+        echo 'Dir was changed: ' . getcwd() . PHP_EOL;
 
         $command = sprintf(
-            ' composer update '
+            'composer update '
         );
         $this->exec($command);
+        echo 'Composer updated' . PHP_EOL;
         chdir($originalWD);
     }
 
@@ -45,7 +49,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     {
         $res = exec($command, $_, $returnCode);
         if ((int) $returnCode !== 0) {
-            throw new \RuntimeException("$command return code was $returnCode. $res . ".print_r($_, true ));
+            throw new \RuntimeException("$command return code was $returnCode. $res . " . print_r($_, true));
         }
     }
 }
