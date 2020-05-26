@@ -17,8 +17,12 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         chdir($newDir);
 
         if (is_dir(__DIR__ . '/vendor')) {
-            rmdir('vendor/yiisoft/composer-config-plugin');
-            symlink('../../../../../', 'vendor/yiisoft/composer-config-plugin');
+            if (!rmdir('vendor/yiisoft/composer-config-plugin')){
+                throw new \RuntimeException('Cannot remove plugin directory');
+            }
+            if (!symlink('../../../../../', 'vendor/yiisoft/composer-config-plugin')){
+                throw new \RuntimeException('Cannot symlink directory');
+            }
             $command = 'composer dump';
         } else {
             $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
