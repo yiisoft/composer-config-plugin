@@ -32,7 +32,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         $commandArguments = $_SERVER['argv'] ?? [];
         $isDebug = in_array('--debug', $commandArguments, true);
 
-        return !$isDebug ? '2>/dev/null' : '';
+        return !$isDebug ? '2>' . sys_get_temp_dir() . '/yiisoft-hook' : '';
     }
 
     private function exec(string $command): void
