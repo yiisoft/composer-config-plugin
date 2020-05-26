@@ -26,11 +26,7 @@ class EnvEncoder implements Encoder
         $closureReflection = $reflection->getClosureScopeClass();
         $closureClassOwnerName = $closureReflection->getName();
 
-        if (!is_a($closureClassOwnerName, Env::class, true)) {
-            return false;
-        }
-
-        return strpos($reflection->getCode(), 'static fn() => $_ENV') !== false;
+        return is_a($closureClassOwnerName, Env::class, true);
     }
 
     public function encode($value, $depth, array $options, callable $encode)
@@ -45,7 +41,7 @@ class EnvEncoder implements Encoder
             ["'$key'", Helper::exportVar($default)],
             substr(
                 $reflection->getCode(),
-                15
+                16
             ),
         );
     }
