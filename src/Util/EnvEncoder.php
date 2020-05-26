@@ -30,7 +30,7 @@ class EnvEncoder implements Encoder
             return false;
         }
 
-        return strpos($reflection->getCode(), 'static fn() => $_ENV') !== false;
+        return strpos($reflection->getCode(), 'static fn () => $_ENV') !== false;
     }
 
     public function encode($value, $depth, array $options, callable $encode)
