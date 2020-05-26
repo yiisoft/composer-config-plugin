@@ -40,7 +40,7 @@ How it works?
 **Read more** about the general idea behind this plugin in [English] or
 [Russian].
 
-[Composer]: https://getcomposer.org/
+[composer]: https://getcomposer.org/
 [English]:  https://hiqdev.com/pages/articles/app-organization
 [Russian]:  https://habrahabr.ru/post/329286/
 
@@ -160,34 +160,6 @@ to build configs. It is located in `vendor/yiisoft/composer-config-plugin-output
 - You can see the assembled configs in the output directory which is
 `vendor/yiisoft/composer-config-plugin-output` by default and can be configured
 with `config-plugin-output-dir` extra option in `composer.json`.
-
-## Passing environment variables into params
-
-The plugin simplifies use of environment variables in configuation
-with passing those variables into params by the convention best
-explained with examples:
-
-`config/params.php`
-
-```php
-return [
-    'my-service.option-name' => null,
-    'db' => [
-        'pgsql' => [
-            'password' => null,
-        ],
-    ],
-];
-```
-
-`.env`
-
-```sh
-MY_SERVICE_OPTION_NAME="option value"
-DB_PGSQL_PASSWORD="secret"
-```
-
-So the values provided with environment will be substituted into assembled configs.
 
 ## Known issues
 
