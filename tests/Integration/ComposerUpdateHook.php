@@ -14,7 +14,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         $command = sprintf(
             '%s && %s',
             $this->cwdToEnvironment(),
-            '[ -d vendor ] && composer dump || composer update ' . $this->suppressLogs(),
+            '[ -d vendor ] && composer dump || composer update '  ,
         );
         $this->exec($command);
     }
