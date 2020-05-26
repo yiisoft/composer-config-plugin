@@ -56,7 +56,7 @@ jobs:
 
       - name: Determine composer cache directory on Windows
         if: matrix.os == 'windows-latest'
-        run: echo "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
+        run: ECHO "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v1
