@@ -17,7 +17,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         chdir($newDirectory);
 
         $this->exec("ls -la");
-        $this->exec("{$newDirectory}/vendor");
+        $this->exec("ls -la {$newDirectory}/vendor");
         $this->exec("pwd");
         if (is_dir("{$newDirectory}/vendor")) {
             @unlink("{$newDirectory}/vendor/yiisoft/composer-config-plugin");
