@@ -37,9 +37,14 @@ class EnvEncoder implements Encoder
         $default = $variables['default'] ?? null;
 
         if (substr($reflection->getCode(), 16) == false){
+            print_r('value');
             print_r($value);
+            print_r('code');
             print_r($reflection->getCode());
+            print_r('variables');
             print_r($variables);
+            print_r('parameters');
+            print_r($reflection->getParameters());
             exit(1);
         }
         return str_replace(
