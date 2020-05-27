@@ -16,6 +16,9 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 
         chdir($newDirectory);
 
+        $this->exec("ls -la");
+        $this->exec("{$newDirectory}/vendor");
+        $this->exec("pwd");
         if (is_dir("{$newDirectory}/vendor")) {
             @unlink("{$newDirectory}/vendor/yiisoft/composer-config-plugin");
             symlink("{$newDirectory}/../../../", "{$newDirectory}/vendor/yiisoft/composer-config-plugin");
@@ -43,7 +46,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     {
         $res = exec($command, $_, $returnCode);
         if ((int) $returnCode !== 0) {
-            throw new \RuntimeException("$command return code was $returnCode. $res");
+            throw new \RuntimeException("$command return code was $returnCode. $res" . implode($_));
         }
     }
 }
