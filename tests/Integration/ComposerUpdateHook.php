@@ -16,7 +16,9 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 
         chdir($newDir);
 
-        if (is_dir(__DIR__ . '/vendor')) {
+        if (is_dir("{$newDir}/vendor")) {
+            @unlink("{$newDir}/vendor/yiisoft/composer-config-plugin");
+            symlink("{$newDir}/../../../", "{$newDir}/vendor/yiisoft/composer-config-plugin");
             $command = 'composer dump';
         } else {
             $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
@@ -32,7 +34,9 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         $commandArguments = $_SERVER['argv'] ?? [];
         $isDebug = in_array('--debug', $commandArguments, true);
 
-        return !$isDebug ? '2>' . sys_get_temp_dir() . '/yiisoft-hook' : '';
+        $tempDir = sys_get_temp_dir();
+
+        return !$isDebug ? "2>{$tempDir}/yiisoft-hook" : '';
     }
 
     private function exec(string $command): void
