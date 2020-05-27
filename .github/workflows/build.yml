@@ -79,13 +79,13 @@ jobs:
         run: echo "::set-env name=REBUILD::0"
 
       - name: Run tests with phpunit
-        run: vendor/bin/phpunit --coverage-clover=coverage.clover
+        run: vendor/bin/phpunit --coverage-clover=coverage.clover --debug
 
       - name: Turn on rebuilding
         run: echo "::set-env name=REBUILD::1"
 
       - name: Run tests with phpunit
-        run: vendor/bin/phpunit --coverage-clover=coverage.clover
+        run: vendor/bin/phpunit --coverage-clover=coverage.clover --debug
 
       - name: Code coverage
         if: matrix.os == 'ubuntu-latest'
