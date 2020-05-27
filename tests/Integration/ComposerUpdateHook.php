@@ -11,14 +11,14 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        $originDir = getcwd();
-        $newDir = PathHelper::realpath(__DIR__) . '/Environment';
+        $originalDirectory = getcwd();
+        $newDirectory = PathHelper::realpath(__DIR__) . '/Environment';
 
-        chdir($newDir);
+        chdir($newDirectory);
 
-        if (is_dir("{$newDir}/vendor")) {
-            @unlink("{$newDir}/vendor/yiisoft/composer-config-plugin");
-            symlink("{$newDir}/../../../", "{$newDir}/vendor/yiisoft/composer-config-plugin");
+        if (is_dir("{$newDirectory}/vendor")) {
+            @unlink("{$newDirectory}/vendor/yiisoft/composer-config-plugin");
+            symlink("{$newDirectory}/../../../", "{$newDirectory}/vendor/yiisoft/composer-config-plugin");
             $command = 'composer dump';
         } else {
             $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
@@ -26,7 +26,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 
         $this->exec($command);
 
-        chdir($originDir);
+        chdir($originalDirectory);
     }
 
     private function suppressLogs(): string
