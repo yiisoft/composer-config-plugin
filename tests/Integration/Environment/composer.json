@@ -8,7 +8,7 @@
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
         "second-vendor/second-package": "*",
-        "yiisoft/composer-config-plugin": "*",
+        "yiisoft/composer-config-plugin": "dev-php8",
         "vlucas/phpdotenv": "*"
     },
     "require-dev": {
@@ -52,8 +52,7 @@
         },
         {
             "type": "git",
-            "url": "github.com/xepozz/composer-config-plugin",
-            "branch": "dev-php8"
+            "url": "github.com/xepozz/composer-config-plugin"
         }
     ],
     "autoload": {
