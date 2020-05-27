@@ -24,7 +24,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
             symlink("{$newDirectory}/../../../", "{$newDirectory}/vendor/yiisoft/composer-config-plugin");
             $command = 'composer dump';
         } else {
-            $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
+            $command = 'composer install -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
         }
 
         $this->exec($command);
