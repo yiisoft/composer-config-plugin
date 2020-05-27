@@ -36,6 +36,12 @@ class EnvEncoder implements Encoder
         $key = $variables['key'];
         $default = $variables['default'] ?? null;
 
+        if (substr($reflection->getCode(), 16) == false){
+            print_r($value);
+            print_r($reflection->getCode());
+            print_r($variables);
+            exit(1);
+        }
         return str_replace(
             ['$key', '$default'],
             ["'$key'", Helper::exportVar($default)],
