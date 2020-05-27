@@ -53,7 +53,7 @@
         {
             "type": "git",
             "url": "github.com/xepozz/composer-config-plugin",
-            "branch": "php8"
+            "branch": "dev-php8"
         }
     ],
     "autoload": {
