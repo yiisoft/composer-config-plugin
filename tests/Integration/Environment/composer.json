@@ -51,8 +51,9 @@
             "url": "../Packages/second-dev-vendor/second-package"
         },
         {
-            "type": "path",
-            "url": "../../../"
+            "type": "git",
+            "url": "github.com/xepozz/composer-config-plugin",
+            "branch": "php8"
         }
     ],
     "autoload": {
