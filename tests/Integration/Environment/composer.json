@@ -51,8 +51,8 @@
             "url": "../Packages/second-dev-vendor/second-package"
         },
         {
-            "type": "git",
-            "url": "github.com/xepozz/composer-config-plugin"
+            "type": "vcs",
+            "url": "https://github.com/xepozz/composer-config-plugin"
         }
     ],
     "autoload": {
