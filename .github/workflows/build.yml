@@ -17,7 +17,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          #- windows-latest
+          - windows-latest
 
         php-version:
           - "7.4"
@@ -42,7 +42,8 @@ jobs:
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
-      - name: Install PHP with extensions
+      - name: Install PHP with extensions on Linux
+        if: matrix.os == 'ubuntu-latest'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
