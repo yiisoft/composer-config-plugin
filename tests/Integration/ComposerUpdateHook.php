@@ -11,20 +11,22 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        $command = sprintf(
-            '%s && %s',
-            $this->cwdToEnvironment(),
-            '[ -d vendor ] && composer dump || composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs(),
-        );
-        $this->exec($command);
-    }
+        $originalDirectory = getcwd();
+        $newDirectory = PathHelper::realpath(__DIR__) . '/Environment';
 
-    private function cwdToEnvironment(): string
-    {
-        return sprintf(
-            'cd %s',
-            PathHelper::realpath(__DIR__) . '/Environment',
-        );
+        chdir($newDirectory);
+
+        if (is_dir("{$newDirectory}/vendor")) {
+            @unlink("{$newDirectory}/vendor/yiisoft/composer-config-plugin");
+            symlink("{$newDirectory}/../../../", "{$newDirectory}/vendor/yiisoft/composer-config-plugin");
+            $command = 'composer dump';
+        } else {
+            $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
+        }
+
+        $this->exec($command);
+
+        chdir($originalDirectory);
     }
 
     private function suppressLogs(): string
@@ -32,7 +34,9 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         $commandArguments = $_SERVER['argv'] ?? [];
         $isDebug = in_array('--debug', $commandArguments, true);
 
-        return !$isDebug ? '2>/dev/null' : '';
+        $tempDir = sys_get_temp_dir();
+
+        return !$isDebug ? "2>{$tempDir}/yiisoft-hook" : '';
     }
 
     private function exec(string $command): void
