@@ -17,13 +17,14 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         chdir($newDirectory);
 
         $this->exec("ls -la");
-        $this->exec("ls -la {$newDirectory}/vendor");
         $this->exec("pwd");
+
         if (is_dir("{$newDirectory}/vendor")) {
             @unlink("{$newDirectory}/vendor/yiisoft/composer-config-plugin");
             symlink("{$newDirectory}/../../../", "{$newDirectory}/vendor/yiisoft/composer-config-plugin");
             $command = 'composer dump';
         } else {
+            $this->exec("ls -la {$newDirectory}/vendor");
             $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
         }
 
