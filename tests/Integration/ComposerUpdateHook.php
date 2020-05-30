@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Tests\Integration;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class ComposerUpdateHook implements BeforeFirstTestHook
@@ -20,8 +22,10 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
             $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
             if (is_link($pluginPath)) {
                 @unlink($pluginPath);
-                symlink("{$newDirectory}/../../../", $pluginPath);
+            } elseif (is_dir($pluginPath)) {
+                $this->removeDirectoryRecursive($pluginPath);
             }
+            symlink("{$newDirectory}/../../../", $pluginPath);
             $command = 'composer dump';
         } else {
             $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
@@ -48,5 +52,22 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         if ((int) $returnCode !== 0) {
             throw new \RuntimeException("$command return code was $returnCode. $res");
         }
+    }
+
+    private function removeDirectoryRecursive(string $path): void
+    {
+        $iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+        $iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+        /* @var \SplFileInfo $file */
+        foreach ($iterator as $file) {
+            if ($file->isLink() || $file->isFile()) {
+                unlink($file->getRealPath());
+            } elseif ($file->isDir()) {
+                rmdir($file->getRealPath());
+            }
+        }
+
+        rmdir($path);
     }
 }
