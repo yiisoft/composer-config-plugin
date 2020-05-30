@@ -14,6 +14,7 @@ use Composer\Script\ScriptEvents;
 final class ComposerEventHandler implements PluginInterface, EventSubscriberInterface
 {
     private Composer $composer;
+
     private IOInterface $io;
 
     /**
