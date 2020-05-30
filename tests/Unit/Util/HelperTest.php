@@ -27,31 +27,31 @@ final class HelperTest extends TestCase
         return [
             [
                 Env::get('value'),
-                "\$_ENV['value']",
+                "getenv('value')",
             ],
             [
                 Env::get('value', null),
-                "\$_ENV['value'] ?? null",
+                "getenv('value') ?? null",
             ],
             [
                 Env::get('value', 'string'),
-                "\$_ENV['value'] ?? 'string'",
+                "getenv('value') ?? 'string'",
             ],
             [
                 Env::get('value', 123),
-                "\$_ENV['value'] ?? 123",
+                "getenv('value') ?? 123",
             ],
             [
                 Env::get('value', new \stdClass()),
-                "\$_ENV['value'] ?? unserialize('O:8:\"stdClass\":0:{}')",
+                "getenv('value') ?? unserialize('O:8:\"stdClass\":0:{}')",
             ],
             [
                 $_ENV['value'],
                 "1",
             ],
             [
-                fn () => $_ENV[$key],
-                'fn () => $_ENV[$key]',
+                fn () => getenv($key),
+                'fn () => getenv($key)',
             ],
             [
                 fn () => $params['test'],

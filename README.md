@@ -144,7 +144,7 @@ behavior:
 
 ### Debugging
 
-There are several ways to debug config building internals.
+There are several ways to debug the config building internals.
 
 - Plugin can show detected package dependencies hierarchy by running:
 
@@ -161,6 +161,82 @@ to build configs. It is located in `vendor/yiisoft/composer-config-plugin-output
 `vendor/yiisoft/composer-config-plugin-output` by default and can be configured
 with `config-plugin-output-dir` extra option in `composer.json`.
 
+## Using environment variables
+
+Environment variables could be used in two ways:
+
+- In runtime.
+- In build time.
+
+### Runtime
+
+Passing environment variables in runtime is preferred way since variables could be specific to the server.
+That is a good way to store and apply sensitive data. Recommended solution
+is [HashiCorp Vault](https://www.vaultproject.io/).
+
+Runtime environment variables could be accessed by using a special wrapper in your `config/params.php`:
+
+```php
+'apiEndpoint' => \Yiisoft\Composer\Config\Env::get('apiEndpoint', 'https://yiipowered.com/en/api/1.0'),
+```
+
+After the config is built, you'll get
+
+```php
+'apiEndpoint' => getenv('apiEndpoint') ?? 'https://yiipowered.com/en/api/1.0',
+``` 
+
+### Build time
+
+Environmental variables at build time are not as useful as at runtime. Still, there are cases when they could come
+in handy.
+
+It could be done by using `getenv()` in your `config/params.php`:
+
+```php
+'apiEndpoint' => getenv('apiEndpoint') ?? 'https://yiipowered.com/en/api/1.0',
+```
+
+After the config is built, you'll get
+
+```php
+'apiEndpoint' => 'https://yiipowered.com/en/api/1.0',
+```
+
+Or whatever ends up in `apiEndpoint` environment variable at config build time. For example,
+
+```
+apiEndpoint="https://example.com" composer du
+```
+
+will give you
+
+```php
+'apiEndpoint' => 'https://example.com',
+```
+
+### Loading environment variables from .env files
+
+There's an ability to load environment variables at build time from one or multiple `.env` files. That could simplify
+development. In order to do it, additional package is required:
+
+```
+composer require --dev vlucas/phpdotenv
+``` 
+
+Then you can specify files to load variables from right in `composer.json`:
+
+```json
+    "extra": {
+        "config-plugin": {
+            "envs": [
+                ".env"
+            ],
+```
+
+Paths are relative to project root. Note that real environment variables have more priority than variables loaded from
+`.env` files.
+
 ## Known issues
 
 This plugin treats configs as simple PHP arrays. No specific
@@ -174,11 +250,13 @@ Anonymous functions must be used in multiline form only:
 
 ```php
 return [
-    'works' => function () {
+    'works' => static function () {
         return 'value';
     },
     // this will not work
-    'noway' => function () { return 'value'; },
+    'noway' => static function () {
+        return 'value';
+    },
 ];
 ```
 
