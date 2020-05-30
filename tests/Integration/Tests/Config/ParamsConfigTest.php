@@ -120,7 +120,7 @@ final class ParamsConfigTest extends ConfigTest
         return 'params';
     }
 
-    public function testConstants()
+    public function testConstants(): void
     {
         $values = $this->getConfigValue('parameters from .env through constants');
         foreach ($values as $k => $v) {
