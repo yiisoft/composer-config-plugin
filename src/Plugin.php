@@ -5,13 +5,13 @@ namespace Yiisoft\Composer\Config;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
+use Dotenv\Dotenv;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Exception\BadConfigurationException;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\AliasesCollector;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
-use Dotenv\Dotenv;
 
 final class Plugin
 {
@@ -42,9 +42,6 @@ final class Plugin
 
     private Builder $builder;
 
-    /**
-     * @var IOInterface
-     */
     private IOInterface $io;
 
     private AliasesCollector $aliasesCollector;
@@ -74,10 +71,10 @@ final class Plugin
         $this->builder->buildAllConfigs($this->files);
 
         $saveFiles = $this->files;
-        $saveEnv = $_ENV;
+        $saveEnv = getenv();
         foreach ($this->alternatives as $name => $files) {
             $this->files = $saveFiles;
-            $_ENV = $saveEnv;
+            $this->overloadEnvs($saveEnv);
             $builder = $this->builder->createAlternative($name);
             $this->addFiles($this->rootPackage, $files);
             $builder->buildAllConfigs($this->files);
@@ -247,5 +244,12 @@ final class Plugin
         $packageFinder = new PackageFinder($vendorDir, $rootPackage, $packages);
 
         $this->packages = $packageFinder->findPackages();
+    }
+
+    private function overloadEnvs(array $envs): void
+    {
+        foreach ($envs as $key => $value) {
+            putenv("$key=$value");
+        }
     }
 }

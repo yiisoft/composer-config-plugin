@@ -67,9 +67,9 @@ return [
     ],
 
     'parameters from .env' => [
-        'ENV_STRING' => $_ENV['ENV_STRING'] ?? null,
-        'ENV_NUMBER' => $_ENV['ENV_NUMBER'] ?? null,
-        'ENV_TEXT' => $_ENV['ENV_TEXT'] ?? null,
+        'ENV_STRING' => getenv('ENV_STRING'),
+        'ENV_NUMBER' => getenv('ENV_NUMBER'),
+        'ENV_TEXT' => getenv('ENV_TEXT'),
     ],
 
     'parameters from .env through constants' => [

@@ -16,7 +16,10 @@ class EnvReader extends AbstractReader
             throw new UnsupportedFileTypeException('for .env support require `vlucas/phpdotenv` in your composer.json');
         }
         $info = pathinfo($path);
-        Dotenv::createImmutable($info['dirname'], $info['basename'])->load();
-        return getenv();
+
+        return array_merge(
+            getenv(),
+            Dotenv::createMutable($info['dirname'], $info['basename'])->load()
+        );
     }
 }
