@@ -17,7 +17,4 @@ return [
     'array parameter with RemoveArrayKeys' => [
         'second-vendor/second-package' => 'second-vendor/second-package',
     ],
-    'array parameter with ReverseValues' => [
-        'second-vendor/second-package' => 'second-vendor/second-package',
-    ],
 ];
