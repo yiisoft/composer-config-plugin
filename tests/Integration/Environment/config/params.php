@@ -28,10 +28,6 @@ return [
         'root key' => 'root value',
         new RemoveKeys(),
     ],
-    'array parameter with ReverseValues' => [
-        'root package' => 'root value',
-        new ReverseValues(),
-    ],
     'callable parameter' => function () {
         return 'I am callable';
     },
