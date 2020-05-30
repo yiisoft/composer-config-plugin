@@ -48,6 +48,8 @@ return [
 
     'env.raw' => Env::get('ENV_STRING'),
     'env.raw.default_null' => Env::get('NOT_FOUND', null),
+    'env.raw.default_bool_true' => Env::get('NOT_FOUND', true),
+    'env.raw.default_bool_false' => Env::get('NOT_FOUND', false),
     'env.raw.default_string' => Env::get('NOT_FOUND', 'default value'),
     'env.raw.default_integer' => Env::get('NOT_FOUND', 123),
     'env.raw.default_object' => Env::get('NOT_FOUND', new stdClass()),

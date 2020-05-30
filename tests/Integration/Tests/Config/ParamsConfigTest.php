@@ -75,6 +75,8 @@ final class ParamsConfigTest extends ConfigTest
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
             ['env.raw', 'string'],
             ['env.raw.default_null', null],
+            ['env.raw.default_bool_true', true],
+            ['env.raw.default_bool_false', false],
             ['env.raw.default_string', 'default value'],
             ['env.raw.default_integer', 123],
             ['env.raw.default_object', new stdClass()],
