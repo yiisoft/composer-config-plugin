@@ -184,7 +184,7 @@ PHP;
         return $this->builder->getBaseDir();
     }
 
-    private function getOutputPath(string $name = null): string
+    protected function getOutputPath(string $name = null): string
     {
         return $this->builder->getOutputPath($name ?: $this->name);
     }
