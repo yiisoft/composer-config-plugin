@@ -15,10 +15,12 @@ trait DirectoryManipulatorTrait
 
         $directoryIterator = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
         $ignoredFolders = ['.idea', '.git', '.github', 'tests', 'vendor'];
-        $filer = new \RecursiveCallbackFilterIterator($directoryIterator,
+        $filer = new \RecursiveCallbackFilterIterator(
+            $directoryIterator,
             static function ($current, $key, \DirectoryIterator $iterator) use ($ignoredFolders) {
                 return !in_array($iterator->getFilename(), $ignoredFolders);
-            });
+            }
+        );
         $iterator = new RecursiveIteratorIterator($filer, RecursiveIteratorIterator::SELF_FIRST);
         /* @var $item \SplFileInfo */
         foreach ($iterator as $item) {
