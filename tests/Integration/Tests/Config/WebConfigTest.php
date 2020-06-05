@@ -9,7 +9,7 @@ final class WebConfigTest extends ConfigTest
     public function configProvider(): array
     {
         $projectDirectoryObject = new \stdClass();
-        $projectDirectoryObject->path = dirname(__DIR__, 2) . '/Environment';
+        $projectDirectoryObject->path = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'Environment';
 
         return [
             [
