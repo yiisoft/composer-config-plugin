@@ -8,6 +8,9 @@ final class WebConfigTest extends ConfigTest
 {
     public function configProvider(): array
     {
+        $projectDirectoryObject = new \stdClass();
+        $projectDirectoryObject->path = dirname(__DIR__, 2) . '/Environment';
+
         return [
             [
                 \Environment\Serializer\SerializerInterface::class,
@@ -16,6 +19,10 @@ final class WebConfigTest extends ConfigTest
             [
                 'params',
                 fn (array $params) => $this->assertSame('default', $params['env_parameter']),
+            ],
+            [
+                'projectDirectoryObject',
+                $projectDirectoryObject,
             ],
         ];
     }
