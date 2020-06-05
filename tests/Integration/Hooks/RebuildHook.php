@@ -15,7 +15,7 @@ final class RebuildHook implements BeforeFirstTestHook
         if (!(bool) ($_SERVER['REBUILD'] ?? false)) {
             return;
         }
-        $baseDir = PathHelper::realpath(__DIR__) . '/Environment';
+        $baseDir = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
 
         require_once $baseDir . '/vendor/autoload.php';
         echo 'Rebuild configs...' . PHP_EOL;
