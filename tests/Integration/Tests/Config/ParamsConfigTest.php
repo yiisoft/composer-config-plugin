@@ -110,7 +110,7 @@ final class ParamsConfigTest extends ConfigTest
                 'boolean value' => true,
                 'int value' => 42,
             ]],
-            ['projectDirectory', dirname(__DIR__, 2) . '/Environment'],
+            ['projectDirectory', dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'Environment'],
         ];
     }
 
