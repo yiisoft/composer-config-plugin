@@ -15,7 +15,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     public function executeBeforeFirstTest(): void
     {
         $originalDirectory = getcwd();
-        $newDirectory = PathHelper::realpath(__DIR__) . '/Environment';
+        $newDirectory = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
 
         chdir($newDirectory);
 
