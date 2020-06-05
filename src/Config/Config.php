@@ -14,8 +14,6 @@ use Yiisoft\Composer\Config\Util\PathHelper;
  */
 class Config
 {
-    private const BASE_DIR_MARKER = '<<<base-dir>>>';
-
     /**
      * @var string config name
      */
@@ -128,9 +126,7 @@ class Config
 
     protected function calcValues(array $sources): array
     {
-        $values = ArrayHelper::merge(...$sources);
-
-        return $this->substituteOutputDirs($values);
+        return ArrayHelper::merge(...$sources);
     }
 
     protected function writeFile(string $path, array $data): void
@@ -157,7 +153,7 @@ class Config
 return {$variables};
 PHP;
 
-        $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
+        $this->contentWriter->write($path, $content . "\n");
     }
 
     protected function envsRequired(): bool
@@ -183,81 +179,12 @@ PHP;
         return substr_count($diff, '/');
     }
 
-    private function replaceMarkers(string $content): string
-    {
-        return str_replace(
-            ["'" . self::BASE_DIR_MARKER, "'?" . self::BASE_DIR_MARKER],
-            ["\$baseDir . '", "'?' . \$baseDir . '"],
-            $content
-        );
-    }
-
-    /**
-     * Substitute output paths in given data array recursively with marker.
-     *
-     * @param array $data
-     * @return array
-     */
-    protected function substituteOutputDirs(array $data): array
-    {
-        $dir = PathHelper::normalize($this->getBaseDir());
-
-        return $this->substitutePaths($data, $dir, self::BASE_DIR_MARKER);
-    }
-
-    /**
-     * Substitute all paths in given array recursively with alias if applicable.
-     *
-     * @param array $data
-     * @param string $dir
-     * @param string $alias
-     * @return array
-     */
-    private function substitutePaths($data, $dir, $alias): array
-    {
-        foreach ($data as &$value) {
-            if (is_string($value)) {
-                $value = $this->substitutePath($value, $dir, $alias);
-            } elseif (is_array($value)) {
-                $value = $this->substitutePaths($value, $dir, $alias);
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Substitute path with alias if applicable.
-     *
-     * @param string $path
-     * @param string $dir
-     * @param string $alias
-     * @return string
-     */
-    private function substitutePath($path, $dir, $alias): string
-    {
-        $end = $dir . '/';
-        $skippable = 0 === strncmp($path, '?', 1);
-        if ($skippable) {
-            $path = substr($path, 1);
-        }
-        if ($path === $dir) {
-            $result = $alias;
-        } elseif (strpos($path, $end) === 0) {
-            $result = $alias . substr($path, strlen($end) - 1);
-        } else {
-            $result = $path;
-        }
-
-        return ($skippable ? '?' : '') . $result;
-    }
-
     private function getBaseDir(): string
     {
         return $this->builder->getBaseDir();
     }
 
-    protected function getOutputPath(string $name = null): string
+    private function getOutputPath(string $name = null): string
     {
         return $this->builder->getOutputPath($name ?: $this->name);
     }

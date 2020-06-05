@@ -75,4 +75,6 @@ return [
         'ENV_NUMBER' => ENV_NUMBER,
         'ENV_TEXT' => ENV_TEXT,
     ],
+
+    'projectDirectory' => dirname(__DIR__),
 ];

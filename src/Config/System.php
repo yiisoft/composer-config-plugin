@@ -40,11 +40,4 @@ class System extends Config
 
         return $this;
     }
-
-    public function build(): self
-    {
-        $this->values = $this->substituteOutputDirs($this->values);
-
-        return $this;
-    }
 }
