@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Tests\Integration;
+namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
 use Yiisoft\Composer\Config\Builder;
