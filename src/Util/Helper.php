@@ -37,9 +37,11 @@ class Helper
     {
         $encoder = new PHPEncoder([
             'object.format' => 'serialize',
+
         ]);
         $encoder->addEncoder(new ClosureEncoder(), true);
         $encoder->addEncoder(new EnvEncoder(), true);
+        $encoder->addEncoder(new ObjectEncoder(), true);
 
         return $encoder;
     }
