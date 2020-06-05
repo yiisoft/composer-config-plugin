@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Tests\Integration;
+namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use Yiisoft\Composer\Config\Tests\Integration\Support\DirectoryManipulatorTrait;
 use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class ComposerUpdateHook implements BeforeFirstTestHook
 {
+    use DirectoryManipulatorTrait;
+
     public function executeBeforeFirstTest(): void
     {
         $originalDirectory = getcwd();
-        $newDirectory = PathHelper::realpath(__DIR__) . '/Environment';
+        $newDirectory = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
 
         chdir($newDirectory);
 
@@ -52,22 +53,5 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         if ((int) $returnCode !== 0) {
             throw new \RuntimeException("$command return code was $returnCode. $res");
         }
-    }
-
-    private function removeDirectoryRecursive(string $path): void
-    {
-        $iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-        $iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
-
-        /* @var \SplFileInfo $file */
-        foreach ($iterator as $file) {
-            if ($file->isLink() || $file->isFile()) {
-                unlink($file->getRealPath());
-            } elseif ($file->isDir()) {
-                rmdir($file->getRealPath());
-            }
-        }
-
-        rmdir($path);
     }
 }
