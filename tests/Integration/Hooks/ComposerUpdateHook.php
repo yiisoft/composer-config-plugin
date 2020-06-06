@@ -22,7 +22,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         if (is_dir("{$newDirectory}/vendor")) {
             $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
             if (is_link($pluginPath)) {
-                @unlink($pluginPath);
+                $this->unlink($pluginPath);
             } elseif (is_dir($pluginPath)) {
                 $this->removeDirectoryRecursive($pluginPath);
             }
@@ -53,5 +53,20 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         if ((int) $returnCode !== 0) {
             throw new \RuntimeException("$command return code was $returnCode. $res");
         }
+    }
+
+    public function unlink(string $path): bool
+    {
+        $isWindows = DIRECTORY_SEPARATOR === '\\';
+
+        if (!$isWindows) {
+            return unlink($path);
+        }
+
+        if (is_link($path) && is_dir($path)) {
+            return rmdir($path);
+        }
+
+        return unlink($path);
     }
 }
