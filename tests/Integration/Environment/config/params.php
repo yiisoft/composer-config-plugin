@@ -8,6 +8,16 @@ use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
 use Yiisoft\Arrays\Modifier\UnsetValue;
 use Yiisoft\Composer\Config\Env;
 
+$objectWithClosures = new stdClass();
+$objectWithClosures->closure = function () {
+    return 1;
+};
+$objectWithClosures->staticClosure = static function () {
+    return 2;
+};
+$objectWithClosures->shortClosure = fn () => 3;
+$objectWithClosures->staticShortClosure = static fn () => 4;
+
 return [
     'boolean parameter' => true,
     'string parameter' => 'value of param 1',
@@ -75,6 +85,8 @@ return [
         'ENV_NUMBER' => ENV_NUMBER,
         'ENV_TEXT' => ENV_TEXT,
     ],
+
+    'objectWithClosures' => $objectWithClosures,
 
     'serialized_classes' => [
         new \Environment\Entity\User(0),
