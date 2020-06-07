@@ -18,7 +18,7 @@ return [
     'long int parameter' => 123_000,
     'array parameter' => [
         'changed value' => 'from root config',
-        [[[[[]]]]]
+        [[[[[]]]]],
     ],
     'array parameter with UnsetArrayValue' => [
         'first-vendor/first-package' => new UnsetValue(),
@@ -39,7 +39,7 @@ return [
         return 'I am callable';
     },
 
-    'short callable parameter' => fn () => 'I am callable',
+    'short callable parameter' => fn() => 'I am callable',
 
     'object parameter' => new stdClass(),
 
@@ -74,5 +74,9 @@ return [
         'ENV_STRING' => ENV_STRING,
         'ENV_NUMBER' => ENV_NUMBER,
         'ENV_TEXT' => ENV_TEXT,
+    ],
+
+    'serialized_classes' => [
+        new \Environment\Entity\User(0),
     ],
 ];
