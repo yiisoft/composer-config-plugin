@@ -37,6 +37,7 @@ class Helper
 
     private static function createEncoder(): PHPEncoder
     {
+        \Opis\Closure\init();
         $encoder = new PHPEncoder([
             'object.format' => 'serialize',
         ]);
