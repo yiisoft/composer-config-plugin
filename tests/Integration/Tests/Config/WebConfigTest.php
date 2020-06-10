@@ -17,6 +17,13 @@ final class WebConfigTest extends ConfigTest
                 'params',
                 fn (array $params) => $this->assertSame('default', $params['env_parameter']),
             ],
+            [
+                \Environment\Serializer\CustomSerializer::class,
+                new \Environment\Serializer\CustomSerializer(
+                    fn () => 'serialize',
+                    fn () => 'unserialize',
+                ),
+            ],
         ];
     }
 
