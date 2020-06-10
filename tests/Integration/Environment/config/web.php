@@ -11,7 +11,7 @@ return [
     'params' => $params,
 
     \Environment\Serializer\CustomSerializer::class => new \Environment\Serializer\CustomSerializer(
-        fn() => 'serialize',
-        fn() => 'unserialize',
+        fn () => 'serialize',
+        fn () => 'unserialize',
     ),
 ];
