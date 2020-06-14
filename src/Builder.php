@@ -52,9 +52,7 @@ class Builder
     {
         $alt = new static($this->configFactory, $this->baseDir);
         $alt->setOutputDir($this->outputDir . DIRECTORY_SEPARATOR . $name);
-        foreach (['aliases', 'packages'] as $key) {
-            $alt->configs[$key] = $this->getConfig($key)->clone($alt);
-        }
+        $alt->configs['packages'] = $this->getConfig('packages')->clone($alt);
 
         return $alt;
     }
@@ -184,7 +182,7 @@ class Builder
     private function buildSystemConfigs(array $files): void
     {
         $this->getConfig('__files')->setValues($files);
-        foreach (['__files', 'aliases', 'packages'] as $name) {
+        foreach (['__files', 'packages'] as $name) {
             $this->getConfig($name)->build()->write();
         }
     }
@@ -211,11 +209,6 @@ class Builder
         }
 
         return $vars;
-    }
-
-    public function mergeAliases(array $aliases): void
-    {
-        $this->getConfig('aliases')->mergeValues($aliases);
     }
 
     public function setPackage(string $name, array $data): void

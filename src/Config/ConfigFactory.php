@@ -14,7 +14,6 @@ class ConfigFactory
 {
     private const KNOWN_TYPES = [
         '__files' => System::class,
-        'aliases' => System::class,
         'packages' => System::class,
         'envs' => Envs::class,
         'params' => Params::class,
