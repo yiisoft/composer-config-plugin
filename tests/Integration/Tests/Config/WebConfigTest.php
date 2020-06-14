@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Tests\Integration\Tests\Config;
 
+include dirname(__DIR__, 3) . '/Integration/Environment/src/Serializer/SerializerInterface.php';
+include dirname(__DIR__, 3) . '/Integration/Environment/src/Serializer/PhpSerializer.php';
+include dirname(__DIR__, 3) . '/Integration/Environment/src/Serializer/CustomSerializer.php';
+
 final class WebConfigTest extends ConfigTest
 {
     public function configProvider(): array
