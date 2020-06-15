@@ -19,8 +19,6 @@ class ObjectEncoder implements Encoder
 
     public function encode($value, $depth, array $options, callable $encode)
     {
-        $serializedValue = \Opis\Closure\serialize($value);
-
-        return '\Opis\Closure\unserialize(' . Helper::exportVar($serializedValue) . ')';
+        return serialize($value);
     }
 }
