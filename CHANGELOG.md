@@ -10,6 +10,7 @@
 - Enh: Make base path detection more reliable (xepozz, samdark)
 - Bug #54: Fix failure when using short closure (xepozz)
 - Bug #72: Fix serialization of objects with closure (xepozz)
+- Enh #70: Removed generation of aliases.php (xepozz)
 
 ## [0.4.0] - 2020-03-08
 
