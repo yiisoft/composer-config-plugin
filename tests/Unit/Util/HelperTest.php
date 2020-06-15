@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
@@ -43,7 +45,7 @@ final class HelperTest extends TestCase
             ],
             [
                 Env::get('value', new \stdClass()),
-                "\$_ENV['value'] ?? unserialize('O:8:\"stdClass\":0:{}')",
+                "\$_ENV['value'] ?? \Opis\Closure\unserialize('O:8:\"stdClass\":0:{}')",
             ],
             [
                 $_ENV['value'],

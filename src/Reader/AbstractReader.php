@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config\Reader;
 
 use Yiisoft\Composer\Config\Builder;

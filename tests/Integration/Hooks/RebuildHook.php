@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Tests\Integration;
+namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
 use Yiisoft\Composer\Config\Builder;
@@ -15,7 +15,7 @@ final class RebuildHook implements BeforeFirstTestHook
         if (!(bool) ($_SERVER['REBUILD'] ?? false)) {
             return;
         }
-        $baseDir = PathHelper::realpath(__DIR__) . '/Environment';
+        $baseDir = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
 
         require_once $baseDir . '/vendor/autoload.php';
         echo 'Rebuild configs...' . PHP_EOL;
