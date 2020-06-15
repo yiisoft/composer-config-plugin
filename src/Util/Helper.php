@@ -43,6 +43,7 @@ class Helper
         ]);
         $encoder->addEncoder(new ClosureEncoder(), true);
         $encoder->addEncoder(new EnvEncoder(), true);
+        $encoder->addEncoder(new ObjectEncoder(), true);
 
         return $encoder;
     }
