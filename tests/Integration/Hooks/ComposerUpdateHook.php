@@ -2,26 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Tests\Integration;
+namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use Yiisoft\Composer\Config\Tests\Integration\Support\DirectoryManipulatorTrait;
 use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class ComposerUpdateHook implements BeforeFirstTestHook
 {
+    use DirectoryManipulatorTrait;
+
     public function executeBeforeFirstTest(): void
     {
         $originalDirectory = getcwd();
-        $newDirectory = PathHelper::realpath(__DIR__) . '/Environment';
+        $newDirectory = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
 
         chdir($newDirectory);
 
         if (is_dir("{$newDirectory}/vendor")) {
             $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
             if (is_link($pluginPath)) {
-                @unlink($pluginPath);
+                $this->unlink($pluginPath);
             } elseif (is_dir($pluginPath)) {
                 $this->removeDirectoryRecursive($pluginPath);
             }
@@ -54,20 +55,18 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         }
     }
 
-    private function removeDirectoryRecursive(string $path): void
+    public function unlink(string $path): bool
     {
-        $iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-        $iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+        $isWindows = DIRECTORY_SEPARATOR === '\\';
 
-        /* @var \SplFileInfo $file */
-        foreach ($iterator as $file) {
-            if ($file->isLink() || $file->isFile()) {
-                unlink($file->getRealPath());
-            } elseif ($file->isDir()) {
-                rmdir($file->getRealPath());
-            }
+        if (!$isWindows) {
+            return unlink($path);
         }
 
-        rmdir($path);
+        if (is_link($path) && is_dir($path)) {
+            return rmdir($path);
+        }
+
+        return unlink($path);
     }
 }

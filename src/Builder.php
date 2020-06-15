@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config;
 
 use JsonException;
@@ -146,7 +148,7 @@ class Builder
         return self::isAbsolutePath($file) ? $file : $dir . DIRECTORY_SEPARATOR . $file;
     }
 
-    private static function isAbsolutePath(string $path): string
+    private static function isAbsolutePath(string $path): bool
     {
         return strpos($path, '/') === 0 || strpos($path, ':') === 1 || strpos($path, '\\\\') === 0;
     }
