@@ -68,7 +68,7 @@ final class Plugin
     {
         $factory = new \Composer\Factory();
         $output = $factory->createOutput();
-        $input = new \Symfony\Component\Console\Input\ArgvInput(array());
+        $input = new \Symfony\Component\Console\Input\ArgvInput([]);
         $helpset = new \Symfony\Component\Console\Helper\HelperSet();
         $io = new \Composer\IO\ConsoleIO($input, $output, $helpset);
         $composer = $factory->createComposer($io, $cwd . '/composer.json', true, $cwd, false);
