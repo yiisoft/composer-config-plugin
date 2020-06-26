@@ -8,7 +8,7 @@ Composer plugin for config assembling.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/composer-config-plugin/v/stable)](https://packagist.org/packages/yiisoft/composer-config-plugin)
 [![Total Downloads](https://poser.pugx.org/yiisoft/composer-config-plugin/downloads)](https://packagist.org/packages/yiisoft/composer-config-plugin)
-[![Build Status](https://travis-ci.com/yiisoft/composer-config-plugin.svg?branch=master)](https://travis-ci.com/yiisoft/composer-config-plugin)
+[![Build status](https://github.com/yiisoft/composer-config-plugin/workflows/build/badge.svg)](https://github.com/yiisoft/composer-config-plugin/actions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/composer-config-plugin/?branch=master)
 
@@ -21,21 +21,21 @@ holding both the code and its configuration.
 How it works?
 
 - Scans installed packages for `config-plugin` extra option in their
-  `composer.json`
-- Loads `.env` files to set `$_ENV` variables
-- Requires `constants` files to set constants
-- Requires `params` files
-- Requires config files
+  `composer.json`.
+- Loads `.env` files to set `$_ENV` variables.
+- Requires `constants` files to set constants.
+- Requires `params` files.
+- Requires config files.
 - Options collected during earlier steps could and should be used in later
   steps, e.g. `$_ENV` should be used for constants and parameters, which
-  in turn should be used for configs
+  in turn should be used for configs.
 - File processing order is crucial to achieve expected behavior: options
   in root package have priority over options from included packages. It is described
   below in **File processing order** section.
 - Collected configs are written as PHP files in
   `vendor/yiisoft/composer-config-plugin-output`
-  directory along with information needed to rebuild configs on demand
-- Then assembled configs are ready to be loaded into application using `require`
+  directory along with information needed to rebuild configs on demand.
+- Then assembled configs are ready to be loaded into application using `require`.
 
 **Read more** about the general idea behind this plugin in [English] or
 [Russian].
@@ -54,8 +54,8 @@ Out of the box this plugin supports configs in PHP and JSON formats.
 
 To enable additional formats require:
 
-- [vlucas/phpdotenv] - for `.env` files
-- [symfony/yaml] - for YAML files, `.yml` and `.yaml`
+- [vlucas/phpdotenv] - for `.env` files.
+- [symfony/yaml] - for YAML files, `.yml` and `.yaml`.
 
 [vlucas/phpdotenv]: https://github.com/vlucas/phpdotenv
 [symfony/yaml]: https://github.com/symfony/yaml
@@ -68,6 +68,7 @@ List your config files in `composer.json` like the following:
 "extra": {
     "config-plugin-output-dir": "path/relative-to-composer-json",
     "config-plugin": {
+        "envs": "db.env",
         "params": [
             "config/params.php",
             "?config/params-local.php"
@@ -119,7 +120,7 @@ composer dump-autoload
 
 Above can be shortened to `composer du`.
 
-If you need to force config rebuildign from your application, you can do it like the following:
+If you need to force config rebuilding from your application, you can do it like the following:
 
 ```php
 // Don't do it in production, assembling takes it's time
@@ -133,13 +134,13 @@ if (ENVIRONMENT === 'dev') {
 Config files are processed in proper order to achieve naturally expected
 behavior:
 
-- Options in outer packages override options from inner packages
-- Plugin respects the order your configs are listed in `composer.json` with
+- Options in outer packages override options from inner packages.
+- Plugin respects the order your configs are listed in `composer.json` with.
 - Different types of options are processed in the following order:
-    - Environment variables from `envs`
-    - Constants from `constants`
-    - Parameters from `params`
-    - Configs are processed last of all
+    - Environment variables from `envs`.
+    - Constants from `constants`.
+    - Parameters from `params`.
+    - Configs are processed last of all.
 
 ### Debugging
 

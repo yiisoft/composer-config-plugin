@@ -11,6 +11,16 @@ final class ParamsConfigTest extends ConfigTest
 {
     public function configProvider(): array
     {
+        $objectWithClosures = new stdClass();
+        $objectWithClosures->closure = function () {
+            return 1;
+        };
+        $objectWithClosures->staticClosure = static function () {
+            return 2;
+        };
+        $objectWithClosures->shortClosure = fn () => 3;
+        $objectWithClosures->staticShortClosure = static fn () => 4;
+
         return [
             ['boolean parameter', true],
             ['string parameter', 'value of param 1'],
@@ -39,6 +49,13 @@ final class ParamsConfigTest extends ConfigTest
                 'second-vendor/second-package',
                 'root value',
             ]],
+            ['array parameter with ReverseValues', [
+                'root package' => 'root value',
+                'second-vendor/second-package' => 'second-vendor/second-package',
+                'second-vendor/first-package' => 'second-vendor/first-package',
+                'first-vendor/second-package' => 'first-vendor/second-package',
+                'first-vendor/first-package' => 'first-vendor/first-package',
+            ]],
             [
                 'callable parameter',
                 new LiterallyCallback(function () {
@@ -51,6 +68,7 @@ final class ParamsConfigTest extends ConfigTest
                     return 'I am callable';
                 }),
             ],
+            ['short callable parameter', new LiterallyCallback(fn () => 'I am callable')],
             ['object parameter', new stdClass()],
             /**
              * Test for subpackages parameters
@@ -65,6 +83,11 @@ final class ParamsConfigTest extends ConfigTest
             ['second-dev-vendor/second-package', true],
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
+            ['env.raw', 'string'],
+            ['env.raw.default_null', null],
+            ['env.raw.default_string', 'default value'],
+            ['env.raw.default_integer', 123],
+            ['env.raw.default_object', new stdClass()],
             ['env.string', 'string'],
             ['env.number', '42'],
             ['env.text', 'Some text with several words'],
@@ -97,6 +120,7 @@ final class ParamsConfigTest extends ConfigTest
                 'boolean value' => true,
                 'int value' => 42,
             ]],
+            ['objectWithClosures', $objectWithClosures],
         ];
     }
 

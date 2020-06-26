@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config\Util;
 
 use Riimu\Kit\PHPEncoder\PHPEncoder;
@@ -39,6 +41,8 @@ class Helper
             'object.format' => 'serialize',
         ]);
         $encoder->addEncoder(new ClosureEncoder(), true);
+        $encoder->addEncoder(new EnvEncoder(), true);
+        $encoder->addEncoder(new ObjectEncoder(), true);
 
         return $encoder;
     }

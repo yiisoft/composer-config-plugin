@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config\Config;
 
 use Yiisoft\Composer\Config\Util\Helper;

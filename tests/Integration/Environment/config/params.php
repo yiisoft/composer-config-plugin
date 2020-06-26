@@ -4,7 +4,19 @@ declare(strict_types=1);
 
 use Yiisoft\Arrays\Modifier\RemoveKeys;
 use Yiisoft\Arrays\Modifier\ReplaceValue;
+use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
 use Yiisoft\Arrays\Modifier\UnsetValue;
+use Yiisoft\Composer\Config\Env;
+
+$objectWithClosures = new stdClass();
+$objectWithClosures->closure = function () {
+    return 1;
+};
+$objectWithClosures->staticClosure = static function () {
+    return 2;
+};
+$objectWithClosures->shortClosure = fn () => 3;
+$objectWithClosures->staticShortClosure = static fn () => 4;
 
 return [
     'boolean parameter' => true,
@@ -26,6 +38,10 @@ return [
         'root key' => 'root value',
         new RemoveKeys(),
     ],
+    'array parameter with ReverseValues' => [
+        'root package' => 'root value',
+        new ReverseBlockMerge(),
+    ],
     'callable parameter' => function () {
         return 'I am callable';
     },
@@ -33,14 +49,18 @@ return [
         return 'I am callable';
     },
 
-    // temporary not working
-    // 'short callable parameter' => fn() => 'I am callable',
+    'short callable parameter' => fn () => 'I am callable',
 
     'object parameter' => new stdClass(),
 
     'env_parameter' => 'default',
     'constant_based_parameter' => TEST_CONSTANT,
 
+    'env.raw' => Env::get('ENV_STRING'),
+    'env.raw.default_null' => Env::get('NOT_FOUND', null),
+    'env.raw.default_string' => Env::get('NOT_FOUND', 'default value'),
+    'env.raw.default_integer' => Env::get('NOT_FOUND', 123),
+    'env.raw.default_object' => Env::get('NOT_FOUND', new stdClass()),
     'env.string' => 'old value',
     'env.number' => 'old value',
     'env.text' => 'old value',
@@ -65,4 +85,6 @@ return [
         'ENV_NUMBER' => ENV_NUMBER,
         'ENV_TEXT' => ENV_TEXT,
     ],
+
+    'objectWithClosures' => $objectWithClosures,
 ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Composer\Config;
 
 use JsonException;
@@ -64,10 +66,11 @@ class Builder
             : static::findOutputDir($this->getBaseDir());
     }
 
-    public static function rebuild(): void
+    public static function rebuild(?string $baseDir = null): void
     {
-        $builder = new self(new ConfigFactory(), static::findBaseDir());
+        $builder = new self(new ConfigFactory(), $baseDir ?? self::findBaseDir());
         $files = $builder->getConfig('__files')->load();
+
         $builder->buildUserConfigs($files->getValues());
     }
 
@@ -75,14 +78,14 @@ class Builder
      * Returns default output dir.
      *
      * @param string|null $baseDir path to the root Composer package. When `null`,
-     * {@see findBaseDir()} will be called to find a base dir.
-     *
      * @return string
      * @throws JsonException
      */
     private static function findOutputDir(string $baseDir = null): string
     {
-        $baseDir = $baseDir ?: static::findBaseDir();
+        if ($baseDir === null) {
+            $baseDir = static::findBaseDir();
+        }
         $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
         $data = @json_decode(file_get_contents($path), true);
         $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
@@ -92,7 +95,22 @@ class Builder
 
     private static function findBaseDir(): string
     {
-        return dirname(__DIR__, 4);
+        $candidates = [
+            // normal relative path
+            dirname(__DIR__, 4),
+            // console
+            getcwd(),
+            // symlinked web
+            dirname(getcwd())
+        ];
+
+        foreach ($candidates as $baseDir) {
+            if (file_exists($baseDir . DIRECTORY_SEPARATOR . 'composer.json')) {
+                return $baseDir;
+            }
+        }
+
+        throw new \RuntimeException('Cannot find directory that contains composer.json');
     }
 
     /**
@@ -130,7 +148,7 @@ class Builder
         return self::isAbsolutePath($file) ? $file : $dir . DIRECTORY_SEPARATOR . $file;
     }
 
-    private static function isAbsolutePath(string $path): string
+    private static function isAbsolutePath(string $path): bool
     {
         return strpos($path, '/') === 0 || strpos($path, ':') === 1 || strpos($path, '\\\\') === 0;
     }
