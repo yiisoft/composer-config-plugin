@@ -69,7 +69,7 @@ final class Plugin
     public static function buildAllConfigs(string $projectRootPath): void
     {
         $factory = new \Composer\Factory();
-        $output = $factory->createOutput();
+        $output = $factory::createOutput();
         $input = new \Symfony\Component\Console\Input\ArgvInput([]);
         $helperSet = new \Symfony\Component\Console\Helper\HelperSet();
         $io = new \Composer\IO\ConsoleIO($input, $output, $helperSet);
