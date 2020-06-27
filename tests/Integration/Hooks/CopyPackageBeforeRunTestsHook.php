@@ -13,7 +13,7 @@ final class CopyPackageBeforeRunTestsHook implements BeforeFirstTestHook
 
     public function executeBeforeFirstTest(): void
     {
-        $composerConfigPluginDirectory = dirname(__DIR__) . '/Packages/yiisoft/';
+        $composerConfigPluginDirectory = dirname(__DIR__) . '/Packages/yiisoft/composer-config-plugin/';
         $pluginCurrentVersionDirectory = dirname(__DIR__, 3);
 
         if (file_exists($composerConfigPluginDirectory)) {
