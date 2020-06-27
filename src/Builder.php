@@ -68,10 +68,7 @@ class Builder
 
     public static function rebuild(?string $baseDir = null): void
     {
-        $builder = new self(new ConfigFactory(), $baseDir ?? self::findBaseDir());
-        $files = $builder->getConfig('__files')->load();
-
-        $builder->buildUserConfigs($files->getValues());
+        Plugin::buildAllConfigs($baseDir ?? self::findBaseDir());
     }
 
     /**
@@ -161,7 +158,7 @@ class Builder
     public function buildAllConfigs(array $files): void
     {
         $this->buildUserConfigs($files);
-        $this->buildSystemConfigs($files);
+        $this->buildSystemConfigs();
     }
 
     /**
@@ -181,10 +178,9 @@ class Builder
         return $files;
     }
 
-    private function buildSystemConfigs(array $files): void
+    private function buildSystemConfigs(): void
     {
-        $this->getConfig('__files')->setValues($files);
-        foreach (['__files', 'aliases', 'packages'] as $name) {
+        foreach (['aliases', 'packages'] as $name) {
             $this->getConfig($name)->build()->write();
         }
     }
