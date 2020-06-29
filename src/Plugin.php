@@ -61,6 +61,18 @@ final class Plugin
         $this->collectPackages($composer);
     }
 
+    public static function buildAllConfigs(string $projectRootPath): void
+    {
+        $factory = new \Composer\Factory();
+        $output = $factory::createOutput();
+        $input = new \Symfony\Component\Console\Input\ArgvInput([]);
+        $helperSet = new \Symfony\Component\Console\Helper\HelperSet();
+        $io = new \Composer\IO\ConsoleIO($input, $output, $helperSet);
+        $composer = $factory->createComposer($io, $projectRootPath . '/composer.json', true, $projectRootPath, false);
+        $plugin = new self($composer, $io);
+        $plugin->build();
+    }
+
     public function build(): void
     {
         $this->io->overwriteError('<info>Assembling config files</info>');

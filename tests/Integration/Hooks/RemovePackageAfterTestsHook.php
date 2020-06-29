@@ -13,7 +13,7 @@ final class RemovePackageAfterTestsHook implements AfterLastTestHook
 
     public function executeAfterLastTest(): void
     {
-        $composerConfigPluginDirectory = dirname(__DIR__) . '/Packages/yiisoft/';
+        $composerConfigPluginDirectory = dirname(__DIR__) . '/Packages/yiisoft/composer-config-plugin/';
 
         $this->removeDirectoryRecursive($composerConfigPluginDirectory);
     }
