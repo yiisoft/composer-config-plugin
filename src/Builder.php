@@ -68,6 +68,15 @@ class Builder
 
     public static function rebuild(?string $baseDir = null): void
     {
+        // Ensure COMPOSER_HOME is set in case web server does not give PHP OS environment variables
+        if (!(getenv('APPDATA') || getenv('HOME') || getenv('COMPOSER_HOME'))) {
+            $path = sys_get_temp_dir() . '/.composer';
+            if (!mkdir($path) && !is_dir($path)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+            }
+            putenv('COMPOSER_HOME=' . $path);
+        }
+
         Plugin::buildAllConfigs($baseDir ?? self::findBaseDir());
     }
 
