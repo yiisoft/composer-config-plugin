@@ -11,6 +11,7 @@
     "homepage": "https://github.com/yiisoft/composer-config-plugin",
     "license": "BSD-3-Clause",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "support": {
         "issues": "https://github.com/yiisoft/composer-config-plugin/issues?state=open",
         "forum": "https://www.yiiframework.com/forum/",
