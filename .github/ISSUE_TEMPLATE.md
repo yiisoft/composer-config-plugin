@@ -11,7 +11,6 @@
 
 | Q                | A
 | ---------------- | ---
-| Version          | 0.3.?
-| Composer Version | 1.8.?
-| PHP version      | 7.?.?
-| Operating system | 
+| Version          | 1.0.?
+| PHP version      | 
+| Operating system |
