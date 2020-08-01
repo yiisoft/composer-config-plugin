@@ -101,6 +101,52 @@ return [
 ];
 ```
 
+Variable $params, like others, is extracted from config array, so variables $envs, $common, $web and $other is also 
+defined, and you can use them in config files 
+
+For example: 
+
+`composer.json`
+
+```json
+"extra": {
+    "config-plugin-output-dir": "path/relative-to-composer-json",
+    "config-plugin": {
+        "envs": "db.env",
+        "params": [
+            "config/params.php",
+            "?config/params-local.php"
+        ],
+        "common": "config/common.php",
+        "web": [
+            "$common",
+            "config/web.php"
+        ],
+        "other": "config/other.php"
+    }
+},
+```
+
+`web.php`
+
+```php
+return [
+    'components' => [
+        'db' => [
+            'class' => \my\Db::class,
+            'name' => $params['db.name'],
+            'password' => $params['db.password'],
+        ],
+        'db2' => [
+            'class' => \my\Db::class,
+            'name' => $params['db.name'],
+            'password' => $other['db.password'], //will not work, because web.php is loaded first
+        ],
+    ],
+];
+```
+
+
 To load assembled configs in your application use `require`:
 
 ```php
