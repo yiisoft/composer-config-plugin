@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config;
 
 use JsonException;
+use Symfony\Component\Yaml\Yaml;
 use Yiisoft\Composer\Config\Config\Config;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Util\Resolver;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Composer\Config\Exception\UnsupportedFileTypeException;
 
 use function dirname;
 
@@ -92,10 +95,8 @@ class Builder
         if ($baseDir === null) {
             $baseDir = static::findBaseDir();
         }
-        $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
-        $data = @json_decode(file_get_contents($path), true);
-        $dir = $data['extra'][Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
-
+        $data = static::getConfigurationData($baseDir);
+        $dir = $data[Package::EXTRA_OUTPUT_DIR_OPTION_NAME] ?? null;
         return $dir ? static::buildAbsPath($baseDir, $dir) : static::defaultOutputDir($baseDir);
     }
 
@@ -234,5 +235,49 @@ class Builder
     public function getBaseDir(): string
     {
         return $this->baseDir;
+    }
+
+    /**
+     * Configuration extra data.
+     *
+     * @param string $baseDir path to the root Composer package.
+     * @return array configuration array
+     */
+    private static function getConfigurationData(string $baseDir): array
+    {
+        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getYamlData($baseDir));
+    }
+
+    /**
+     * Composer extra data.
+     *
+     * @param string $baseDir path to the root Composer package.
+     * @return array composer.json extra configuration array
+     * @throws JsonException
+     */
+    private static function getComposerExtraData($baseDir): array
+    {
+        $path = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
+        $data = @json_decode(file_get_contents($path), true);
+        return $data['extra'] ?? [];
+    }
+
+    /**
+     * Yaml configuration data.
+     *
+     * @param string $baseDir path to the root Composer package.
+     * @return array .yii.yml configuration array
+     * @throws UnsupportedFileTypeException
+     */
+    private static function getYamlData($baseDir): array
+    {
+        $path = $baseDir . DIRECTORY_SEPARATOR . Package::CONFIG_FILE_NAME_YAML;
+        if (file_exists($path)) {
+            if (!class_exists(Yaml::class)) {
+                throw new UnsupportedFileTypeException("For YAML support require `symfony/yaml` in your composer.json (reading $path)");
+            }
+            return is_array($data = Yaml::parse(file_get_contents($path))) ? $data : [];
+        }
+        return [];
     }
 }
