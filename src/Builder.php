@@ -9,7 +9,6 @@ use Yiisoft\Composer\Config\Config\Config;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Util\Resolver;
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Composer\Config\Exception\UnsupportedFileTypeException;
 
 use function dirname;
 
@@ -266,7 +265,6 @@ class Builder
      *
      * @param string $baseDir path to the root Composer package.
      * @return array .plugin.conf.php configuration array
-     * @throws UnsupportedFileTypeException
      */
     private static function getPluginConfigData($baseDir): array
     {
