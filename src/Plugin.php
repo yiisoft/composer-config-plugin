@@ -42,6 +42,11 @@ final class Plugin
      */
     private array $originalFiles = [];
 
+    /**
+     * @var array
+     */
+    private array $paramsConfigs = [];
+
     private Builder $builder;
 
     /**
@@ -85,6 +90,7 @@ final class Plugin
         $this->scanPackages();
         $this->reorderFiles();
 
+        $this->builder->setParamsConfigs($this->paramsConfigs);
         $this->builder->buildAllConfigs($this->files);
 
         $saveFiles = $this->files;
@@ -228,7 +234,11 @@ final class Plugin
                 $paths = array_reverse($paths);
             }
             foreach ($paths as $path) {
-                $this->addFile($package, $name, $path);
+                if (preg_match('/^\$params\s*\=\s*\$(.+)$/', $path, $matches)) {
+                    $this->paramsConfigs[$name] = $matches[1];
+                } else {
+                    $this->addFile($package, $name, $path);
+                }
             }
         }
     }

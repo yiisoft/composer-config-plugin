@@ -22,7 +22,7 @@ class ReaderFactory
         'yml' => YamlReader::class,
     ];
 
-    public static function get(Builder $builder, string $path): ReaderInterface
+    public static function get(Builder $builder, string $path, array $params = []): ReaderInterface
     {
         $type = static::detectType($path);
         $class = static::findClass($type);
@@ -30,6 +30,10 @@ class ReaderFactory
         $uniqid = $class . ':' . spl_object_hash($builder);
         if (empty(self::$loaders[$uniqid])) {
             self::$loaders[$uniqid] = new $class($builder);
+        }
+
+        if (self::$loaders[$uniqid] instanceof ReaderWithParamsInterface) {
+            self::$loaders[$uniqid]->setParams($params);
         }
 
         return self::$loaders[$uniqid];

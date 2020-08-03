@@ -7,17 +7,24 @@ namespace Yiisoft\Composer\Config\Reader;
 /**
  * PhpReader - reads PHP files.
  */
-class PhpReader extends AbstractReader
+class PhpReader extends AbstractReader implements ReaderWithParamsInterface
 {
+    private $params = [];
+
     protected function readRaw(string $path)
     {
         $result = static function () {
             /** @noinspection NonSecureExtractUsageInspection */
-            extract(func_get_arg(0));
+            $params = func_get_arg(0) ;
 
             return require func_get_arg(1);
         };
 
-        return $result($this->builder->getVars(), $path);
+        return $result($this->params, $path);
+    }
+
+    public function setParams(array $params): void
+    {
+        $this->params = $params;
     }
 }

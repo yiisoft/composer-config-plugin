@@ -33,6 +33,11 @@ class Builder
      */
     private array $configs = [];
 
+    /**
+     * @var array
+     */
+    private array $paramsConfigs;
+
     private ConfigFactory $configFactory;
 
     /**
@@ -157,6 +162,25 @@ class Builder
     private static function isAbsolutePath(string $path): bool
     {
         return strpos($path, '/') === 0 || strpos($path, ':') === 1 || strpos($path, '\\\\') === 0;
+    }
+
+    /**
+     * @param array $paramsConfigs
+     * @return void
+     */
+    public function setParamsConfigs(array $paramsConfigs): void
+    {
+        $this->paramsConfigs = $paramsConfigs;
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    public function getConfigParams(string $name): array
+    {
+        $paramsConfigName = isset($this->paramsConfigs[$name]) ? $this->paramsConfigs[$name] : 'params';
+        return isset($this->configs[$paramsConfigName]) ? $this->configs[$paramsConfigName]->getValues() : [];
     }
 
     /**
