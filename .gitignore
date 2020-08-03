@@ -25,6 +25,9 @@ coverage.clover
 # dynamic files
 .phpunit.result.cache
 
+# local phpunit config
+/phpunit.xml
+
 # Binaries
 chkipper.phar
 composer.phar
