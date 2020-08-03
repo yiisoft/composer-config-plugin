@@ -36,7 +36,7 @@ class Builder
     /**
      * @var array
      */
-    private array $paramsConfigs;
+    private array $paramsConfigs = [];
 
     private ConfigFactory $configFactory;
 
@@ -179,7 +179,7 @@ class Builder
      */
     public function getConfigParams(string $name): array
     {
-        $paramsConfigName = isset($this->paramsConfigs[$name]) ? $this->paramsConfigs[$name] : 'params';
+        $paramsConfigName = $this->paramsConfigs[$name] ?? 'params';
         return isset($this->configs[$paramsConfigName]) ? $this->configs[$paramsConfigName]->getValues() : [];
     }
 
