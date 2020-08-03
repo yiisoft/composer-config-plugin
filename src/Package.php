@@ -8,8 +8,6 @@ use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Util\Filesystem;
-use Symfony\Component\Yaml\Yaml;
-use Yiisoft\Composer\Config\Exception\UnsupportedFileTypeException;
 
 /**
  * Class Package.
@@ -22,7 +20,7 @@ class Package
     public const EXTRA_ALTERNATIVES_OPTION_NAME = 'config-plugin-alternatives';
 
     public const CONFIG_FILE_NAME_COMPOSER = 'composer.json';
-    public const CONFIG_FILE_NAME_YAML = '.yii.yml';
+    public const CONFIG_FILE_NAME_YII = '.yii.php';
 
     private PackageInterface $package;
 
@@ -32,9 +30,9 @@ class Package
     private array $data;
 
     /**
-     * @var array .yii.yml raw data array
+     * @var array .yii.php config array
      */
-    private array $yamlData;
+    private array $config;
 
     /**
      * @var string absolute path to the root base directory
@@ -59,7 +57,7 @@ class Package
         $this->vendorDir = $this->filesystem->normalizePath($vendorDir);
         $this->baseDir = dirname($this->vendorDir);
         $this->data = $this->readRawData();
-        $this->yamlData = $this->readYamlData();
+        $this->config = $this->readConfigFile();
     }
 
     /**
@@ -169,13 +167,13 @@ class Package
     /**
      * Get configuration value or default
      *
-     * @param string $key key to look for in yaml or extra configuration
-     * @param mixed $default default to return if there's no yaml and extra configuration value
+     * @param string $key key to look for in .yii.php or extra configuration
+     * @param mixed $default default to return if there's no .yii.php and extra configuration value
      * @return mixed configuration value or default
      */
     private function getConfigValue(string $key, $default = null)
     {
-        return $this->getYamlValue($key, $this->getExtraValue($key, $default));
+        return $this->config[$key] ?? $this->getExtraValue($key, $default);
     }
 
     /**
@@ -208,15 +206,6 @@ class Package
     }
 
     /**
-     * @param string $name option name
-     * @return mixed yaml value from .yii.yml if available
-     */
-    private function getYamlValue(string $name, $default = null)
-    {
-        return $this->yamlData[$name] ?? $default;
-    }
-
-    /**
      * @return array composer.json contents as array
      * @throws \JsonException
      */
@@ -231,21 +220,12 @@ class Package
     }
 
     /**
-     * @return array .yii.yml contents as array
-     * @throws UnsupportedFileTypeException
+     * @return array .yii.php array config
      */
-    private function readYamlData(): array
+    private function readConfigFile(): array
     {
-        $path = $this->preparePath(self::CONFIG_FILE_NAME_YAML);
-        if (file_exists($path)) {
-            if (!class_exists(Yaml::class)) {
-                throw new UnsupportedFileTypeException("For YAML support require `symfony/yaml` in your composer.json (reading $path)");
-            }
-
-            return is_array($data = Yaml::parse(file_get_contents($path))) ? $data : [];
-        }
-
-        return [];
+        $path = $this->preparePath(self::CONFIG_FILE_NAME_YII);
+        return file_exists($path) ? require $path : [];
     }
 
     /**

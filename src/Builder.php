@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config;
 
 use JsonException;
-use Symfony\Component\Yaml\Yaml;
 use Yiisoft\Composer\Config\Config\Config;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Util\Resolver;
@@ -238,14 +237,14 @@ class Builder
     }
 
     /**
-     * Configuration extra data.
+     * Configuration data.
      *
      * @param string $baseDir path to the root Composer package.
      * @return array configuration array
      */
     private static function getConfigurationData(string $baseDir): array
     {
-        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getYamlData($baseDir));
+        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getYiiConfigData($baseDir));
     }
 
     /**
@@ -263,21 +262,15 @@ class Builder
     }
 
     /**
-     * Yaml configuration data.
+     * .yii.php configuration data.
      *
      * @param string $baseDir path to the root Composer package.
-     * @return array .yii.yml configuration array
+     * @return array .yii.php configuration array
      * @throws UnsupportedFileTypeException
      */
-    private static function getYamlData($baseDir): array
+    private static function getYiiConfigData($baseDir): array
     {
-        $path = $baseDir . DIRECTORY_SEPARATOR . Package::CONFIG_FILE_NAME_YAML;
-        if (file_exists($path)) {
-            if (!class_exists(Yaml::class)) {
-                throw new UnsupportedFileTypeException("For YAML support require `symfony/yaml` in your composer.json (reading $path)");
-            }
-            return is_array($data = Yaml::parse(file_get_contents($path))) ? $data : [];
-        }
-        return [];
+        $path = $baseDir . DIRECTORY_SEPARATOR . Package::CONFIG_FILE_NAME_YII;
+        return file_exists($path) ? require $path : [];
     }
 }
