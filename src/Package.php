@@ -20,7 +20,7 @@ class Package
     public const EXTRA_ALTERNATIVES_OPTION_NAME = 'config-plugin-alternatives';
 
     public const CONFIG_FILE_NAME_COMPOSER = 'composer.json';
-    public const CONFIG_FILE_NAME_YII = '.yii.php';
+    public const CONFIG_FILE_NAME_PLUGIN = '.plugin.conf.php';
 
     private PackageInterface $package;
 
@@ -30,7 +30,7 @@ class Package
     private array $data;
 
     /**
-     * @var array .yii.php config array
+     * @var array .plugin.conf.php config array
      */
     private array $config;
 
@@ -167,8 +167,8 @@ class Package
     /**
      * Get configuration value or default
      *
-     * @param string $key key to look for in .yii.php or extra configuration
-     * @param mixed $default default to return if there's no .yii.php and extra configuration value
+     * @param string $key key to look for in .plugin.conf.php or extra configuration
+     * @param mixed $default default to return if there's no .plugin.conf.php and extra configuration value
      * @return mixed configuration value or default
      */
     private function getConfigValue(string $key, $default = null)
@@ -220,11 +220,11 @@ class Package
     }
 
     /**
-     * @return array .yii.php array config
+     * @return array .plugin.conf.php array config
      */
     private function readConfigFile(): array
     {
-        $path = $this->preparePath(self::CONFIG_FILE_NAME_YII);
+        $path = $this->preparePath(self::CONFIG_FILE_NAME_PLUGIN);
         return file_exists($path) ? require $path : [];
     }
 

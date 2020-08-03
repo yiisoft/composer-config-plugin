@@ -244,7 +244,7 @@ class Builder
      */
     private static function getConfigurationData(string $baseDir): array
     {
-        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getYiiConfigData($baseDir));
+        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getPluginConfigData($baseDir));
     }
 
     /**
@@ -262,15 +262,15 @@ class Builder
     }
 
     /**
-     * .yii.php configuration data.
+     * .plugin.conf.php configuration data.
      *
      * @param string $baseDir path to the root Composer package.
-     * @return array .yii.php configuration array
+     * @return array .plugin.conf.php configuration array
      * @throws UnsupportedFileTypeException
      */
-    private static function getYiiConfigData($baseDir): array
+    private static function getPluginConfigData($baseDir): array
     {
-        $path = $baseDir . DIRECTORY_SEPARATOR . Package::CONFIG_FILE_NAME_YII;
+        $path = $baseDir . DIRECTORY_SEPARATOR . Package::CONFIG_FILE_NAME_PLUGIN;
         return file_exists($path) ? require $path : [];
     }
 }
