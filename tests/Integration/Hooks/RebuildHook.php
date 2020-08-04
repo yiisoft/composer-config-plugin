@@ -25,7 +25,7 @@ final class RebuildHook implements BeforeFirstTestHook
 
             require_once $environmentDir . '/vendor/autoload.php';
             echo "Rebuild {$environmentName} configs..." . PHP_EOL;
-            
+
             Builder::rebuild($environmentDir);
         }
     }
