@@ -16,8 +16,6 @@ abstract class TestConfigTest extends ConfigTest
         ];
     }
 
-    abstract protected function getEnvironmentName(): string;
-
     protected function getDefaultConfigName(): string
     {
         return 'test';

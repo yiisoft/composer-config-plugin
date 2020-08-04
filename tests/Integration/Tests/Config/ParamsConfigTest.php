@@ -142,8 +142,6 @@ abstract class ParamsConfigTest extends ConfigTest
         ];
     }
 
-    abstract protected function getEnvironmentName(): string;
-
     protected function getDefaultConfigName(): string
     {
         return 'params';

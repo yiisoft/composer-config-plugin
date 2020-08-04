@@ -27,8 +27,6 @@ abstract class AlternativesTest extends ConfigTest
         ];
     }
 
-    abstract protected function getEnvironmentName(): string;
-
     protected function getDefaultConfigName(): string
     {
         return 'web';
