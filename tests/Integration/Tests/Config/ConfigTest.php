@@ -12,7 +12,7 @@ abstract class ConfigTest extends PluginTestCase
 {
     protected function setUp(): void
     {
-        $this->registerConfig($this->getDefaultConfigName());
+        $this->registerConfig($this->getEnvironmentName(), $this->getDefaultConfigName());
     }
 
     /**
@@ -38,10 +38,12 @@ abstract class ConfigTest extends PluginTestCase
     protected function getConfigValue(string $name, string $configName = null)
     {
         if ($configName !== null) {
-            $this->registerConfig($configName);
+            $this->registerConfig($this->getEnvironmentName(), $configName);
         }
-        return $this->getFromConfig($configName ?? $this->getDefaultConfigName(), $name);
+        return $this->getFromConfig($this->getEnvironmentName(), $configName ?? $this->getDefaultConfigName(), $name);
     }
+
+    abstract protected function getEnvironmentName(): string;
 
     abstract protected function getDefaultConfigName(): string;
 }

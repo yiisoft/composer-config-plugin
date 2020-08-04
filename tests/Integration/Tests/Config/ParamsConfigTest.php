@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config\Tests\Integration\Tests\Config;
 use stdClass;
 use Yiisoft\Composer\Config\Tests\Integration\Tests\Helper\LiterallyCallback;
 
-final class ParamsConfigTest extends ConfigTest
+abstract class ParamsConfigTest extends ConfigTest
 {
     public function configProvider(): array
     {
@@ -34,12 +34,18 @@ final class ParamsConfigTest extends ConfigTest
                 'first-vendor/second-package' => true,
                 'second-vendor/first-package' => true,
                 'second-vendor/second-package' => true,
+                'third-vendor/first-package' => true,
+                'third-vendor/second-package' => true,
+                'third-vendor/third-package' => true,
                 [[[[[]]]]],
             ]],
             ['array parameter with UnsetArrayValue', [
                 'first-vendor/second-package' => true,
                 'second-vendor/first-package' => true,
                 'second-vendor/second-package' => true,
+                'third-vendor/first-package' => true,
+                'third-vendor/second-package' => true,
+                'third-vendor/third-package' => true,
             ]],
             ['array parameter with ReplaceArrayValue', ['replace']],
             ['array parameter with RemoveArrayKeys', [
@@ -47,10 +53,16 @@ final class ParamsConfigTest extends ConfigTest
                 'first-vendor/second-package',
                 'second-vendor/first-package',
                 'second-vendor/second-package',
+                'third-vendor/first-package',
+                'third-vendor/second-package',
+                'third-vendor/third-package',
                 'root value',
             ]],
             ['array parameter with ReverseValues', [
                 'root package' => 'root value',
+                'third-vendor/third-package' => 'third-vendor/third-package',
+                'third-vendor/second-package' => 'third-vendor/second-package',
+                'third-vendor/first-package' => 'third-vendor/first-package',
                 'second-vendor/second-package' => 'second-vendor/second-package',
                 'second-vendor/first-package' => 'second-vendor/first-package',
                 'first-vendor/second-package' => 'first-vendor/second-package',
@@ -81,6 +93,12 @@ final class ParamsConfigTest extends ConfigTest
             ['second-vendor/second-package', true],
             ['second-dev-vendor/first-package', true],
             ['second-dev-vendor/second-package', true],
+            ['third-vendor/first-package', true],
+            ['third-vendor/second-package', true],
+            ['third-vendor/third-package', true],
+            ['third-dev-vendor/first-package', true],
+            ['third-dev-vendor/second-package', true],
+            ['third-dev-vendor/third-package', true],
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
             ['env.raw', 'string'],
@@ -123,6 +141,8 @@ final class ParamsConfigTest extends ConfigTest
             ['objectWithClosures', $objectWithClosures],
         ];
     }
+
+    abstract protected function getEnvironmentName(): string;
 
     protected function getDefaultConfigName(): string
     {

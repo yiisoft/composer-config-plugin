@@ -8,6 +8,9 @@
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
         "second-vendor/second-package": "*",
+        "third-vendor/first-package": "*",
+        "third-vendor/second-package": "*",
+        "third-vendor/third-package": "*",
         "yiisoft/composer-config-plugin": "*",
         "vlucas/phpdotenv": "*"
     },
@@ -15,44 +18,71 @@
         "first-dev-vendor/first-package": "*",
         "first-dev-vendor/second-package": "*",
         "second-dev-vendor/first-package": "*",
-        "second-dev-vendor/second-package": "*"
+        "second-dev-vendor/second-package": "*",
+        "third-dev-vendor/first-package": "*",
+        "third-dev-vendor/second-package": "*",
+        "third-dev-vendor/third-package": "*"
     },
     "repositories": [
         {
             "type": "path",
-            "url": "../Packages/first-vendor/first-package"
+            "url": "../../Packages/first-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "../Packages/first-vendor/second-package"
+            "url": "../../Packages/first-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "../Packages/second-vendor/first-package"
+            "url": "../../Packages/second-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "../Packages/second-vendor/second-package"
+            "url": "../../Packages/second-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "../Packages/first-dev-vendor/first-package"
+            "url": "../../Packages/third-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "../Packages/first-dev-vendor/second-package"
+            "url": "../../Packages/third-vendor/second-package"
         },
         {
             "type": "path",
-            "url": "../Packages/second-dev-vendor/first-package"
+            "url": "../../Packages/third-vendor/third-package"
         },
         {
             "type": "path",
-            "url": "../Packages/second-dev-vendor/second-package"
+            "url": "../../Packages/first-dev-vendor/first-package"
         },
         {
             "type": "path",
-            "url": "../Packages/yiisoft/composer-config-plugin"
+            "url": "../../Packages/first-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/second-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/second-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-dev-vendor/third-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/yiisoft/composer-config-plugin"
         }
     ],
     "autoload": {
@@ -66,6 +96,7 @@
         }
     },
     "extra": {
+        "config-plugin-output-dir": "runtime/build/config",
         "config-plugin": {
             "constants": "config/constants.php",
             "params": [

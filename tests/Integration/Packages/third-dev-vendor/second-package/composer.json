@@ -1,0 +1,8 @@
+{
+    "name": "third-dev-vendor/second-package",
+    "autoload": {
+        "psr-4": {
+            "ThirdDevVendor\\SecondPackage\\": "src"
+        }
+    }
+}

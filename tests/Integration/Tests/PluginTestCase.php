@@ -9,20 +9,20 @@ use Yiisoft\Composer\Config\Builder;
 
 abstract class PluginTestCase extends TestCase
 {
-    private const BASE_DIRECTORY = __DIR__ . '/../Environment';
+    private const BASE_DIRECTORY = __DIR__ . '/../Environments';
 
     private static array $configs = [];
 
-    protected function registerConfig(string $name): void
+    protected function registerConfig(string $environment, string $name): void
     {
-        if ((self::$configs[$name] ?? []) !== []) {
+        if ((self::$configs[$environment][$name] ?? []) !== []) {
             return;
         }
-        self::$configs[$name] = require Builder::path($name, self::BASE_DIRECTORY);
+        self::$configs[$environment][$name] = require Builder::path($name, self::BASE_DIRECTORY . '/' . $environment);
     }
 
-    protected function getFromConfig(string $config, string $name)
+    protected function getFromConfig(string $environment, string $config, string $name)
     {
-        return self::$configs[$config][$name];
+        return self::$configs[$environment][$config][$name];
     }
 }

@@ -1,0 +1,105 @@
+{
+    "name": "test-yiisoft/composer-config-plugin",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4",
+        "symfony/yaml": "^5.1",
+        "first-vendor/first-package": "*",
+        "first-vendor/second-package": "*",
+        "second-vendor/first-package": "*",
+        "second-vendor/second-package": "*",
+        "third-vendor/first-package": "*",
+        "third-vendor/second-package": "*",
+        "third-vendor/third-package": "*",
+        "yiisoft/composer-config-plugin": "*",
+        "vlucas/phpdotenv": "*"
+    },
+    "require-dev": {
+        "first-dev-vendor/first-package": "*",
+        "first-dev-vendor/second-package": "*",
+        "second-dev-vendor/first-package": "*",
+        "second-dev-vendor/second-package": "*",
+        "third-dev-vendor/first-package": "*",
+        "third-dev-vendor/second-package": "*",
+        "third-dev-vendor/third-package": "*"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../Packages/first-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/first-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/second-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/second-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-vendor/third-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/first-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/first-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/second-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/second-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-dev-vendor/first-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/third-dev-vendor/third-package"
+        },
+        {
+            "type": "path",
+            "url": "../../Packages/yiisoft/composer-config-plugin"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Environment\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Environment\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "symlink-package": [
+            "@composer dump"
+        ],
+        "post-install-cmd": "@symlink-package",
+        "post-update-cmd": "@symlink-package"
+    }
+}

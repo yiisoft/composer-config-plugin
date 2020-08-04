@@ -1,0 +1,13 @@
+{
+    "name": "third-vendor/third-package",
+    "autoload": {
+        "psr-4": {
+            "ThirdVendor\\ThirdPackage\\": "src"
+        }
+    },
+    "extra": {
+        "config-plugin": {
+            "params": "config/params-from-composer.php"
+        }
+    }
+}

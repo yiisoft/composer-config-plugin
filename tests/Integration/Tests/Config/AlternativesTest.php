@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Tests\Integration\Tests\Config;
 
-final class AlternativesTest extends ConfigTest
+abstract class AlternativesTest extends ConfigTest
 {
     public function configProvider(): array
     {
@@ -26,6 +26,8 @@ final class AlternativesTest extends ConfigTest
             ],
         ];
     }
+
+    abstract protected function getEnvironmentName(): string;
 
     protected function getDefaultConfigName(): string
     {

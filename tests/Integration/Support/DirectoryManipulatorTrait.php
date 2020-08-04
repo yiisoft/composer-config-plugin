@@ -11,7 +11,9 @@ trait DirectoryManipulatorTrait
 {
     public function copyDirectory(string $source, string $destination): void
     {
-        mkdir($destination);
+        if (!file_exists($destination)) {
+            mkdir($destination);
+        }
 
         $directoryIterator = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
         $ignoredFolders = ['.idea', '.git', '.github', 'tests', 'vendor'];
@@ -48,4 +50,23 @@ trait DirectoryManipulatorTrait
 
         rmdir($path);
     }
+
+    // public function copyFilesFromDirectory(string $source, string $destination): void
+    // {
+        
+    //     $iterator = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
+    //     $iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+    //     print_r($iterator);
+    //     // echo "\n";
+    //     // print_r($destination);
+    //     die;
+
+    //     foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
+    //         if ($item->isDir()) {
+    //             mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+    //         } else {
+    //             copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+    //         }
+    //     }
+    // }
 }

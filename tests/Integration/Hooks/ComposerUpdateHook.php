@@ -6,33 +6,43 @@ namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
 use Yiisoft\Composer\Config\Tests\Integration\Support\DirectoryManipulatorTrait;
+use Yiisoft\Composer\Config\Tests\Integration\Support\EnvironmentVariantsTrait;
 use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class ComposerUpdateHook implements BeforeFirstTestHook
 {
     use DirectoryManipulatorTrait;
+    use EnvironmentVariantsTrait;
 
     public function executeBeforeFirstTest(): void
     {
         $originalDirectory = getcwd();
-        $newDirectory = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
+        $baseDirectory = PathHelper::realpath(dirname(__DIR__)) . '/Environments';
+        $templateDirectory = PathHelper::realpath(dirname(__DIR__)) . '/EnvironmentTemplate';
 
-        chdir($newDirectory);
-
-        if (is_dir("{$newDirectory}/vendor")) {
-            $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
-            if (is_link($pluginPath)) {
-                $this->unlink($pluginPath);
-            } elseif (is_dir($pluginPath)) {
-                $this->removeDirectoryRecursive($pluginPath);
+        foreach ($this->getEnvironments() as $environmentName) {
+            $newDirectory = $baseDirectory . '/' . $environmentName;
+            
+            chdir($newDirectory);
+    
+            if (is_dir("{$newDirectory}/vendor")) {
+                $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
+                if (is_link($pluginPath)) {
+                    $this->unlink($pluginPath);
+                } elseif (is_dir($pluginPath)) {
+                    $this->removeDirectoryRecursive($pluginPath);
+                }
+                symlink("{$newDirectory}/../../../", $pluginPath);
+                $command = 'composer dump';
+            } else {
+                // build environment 
+                $this->copyDirectory($templateDirectory, $newDirectory);
+                $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
             }
-            symlink("{$newDirectory}/../../../", $pluginPath);
-            $command = 'composer dump';
-        } else {
-            $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
+    
+            $this->exec($command);
         }
 
-        $this->exec($command);
 
         chdir($originalDirectory);
     }
