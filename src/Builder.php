@@ -243,7 +243,7 @@ class Builder
      */
     private static function getConfigurationData(string $baseDir): array
     {
-        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getPluginConfigData($baseDir));
+        return ArrayHelper::merge(static::getComposerExtraData($baseDir), static::getConfigPluginData($baseDir));
     }
 
     /**
@@ -261,12 +261,12 @@ class Builder
     }
 
     /**
-     * .plugin.conf.php configuration data.
+     * .composer-config-plugin.php configuration data.
      *
      * @param string $baseDir path to the root Composer package.
-     * @return array .plugin.conf.php configuration array
+     * @return array .composer-config-plugin.php configuration array
      */
-    private static function getPluginConfigData($baseDir): array
+    private static function getConfigPluginData($baseDir): array
     {
         $path = $baseDir . DIRECTORY_SEPARATOR . Package::CONFIG_FILE_NAME_PLUGIN;
         return file_exists($path) ? require $path : [];
