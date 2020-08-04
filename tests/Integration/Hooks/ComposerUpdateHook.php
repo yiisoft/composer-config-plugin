@@ -22,9 +22,9 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 
         foreach ($this->getEnvironments() as $environmentName) {
             $newDirectory = $baseDirectory . '/' . $environmentName;
-            
+
             chdir($newDirectory);
-    
+
             if (is_dir("{$newDirectory}/vendor")) {
                 $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
                 if (is_link($pluginPath)) {
@@ -35,11 +35,11 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
                 symlink("{$newDirectory}/../../../", $pluginPath);
                 $command = 'composer dump';
             } else {
-                // build environment 
+                // build environment
                 $this->copyDirectory($templateDirectory, $newDirectory);
                 $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
             }
-    
+
             $this->exec($command);
         }
 

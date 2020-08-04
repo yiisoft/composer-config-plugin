@@ -53,7 +53,7 @@ trait DirectoryManipulatorTrait
 
     // public function copyFilesFromDirectory(string $source, string $destination): void
     // {
-        
+
     //     $iterator = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
     //     $iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
     //     print_r($iterator);
