@@ -173,7 +173,7 @@ class Package
      */
     private function getConfigValue(string $key, $default = null)
     {
-        return $this->config[$key] ?? $this->getExtraValue($key, $default);
+        return array_key_exists($key, $this->config) ? $this->config[$key] : $this->getExtraValue($key, $default);
     }
 
     /**
