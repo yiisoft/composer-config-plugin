@@ -6,7 +6,6 @@ namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
 use Yiisoft\Composer\Config\Tests\Integration\Support\EnvironmentVariantsTrait;
-use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class RebuildHook implements BeforeFirstTestHook
@@ -23,10 +22,10 @@ final class RebuildHook implements BeforeFirstTestHook
         foreach ($this->getEnvironments() as $environmentName) {
             $environmentDir = $baseDir . '/' . $environmentName;
 
-            require_once $environmentDir . '/vendor/autoload.php';
-            echo "Rebuild {$environmentName} configs..." . PHP_EOL;
+            $cmd = "php -r \"require_once '{$environmentDir}/vendor/autoload.php';" .
+                   "\Yiisoft\Composer\Config\Builder::rebuild('{$environmentDir}');\"";
 
-            Builder::rebuild($environmentDir);
+            shell_exec(escapeshellcmd($cmd));
         }
     }
 }
