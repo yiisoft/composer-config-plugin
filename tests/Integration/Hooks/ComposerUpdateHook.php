@@ -32,7 +32,7 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
                 } elseif (is_dir($pluginPath)) {
                     $this->removeDirectoryRecursive($pluginPath);
                 }
-                symlink("{$newDirectory}/../../../", $pluginPath);
+                symlink("{$newDirectory}/../../../../", $pluginPath);
                 $command = 'composer dump';
             } else {
                 // build environment
