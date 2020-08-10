@@ -146,7 +146,7 @@ return [
 ];
 ```
 
-Not that the config you need to access should be listed before the config you want to access it in i.e. `other` should
+Note that the config you need to access should be listed before the config you want to access it in i.e. `other` should
 be listed before `web`.
 
 To load assembled configs in your application use `require`:
