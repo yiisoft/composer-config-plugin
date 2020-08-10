@@ -13,13 +13,14 @@ class PhpReader extends AbstractReader
     {
         $result = static function () {
             /** @noinspection NonSecureExtractUsageInspection */
-            foreach (func_get_arg(0) as $k => $v) {
-                if ($k === 'params') {
-                    $params = $v;
+            foreach (func_get_arg(0) as $__k => $__v) {
+                if ($__k === 'params') {
+                    $params = $__v;
                 } else {
-                    $config[$k] = $v;
+                    $config[$__k] = $__v;
                 }
             }
+            unset($__k, $__v);
 
             return require func_get_arg(1);
         };
