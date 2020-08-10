@@ -101,8 +101,8 @@ return [
 ];
 ```
 
-Variable $params, like others, is extracted from config array, so variables $envs, $common, $web and $other is also 
-defined, and you can use them in config files 
+A special variable `$params` is read from `params` config. The rest of configs, such as `envs` and `common`
+are available as `$config['envs']` and `$config['common']`. 
 
 For example: 
 
@@ -118,11 +118,11 @@ For example:
             "?config/params-local.php"
         ],
         "common": "config/common.php",
+        "other": "config/other.php",
         "web": [
             "$common",
             "config/web.php"
-        ],
-        "other": "config/other.php"
+        ]
     }
 },
 ```
@@ -140,12 +140,14 @@ return [
         'db2' => [
             'class' => \my\Db::class,
             'name' => $params['db.name'],
-            'password' => $other['db.password'], //will not work, because web.php is loaded first
+            'password' => $config['other']['db.password'],
         ],
     ],
 ];
 ```
 
+Not that the config you need to access should be listed before the config you want to access it in i.e. `other` should
+be listed before `web`.
 
 To load assembled configs in your application use `require`:
 
@@ -170,7 +172,7 @@ If you need to force config rebuilding from your application, you can do it like
 
 ```php
 // Don't do it in production, assembling takes it's time
-if (ENVIRONMENT === 'dev') {
+if (getenv('APP_ENV') === 'dev') {
     Yiisoft\Composer\Config\Builder::rebuild();
 }
 ```
@@ -215,18 +217,6 @@ It is simple and straightforward, but I'm in doubt...
 What about errors and typos?
 I think about adding config validation rules provided together with
 plugins. Will it solve all the problems?
-
-Anonymous functions must be used in multiline form only:
-
-```php
-return [
-    'works' => function () {
-        return 'value';
-    },
-    // this will not work
-    'noway' => function () { return 'value'; },
-];
-```
 
 ## License
 
