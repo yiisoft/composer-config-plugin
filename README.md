@@ -101,6 +101,54 @@ return [
 ];
 ```
 
+A special variable `$params` is read from `params` config. The rest of configs, such as `envs` and `common`
+are available as `$config['envs']` and `$config['common']`. 
+
+For example: 
+
+`composer.json`
+
+```json
+"extra": {
+    "config-plugin-output-dir": "path/relative-to-composer-json",
+    "config-plugin": {
+        "envs": "db.env",
+        "params": [
+            "config/params.php",
+            "?config/params-local.php"
+        ],
+        "common": "config/common.php",
+        "other": "config/other.php",
+        "web": [
+            "$common",
+            "config/web.php"
+        ]
+    }
+},
+```
+
+`web.php`
+
+```php
+return [
+    'components' => [
+        'db' => [
+            'class' => \my\Db::class,
+            'name' => $params['db.name'],
+            'password' => $params['db.password'],
+        ],
+        'db2' => [
+            'class' => \my\Db::class,
+            'name' => $params['db.name'],
+            'password' => $config['other']['db.password'],
+        ],
+    ],
+];
+```
+
+Note that the config you need to access should be listed before the config you want to access it in i.e. `other` should
+be listed before `web`.
+
 To load assembled configs in your application use `require`:
 
 ```php
@@ -124,7 +172,7 @@ If you need to force config rebuilding from your application, you can do it like
 
 ```php
 // Don't do it in production, assembling takes it's time
-if (ENVIRONMENT === 'dev') {
+if (getenv('APP_ENV') === 'dev') {
     Yiisoft\Composer\Config\Builder::rebuild();
 }
 ```
@@ -169,18 +217,6 @@ It is simple and straightforward, but I'm in doubt...
 What about errors and typos?
 I think about adding config validation rules provided together with
 plugins. Will it solve all the problems?
-
-Anonymous functions must be used in multiline form only:
-
-```php
-return [
-    'works' => function () {
-        return 'value';
-    },
-    // this will not work
-    'noway' => function () { return 'value'; },
-];
-```
 
 ## License
 
