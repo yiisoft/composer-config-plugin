@@ -11,20 +11,21 @@ class PhpReader extends AbstractReader
 {
     protected function readRaw(string $path)
     {
-        $result = static function () {
-            /** @noinspection NonSecureExtractUsageInspection */
-            foreach (func_get_arg(0) as $__k => $__v) {
-                if ($__k === 'params') {
-                    $params = $__v;
-                } else {
-                    $config[$__k] = $__v;
-                }
-            }
-            unset($__k, $__v);
+        $params = [];
+        $config = [];
 
-            return require func_get_arg(1);
+        foreach ($this->builder->getVars() as $key => $parameters) {
+            if ($key === 'params') {
+                $params = (array)$parameters;
+            } else {
+                $config[$key] = $parameters;
+            }
+        }
+
+        $result = static function (array $params, array $config) {
+            return require func_get_arg(2);
         };
 
-        return $result($this->builder->getVars(), $path);
+        return $result($params, $config, $path);
     }
 }
