@@ -14,8 +14,8 @@ $objectWithClosures->closure = function () {
 $objectWithClosures->staticClosure = static function () {
     return 2;
 };
-$objectWithClosures->shortClosure = fn() => 3;
-$objectWithClosures->staticShortClosure = static fn() => 4;
+$objectWithClosures->shortClosure = fn () => 3;
+$objectWithClosures->staticShortClosure = static fn () => 4;
 
 return [
     'boolean parameter' => true,
@@ -48,7 +48,7 @@ return [
         return 'I am callable';
     },
 
-    'short callable parameter' => fn() => 'I am callable',
+    'short callable parameter' => fn () => 'I am callable',
 
     'object parameter' => new stdClass(),
 
