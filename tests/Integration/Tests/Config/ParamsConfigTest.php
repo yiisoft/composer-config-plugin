@@ -121,6 +121,10 @@ final class ParamsConfigTest extends ConfigTest
                 'int value' => 42,
             ]],
             ['objectWithClosures', $objectWithClosures],
+            ['params-1-wildcard', true],
+            ['params-2-wildcard', true],
+            ['module1-params', true],
+            ['module2-params', true],
         ];
     }
 
