@@ -88,10 +88,11 @@ jobs:
         run: vendor/bin/phpunit --debug
 
       - name: Collect code coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
         run: vendor/bin/phpunit --coverage-clover=coverage.clover
 
       - name: Code coverage
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
         run: |
           wget https://scrutinizer-ci.com/ocular.phar
           php ocular.phar code-coverage:upload --format=php-clover coverage.clover
