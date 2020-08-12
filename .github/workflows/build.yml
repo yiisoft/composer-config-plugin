@@ -43,7 +43,6 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Install PHP with extensions on Linux
-        if: matrix.os == 'ubuntu-latest'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
