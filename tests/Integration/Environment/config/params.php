@@ -6,7 +6,6 @@ use Yiisoft\Arrays\Modifier\RemoveKeys;
 use Yiisoft\Arrays\Modifier\ReplaceValue;
 use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
 use Yiisoft\Arrays\Modifier\UnsetValue;
-use Yiisoft\Composer\Config\Env;
 
 $objectWithClosures = new stdClass();
 $objectWithClosures->closure = function () {
@@ -15,8 +14,8 @@ $objectWithClosures->closure = function () {
 $objectWithClosures->staticClosure = static function () {
     return 2;
 };
-$objectWithClosures->shortClosure = fn () => 3;
-$objectWithClosures->staticShortClosure = static fn () => 4;
+$objectWithClosures->shortClosure = fn() => 3;
+$objectWithClosures->staticShortClosure = static fn() => 4;
 
 return [
     'boolean parameter' => true,
@@ -28,7 +27,7 @@ return [
     'long int parameter' => 123_000,
     'array parameter' => [
         'changed value' => 'from root config',
-        [[[[[]]]]]
+        [[[[[]]]]],
     ],
     'array parameter with UnsetArrayValue' => [
         'first-vendor/first-package' => new UnsetValue(),
@@ -49,18 +48,22 @@ return [
         return 'I am callable';
     },
 
-    'short callable parameter' => fn () => 'I am callable',
+    'short callable parameter' => fn() => 'I am callable',
 
     'object parameter' => new stdClass(),
 
     'env_parameter' => 'default',
     'constant_based_parameter' => TEST_CONSTANT,
 
-    'env.raw' => Env::get('ENV_STRING'),
-    'env.raw.default_null' => Env::get('NOT_FOUND', null),
-    'env.raw.default_string' => Env::get('NOT_FOUND', 'default value'),
-    'env.raw.default_integer' => Env::get('NOT_FOUND', 123),
-    'env.raw.default_object' => Env::get('NOT_FOUND', new stdClass()),
+    /**
+     * Currently it's not available
+     *
+     * 'env.raw' => Env::get('ENV_STRING'),
+     * 'env.raw.default_null' => Env::get('NOT_FOUND', null),
+     * 'env.raw.default_string' => Env::get('NOT_FOUND', 'default value'),
+     * 'env.raw.default_integer' => Env::get('NOT_FOUND', 123),
+     * 'env.raw.default_object' => Env::get('NOT_FOUND', new stdClass()),
+     */
     'env.string' => 'old value',
     'env.number' => 'old value',
     'env.text' => 'old value',

@@ -37,12 +37,16 @@ class Helper
 
     private static function createEncoder(): PHPEncoder
     {
+        \Opis\Closure\SerializableClosure::init([
+//            'transformUseVariables' => true,
+//            'resolveUseVariables' => true,
+        ]);
         $encoder = new PHPEncoder([
             'object.format' => 'serialize',
         ]);
-        $encoder->addEncoder(new ClosureEncoder(), true);
-        $encoder->addEncoder(new EnvEncoder(), true);
-        $encoder->addEncoder(new ObjectEncoder(), true);
+//        $encoder->addEncoder(new ClosureEncoder(), true);
+//        $encoder->addEncoder(new EnvEncoder(), true);
+//        $encoder->addEncoder(new ObjectEncoder(), true);
 
         return $encoder;
     }

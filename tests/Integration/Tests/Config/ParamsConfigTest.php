@@ -83,11 +83,16 @@ final class ParamsConfigTest extends ConfigTest
             ['second-dev-vendor/second-package', true],
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
-            ['env.raw', 'string'],
-            ['env.raw.default_null', null],
-            ['env.raw.default_string', 'default value'],
-            ['env.raw.default_integer', 123],
-            ['env.raw.default_object', new stdClass()],
+
+            /**
+             * See tests/Integration/Environment/config/params.php:59
+             *
+             * ['env.raw', 'string'],
+             * ['env.raw.default_null', null],
+             * ['env.raw.default_string', 'default value'],
+             * ['env.raw.default_integer', 123],
+             * ['env.raw.default_object', new stdClass()],
+             */
             ['env.string', 'string'],
             ['env.number', '42'],
             ['env.text', 'Some text with several words'],
