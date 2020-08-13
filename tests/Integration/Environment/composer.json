@@ -67,7 +67,8 @@
     },
     "extra": {
         "config-plugin-override-params": {
-            "another": "$params-another"
+            "another": "$params-another",
+            "second": "$params-second-override"
         },
         "config-plugin": {
             "constants": "config/constants.php",
@@ -79,7 +80,8 @@
             "params-another": "config/params-another.php",
             "test": "config/test.php",
             "web": "config/web.php",
-            "another": "config/another.php"
+            "another": "config/another.php",
+            "params-second-override": "config/params-second-override.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
     },
