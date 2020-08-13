@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Reader;
 
-use RuntimeException;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\Exception\UnsupportedFileTypeException;
 
