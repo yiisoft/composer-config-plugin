@@ -83,6 +83,7 @@ final class Plugin
         $this->io->overwriteError('<info>Assembling config files</info>');
 
         $this->scanPackages();
+        $this->reorderConfigs();
         $this->reorderFiles();
 
         $this->builder->buildAllConfigs($this->files);
@@ -105,6 +106,34 @@ final class Plugin
                 $this->processPackage($package);
             }
         }
+    }
+
+    private function reorderConfigs(): void
+    {
+        $order = [];
+        foreach (array_reverse($this->packages) as $package) {
+            if ($package->isComplete()) {
+                $files = $package->getFiles();
+                if (!empty($files)) {
+                    foreach (array_keys($files) as $name) {
+                        if (!in_array($name, $order)) {
+                            $order[] = $name;
+                        }
+                    }
+                }
+            }
+        }
+
+        $files = [];
+        foreach (array_keys($this->files) as $name) {
+            if (!in_array($name, $order)) {
+                $files[$name] = $this->files[$name];
+            }
+        }
+        foreach ($order as $name) {
+            $files[$name] = $this->files[$name];
+        }
+        $this->files = $files;
     }
 
     private function reorderFiles(): void
