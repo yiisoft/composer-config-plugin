@@ -6,9 +6,14 @@
         }
     },
     "extra": {
+        "config-plugin-override-params": {
+            "first": "$params-first"
+        },
         "config-plugin": {
             "constants": "config/constants.php",
-            "params": "config/params.php"
+            "params": "config/params.php",
+            "params-first": "config/params-first.php",
+            "first": "config/first.php"
         }
     }
 }
