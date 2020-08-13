@@ -74,7 +74,9 @@
                 "config/params.json"
             ],
             "test": "config/test.php",
-            "web": "config/web.php"
+            "web": "config/web.php",
+            "order-a": "config/order-a.php",
+            "order-b": "config/order-b.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
     },
