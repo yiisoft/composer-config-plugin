@@ -66,6 +66,9 @@
         }
     },
     "extra": {
+        "config-plugin-override-params": {
+            "another": "$params-another"
+        },
         "config-plugin": {
             "constants": "config/constants.php",
             "params": [
@@ -73,8 +76,10 @@
                 "config/params.yaml",
                 "config/params.json"
             ],
+            "params-another": "config/params-another.php",
             "test": "config/test.php",
-            "web": "config/web.php"
+            "web": "config/web.php",
+            "another": "config/another.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
     },
