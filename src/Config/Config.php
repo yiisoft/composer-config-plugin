@@ -104,7 +104,7 @@ class Config
      */
     protected function loadFile(string $path): array
     {
-        $reader = ReaderFactory::get($this->builder, $path);
+        $reader = ReaderFactory::get($this->builder, $path, $this->builder->getConfigParams($this->name));
 
         return $reader->read($path);
     }

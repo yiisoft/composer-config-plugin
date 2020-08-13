@@ -33,6 +33,11 @@ class Builder
      */
     private array $configs = [];
 
+    /**
+     * @var array
+     */
+    private array $overrideParams = [];
+
     private ConfigFactory $configFactory;
 
     /**
@@ -157,6 +162,27 @@ class Builder
     private static function isAbsolutePath(string $path): bool
     {
         return strpos($path, '/') === 0 || strpos($path, ':') === 1 || strpos($path, '\\\\') === 0;
+    }
+
+    /**
+     * @param array $overrideParams
+     * @return void
+     */
+    public function mergeOverrideParams(array $overrideParams): void
+    {
+        if ($overrideParams) {
+            $this->overrideParams = array_merge($this->overrideParams, $overrideParams);
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    public function getConfigParams(string $name): array
+    {
+        $paramsConfigName = $this->overrideParams[$name] ?? 'params';
+        return isset($this->configs[$paramsConfigName]) ? $this->configs[$paramsConfigName]->getValues() : [];
     }
 
     /**

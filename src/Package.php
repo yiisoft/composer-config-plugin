@@ -8,6 +8,7 @@ use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Util\Filesystem;
+use RuntimeException;
 
 /**
  * Class Package.
@@ -17,6 +18,7 @@ class Package
     public const EXTRA_FILES_OPTION_NAME = 'config-plugin';
     public const EXTRA_DEV_FILES_OPTION_NAME = 'config-plugin-dev';
     public const EXTRA_OUTPUT_DIR_OPTION_NAME = 'config-plugin-output-dir';
+    public const EXTRA_OVERRIDE_PARAMS_OPTION_NAME = 'config-plugin-override-params';
     public const EXTRA_ALTERNATIVES_OPTION_NAME = 'config-plugin-alternatives';
 
     private PackageInterface $package;
@@ -233,5 +235,16 @@ class Package
     public function getBaseDir(): string
     {
         return $this->baseDir;
+    }
+
+    public function getOverrideParams(): array
+    {
+        $overrideParams = $this->getExtraValue(self::EXTRA_OVERRIDE_PARAMS_OPTION_NAME, []);
+        return array_map(function ($name) {
+            if (strpos($name, '$') !== 0) {
+                throw new RuntimeException('For override params use variable, for example "$params-another".');
+            }
+            return substr($name, 1);
+        }, $overrideParams);
     }
 }

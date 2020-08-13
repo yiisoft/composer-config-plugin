@@ -182,6 +182,8 @@ final class Plugin
             }
         }
 
+        $this->builder->mergeOverrideParams($package->getOverrideParams());
+
         $aliases = $this->aliasesCollector->collect($package);
 
         $this->builder->mergeAliases($aliases);
@@ -223,7 +225,7 @@ final class Plugin
     private function addFiles(Package $package, array $files): void
     {
         foreach ($files as $name => $paths) {
-            $paths = (array) $paths;
+            $paths = (array)$paths;
             if ('constants' === $name) {
                 $paths = array_reverse($paths);
             }
