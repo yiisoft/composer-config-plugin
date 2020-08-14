@@ -112,14 +112,18 @@ final class Plugin
     {
         $order = [];
         foreach (array_reverse($this->packages) as $package) {
-            if ($package->isComplete()) {
-                $files = $package->getFiles();
-                if (!empty($files)) {
-                    foreach (array_keys($files) as $name) {
-                        if (!in_array($name, $order)) {
-                            $order[] = $name;
-                        }
-                    }
+            if (!$package->isComplete()) {
+                continue;
+            }
+
+            $files = $package->getFiles();
+            if (empty($files)) {
+                continue;
+            }
+
+            foreach (array_keys($files) as $name) {
+                if (!in_array($name, $order, true)) {
+                    $order[] = $name;
                 }
             }
         }
