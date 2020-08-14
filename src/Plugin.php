@@ -130,7 +130,7 @@ final class Plugin
 
         $files = [];
         foreach (array_keys($this->files) as $name) {
-            if (!in_array($name, $order)) {
+            if (!in_array($name, $order, true)) {
                 $files[$name] = $this->files[$name];
             }
         }
