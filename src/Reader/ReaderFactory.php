@@ -24,8 +24,7 @@ class ReaderFactory
 
     public static function get(Builder $builder, string $path): ReaderInterface
     {
-        $type = static::detectType($path);
-        $class = static::findClass($type);
+        $class = static::findClass($path);
 
         $uniqid = $class . ':' . spl_object_hash($builder);
         if (empty(self::$loaders[$uniqid])) {
@@ -44,10 +43,11 @@ class ReaderFactory
         return pathinfo($path, PATHINFO_EXTENSION);
     }
 
-    private static function findClass(string $type): string
+    private static function findClass(string $path): string
     {
+        $type = static::detectType($path);
         if (!array_key_exists($type, static::$knownReaders)) {
-            throw new UnsupportedFileTypeException("Unsupported file type: \"$type\"");
+            throw new UnsupportedFileTypeException("Unsupported file type for \"$path\".");
         }
 
         return static::$knownReaders[$type];
