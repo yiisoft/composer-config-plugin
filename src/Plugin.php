@@ -94,6 +94,7 @@ final class Plugin
             $_ENV = $saveEnv;
             $builder = $this->builder->createAlternative($name);
             $this->addFiles($this->rootPackage, $files);
+            $this->reorderFiles();
             $builder->buildAllConfigs($this->files);
         }
     }
