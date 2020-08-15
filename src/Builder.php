@@ -186,8 +186,8 @@ class Builder
     }
 
     private function buildSystemConfigs(): void
-    {        
-        $this->getConfig('packages')->build()->write();        
+    {
+        $this->getConfig('packages')->build()->write();
     }
 
     public function getOutputPath(string $name): string
