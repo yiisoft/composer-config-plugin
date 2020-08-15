@@ -90,6 +90,8 @@ List your config files in `composer.json` like the following:
 Define your configs like the following:
 
 ```php
+<?php
+
 return [
     'components' => [
         'db' => [
@@ -101,12 +103,18 @@ return [
 ];
 ```
 
-A special variable `$params` is read from `params` config. The rest of configs, such as `envs` and `common`
-are available as `$config['envs']` and `$config['common']`. 
+A special variable `$params` is read from `params` config.
 
-For example: 
+To load assembled configs in your application use `require`:
 
-`composer.json`
+```php
+$config = require Yiisoft\Composer\Config\Builder::path('web');
+```
+
+### Using sub-configs
+
+In some cases it is convenient to extract part of your config into another file. For example, we want to extract database
+configuration into `db.php`. To do it add the config to `composer.json`:
 
 ```json
 "extra": {
@@ -118,41 +126,40 @@ For example:
             "?config/params-local.php"
         ],
         "common": "config/common.php",
-        "other": "config/other.php",
         "web": [
             "$common",
             "config/web.php"
-        ]
+        ],
+        "other": "config/other.php",
+        "db": "config/db.php"
     }
 },
 ```
 
-`web.php`
+Create `db.php`:
 
 ```php
+<?php
+
 return [
-    'components' => [
-        'db' => [
-            'class' => \my\Db::class,
-            'name' => $params['db.name'],
-            'password' => $params['db.password'],
-        ],
-        'db2' => [
-            'class' => \my\Db::class,
-            'name' => $params['db.name'],
-            'password' => $config['other']['db.password'],
-        ],
-    ],
+    'class' => \my\Db::class,
+    'name' => $params['db.name'],
+    'password' => $params['db.password'],
 ];
 ```
 
-Note that the config you need to access should be listed before the config you want to access it in i.e. `other` should
-be listed before `web`.
-
-To load assembled configs in your application use `require`:
+Then in the config use `Builder::require()`:
 
 ```php
-$config = require Yiisoft\Composer\Config\Builder::path('web');
+<?php
+
+use Yiisoft\Composer\Config\Builder;
+
+return [
+    'components' => [
+        'db' => Builder::require('db'),
+    ],
+];
 ```
 
 ### Refreshing config
@@ -201,9 +208,6 @@ composer dump-autoload --verbose
 ```
 
 Above can be shortened to `composer du -v`.
-
-- You can see the list of configs and files that plugin has detected and uses
-to build configs. It is located in `vendor/yiisoft/composer-config-plugin-output/__files.php`.
 
 - You can see the assembled configs in the output directory which is
 `vendor/yiisoft/composer-config-plugin-output` by default and can be configured

@@ -17,6 +17,13 @@ final class WebConfigTest extends ConfigTest
                 'params',
                 fn (array $params) => $this->assertSame('default', $params['env_parameter']),
             ],
+            [
+                'required',
+                [
+                    'question' => 'The Ultimate Question of Life, The Universe, and Everything',
+                    'answer' => 42,
+                ],
+            ],
         ];
     }
 

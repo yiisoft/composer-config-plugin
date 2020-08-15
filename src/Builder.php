@@ -235,4 +235,17 @@ class Builder
     {
         return $this->baseDir;
     }
+
+    /**
+     * Require another configuration by name.
+     *
+     * It will result in "require 'my-config' in the assembled configuration file.
+     *
+     * @param string $config config name
+     * @return callable
+     */
+    public static function require(string $config): callable
+    {
+        return static fn () => require $config;
+    }
 }
