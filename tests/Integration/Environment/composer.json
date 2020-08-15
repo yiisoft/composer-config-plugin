@@ -74,7 +74,8 @@
                 "config/params.json"
             ],
             "test": "config/test.php",
-            "web": "config/web.php"
+            "web": "config/web.php",
+            "required": "config/required.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
     },
