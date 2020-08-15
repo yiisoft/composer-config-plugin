@@ -77,15 +77,50 @@ List your config files in `composer.json` like the following:
         "web": [
             "$common",
             "config/web.php"
+            "../src/Modules/*/config/web.php"
         ],
         "other": "config/other.php"
     }
 },
 ```
 
-`?` marks optional files. Absence of files not marked with it will cause exception.
+### Markers 
 
-`$common` is inclusion - `common` config will be merged into `web`.
+- `?` - marks optional files. Absence of files not marked with it will cause exception.
+    ```
+    "params": [
+       "params.php",
+       "?params-local.php"
+    ]
+    ```
+  It's okay if `params-local.php` will not found, but it's not okay if `params.php` will be absent.
+  
+- `*` - marks wildcard path. It means zero or more matches by wildcard mask.
+  ```
+  "web": [
+     "../src/Modules/*/config/web.php"
+  ]
+  ```
+  It will collect all `web.php` in any subfolders of `src/Modules/` in `config` folder.
+
+- `$` - reference to another config.
+  ```
+  "params": [
+     "params.php",
+     "?params-local.php"
+  ],
+  "params-console": [
+     "$params",
+     "params-console.php"
+  ],
+  "params-web": [
+     "$params",
+     "params-web.php"
+  ]
+  ```
+  Output files `params-console.php` and `params-web.php` will contain `params.php` and `params-local.php`.
+
+***
 
 Define your configs like the following:
 

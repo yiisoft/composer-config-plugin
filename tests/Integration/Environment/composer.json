@@ -70,6 +70,8 @@
             "constants": "config/constants.php",
             "params": [
                 "config/params.php",
+                "config/params-*.php",
+                "config/*/params.php",
                 "config/params.yaml",
                 "config/params.json"
             ],
