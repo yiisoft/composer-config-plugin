@@ -3,7 +3,7 @@
 Composer Config Plugin supports alternative sets of configurations creation on top of base config.
 This allows you to build configurations of several applications within one project, separating the common part.
 
-## How it works??
+## How it works?
 
 Main set of configurations merges with alternative, build and writes in separate folder named by alternative configuration name.
 
@@ -32,6 +32,7 @@ Define alternative sets in `config-plugin-alternatives` extra-option as follow:
     }
 },
 ```
+
 As shown, in alternative sets you can use configurations to merge from both the current one, 
 and main set. (in given example, in set `alfa` we use `$web` configuration from the main set).
 
@@ -41,9 +42,9 @@ To load sets of alternative configurations in your app, in entry point (`index.p
 $config = require Yiisoft\Composer\Config\Builder::path('alfa/main');
  ```
 
-## `$params` variable in alternative sets.
+## `$params` variable in alternative sets
 
-If defined in alternative set, `params` will be merged with `params` from the main set,
+If defined in alternative set, parameters `params` will be merged with `params` from the main set,
 and can be used in building all configurations in term of current set.
 
 ## Example
@@ -85,7 +86,7 @@ Built configurations in `vendor/yiisoft/composer-config-plugin-output/`:
 /alfa/providers.php
 ```
 
-# Explain of the results:
+### Explanation of the result
 
 Alternative set `alfa`:
 
