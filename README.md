@@ -18,7 +18,12 @@ It allows putting configuration needed to use a package right inside of
 the package thus implementing a plugin system. The package becomes a plugin
 holding both the code and its configuration.
 
-How it works?
+### Documentation
+
+- [English](docs/en/README.md)
+- [Russian](docs/ru/README.md)
+
+## How it works?
 
 - Scans installed packages for `config-plugin` extra option in their
   `composer.json`.
