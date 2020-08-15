@@ -11,7 +11,7 @@
 - Bug #54: Fix failure when using short closure (xepozz)
 - Bug #72: Fix serialization of objects with closure (xepozz)
 - Enh #85: Rebuild now works regardless of composer dump-autoload (yiiliveext, samdark)
-- Add `Builder::require('my-config')` that can be used for sub-configs (samdark)
+- Enh #113: Add `Builder::require('my-config')` that can be used for sub-configs (samdark)
 
 ## [0.4.0] - 2020-03-08
 
