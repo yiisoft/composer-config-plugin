@@ -4,6 +4,7 @@
     "require": {
         "php": "^7.4",
         "symfony/yaml": "^5.1",
+        "nikic/php-parser": "dev-master",
         "first-vendor/first-package": "*",
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
