@@ -8,5 +8,10 @@
             "config/alt/yiiframework.ru.env",
             "config/alt/yiiframework.ru-beta.env"
         ]
+    },
+
+    "with-variable": {
+        "params": "config/alt/with-variable-params.php",
+        "web2": "$web"
     }
 }

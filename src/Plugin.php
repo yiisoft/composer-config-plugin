@@ -6,11 +6,9 @@ namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
-use Composer\Util\Filesystem;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Exception\BadConfigurationException;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
-use Yiisoft\Composer\Config\Package\AliasesCollector;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
 use Dotenv\Dotenv;
@@ -49,8 +47,6 @@ final class Plugin
      */
     private IOInterface $io;
 
-    private AliasesCollector $aliasesCollector;
-
     /**
      * Initializes the plugin object with the passed $composer and $io.
      *
@@ -61,7 +57,6 @@ final class Plugin
     {
         $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
         $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
-        $this->aliasesCollector = new AliasesCollector(new Filesystem());
         $this->io = $io;
         $this->collectPackages($composer);
     }
@@ -94,6 +89,7 @@ final class Plugin
             $_ENV = $saveEnv;
             $builder = $this->builder->createAlternative($name);
             $this->addFiles($this->rootPackage, $files);
+            $this->reorderFiles();
             $builder->buildAllConfigs($this->files);
         }
     }
@@ -182,14 +178,10 @@ final class Plugin
             }
         }
 
-        $aliases = $this->aliasesCollector->collect($package);
-
-        $this->builder->mergeAliases($aliases);
         $this->builder->setPackage($package->getPrettyName(), array_filter([
             'name' => $package->getPrettyName(),
             'version' => $package->getVersion(),
             'reference' => $package->getSourceReference() ?: $package->getDistReference(),
-            'aliases' => $aliases,
         ]));
     }
 

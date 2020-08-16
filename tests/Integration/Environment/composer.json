@@ -70,11 +70,14 @@
             "constants": "config/constants.php",
             "params": [
                 "config/params.php",
+                "config/params-*.php",
+                "config/*/params.php",
                 "config/params.yaml",
                 "config/params.json"
             ],
             "test": "config/test.php",
-            "web": "config/web.php"
+            "web": "config/web.php",
+            "required": "config/required.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
     },

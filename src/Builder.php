@@ -52,9 +52,7 @@ class Builder
     {
         $alt = new static($this->configFactory, $this->baseDir);
         $alt->setOutputDir($this->outputDir . DIRECTORY_SEPARATOR . $name);
-        foreach (['aliases', 'packages'] as $key) {
-            $alt->configs[$key] = $this->getConfig($key)->clone($alt);
-        }
+        $alt->configs['packages'] = $this->getConfig('packages')->clone($alt);
 
         return $alt;
     }
@@ -189,9 +187,7 @@ class Builder
 
     private function buildSystemConfigs(): void
     {
-        foreach (['aliases', 'packages'] as $name) {
-            $this->getConfig($name)->build()->write();
-        }
+        $this->getConfig('packages')->build()->write();
     }
 
     public function getOutputPath(string $name): string
@@ -218,11 +214,6 @@ class Builder
         return $vars;
     }
 
-    public function mergeAliases(array $aliases): void
-    {
-        $this->getConfig('aliases')->mergeValues($aliases);
-    }
-
     public function setPackage(string $name, array $data): void
     {
         $this->getConfig('packages')->setValue($name, $data);
@@ -234,5 +225,18 @@ class Builder
     public function getBaseDir(): string
     {
         return $this->baseDir;
+    }
+
+    /**
+     * Require another configuration by name.
+     *
+     * It will result in "require 'my-config' in the assembled configuration file.
+     *
+     * @param string $config config name
+     * @return callable
+     */
+    public static function require(string $config): callable
+    {
+        return static fn () => require $config;
     }
 }

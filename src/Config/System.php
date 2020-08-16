@@ -6,7 +6,7 @@ namespace Yiisoft\Composer\Config\Config;
 
 /**
  * System class represents system configuration files:
- * __files, aliases, packages.
+ * __files, packages.
  */
 class System extends Config
 {
