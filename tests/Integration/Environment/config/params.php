@@ -87,4 +87,6 @@ return [
     ],
 
     'objectWithClosures' => $objectWithClosures,
+
+    __DIR__ . '/relative/path' => __DIR__ . '/relative/path',
 ];

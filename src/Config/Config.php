@@ -204,39 +204,53 @@ PHP;
     {
         $dir = PathHelper::normalize($this->getBaseDir());
 
-        return $this->substitutePaths($data, $dir, self::BASE_DIR_MARKER);
+        return $this->substitutePaths($data, $dir);
     }
 
     /**
-     * Substitute all paths in given array recursively with alias if applicable.
+     * Substitute all paths in given array recursively with marker if applicable.
      *
      * @param array $data
      * @param string $dir
-     * @param string $alias
      * @return array
      */
-    private function substitutePaths($data, $dir, $alias): array
+    private function substitutePaths($data, $dir): array
     {
-        foreach ($data as &$value) {
-            if (is_string($value)) {
-                $value = $this->substitutePath($value, $dir, $alias);
-            } elseif (is_array($value)) {
-                $value = $this->substitutePaths($value, $dir, $alias);
-            }
+        $res = [];
+        foreach ($data as $key => $value) {
+            $res[$this->substitutePath($key, $dir)] = $this->substitutePath($value, $dir);
         }
 
-        return $data;
+        return $res;
     }
 
     /**
-     * Substitute path with alias if applicable.
+     * Substitute all paths in given value if applicable.
+     *
+     * @param mixed $value
+     * @param string $dir
+     * @return mixed
+     */
+    private function substitutePath($value, $dir)
+    {
+        if (is_string($value)) {
+            return $this->substitutePathInString($value, $dir);
+        }
+        if (is_array($value)) {
+            return $this->substitutePaths($value, $dir);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Substitute path with marker in string if applicable.
      *
      * @param string $path
      * @param string $dir
-     * @param string $alias
      * @return string
      */
-    private function substitutePath($path, $dir, $alias): string
+    private function substitutePathInString($path, $dir): string
     {
         $end = $dir . '/';
         $skippable = 0 === strncmp($path, '?', 1);
@@ -244,9 +258,9 @@ PHP;
             $path = substr($path, 1);
         }
         if ($path === $dir) {
-            $result = $alias;
+            $result = self::BASE_DIR_MARKER;
         } elseif (strpos($path, $end) === 0) {
-            $result = $alias . substr($path, strlen($end) - 1);
+            $result = self::BASE_DIR_MARKER . substr($path, strlen($end) - 1);
         } else {
             $result = $path;
         }
