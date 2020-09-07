@@ -125,7 +125,12 @@ final class ParamsConfigTest extends ConfigTest
             ['params-2-wildcard', true],
             ['module1-params', true],
             ['module2-params', true],
-            [dirname(__DIR__, 2) . '/Environment/config/relative/path', dirname(__DIR__, 2) . '/Environment/config/relative/path'],
+            [
+                dirname(__DIR__, 2) .
+                DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'config/relative/path',
+                dirname(__DIR__, 2) .
+                DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'config/relative/path'
+            ],
         ];
     }
 
