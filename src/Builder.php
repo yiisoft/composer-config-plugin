@@ -165,7 +165,7 @@ class Builder
      */
     public function buildAllConfigs(array $files): void
     {
-        if (file_exists($this->outputDir) && is_dir($this->outputDir)) {
+        if (is_dir($this->outputDir)) {
             FileHelper::clearDirectory($this->outputDir);
         }
 
