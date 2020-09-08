@@ -7,7 +7,9 @@ namespace Yiisoft\Composer\Config;
 use JsonException;
 use Yiisoft\Composer\Config\Config\Config;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
+use Yiisoft\Composer\Config\Exception\FailedWriteException;
 use Yiisoft\Composer\Config\Util\Resolver;
+use Yiisoft\Files\FileHelper;
 
 use function dirname;
 
@@ -161,11 +163,28 @@ class Builder
      * Builds all (user and system) configs by given files list.
      *
      * @param null|array $files files to process: config name => list of files
+     * @throws FailedWriteException
      */
     public function buildAllConfigs(array $files): void
     {
+        $this->prepareOutputDir();
         $this->buildUserConfigs($files);
         $this->buildSystemConfigs();
+    }
+
+    /**
+     * Create (if not exists) and clear (if exists) output dir.
+     * @throws FailedWriteException
+     */
+    private function prepareOutputDir(): void
+    {
+        if (file_exists($this->outputDir) && is_dir($this->outputDir)) {
+            FileHelper::clearDirectory($this->outputDir);
+        } else {
+            if (!mkdir($this->outputDir, 0777, true)) {
+                throw new FailedWriteException(sprintf('Directory "%s" was not created', $this->outputDir));
+            }
+        }
     }
 
     /**
