@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false"
-         stopOnFailure="false" bootstrap="tests/_bootstrap.php">
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         bootstrap="tests/_bootstrap.php"
+>
+    <coverage includeUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./src/</directory>
+        </include>
+    </coverage>
     <testsuites>
         <testsuite name="Unit Test Suite">
             <directory>./tests/Unit/</directory>
@@ -16,9 +28,4 @@
         <extension class="Yiisoft\Composer\Config\Tests\Integration\Hooks\RebuildHook"/>
         <extension class="Yiisoft\Composer\Config\Tests\Integration\Hooks\RemovePackageAfterTestsHook"/>
     </extensions>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src/</directory>
-        </whitelist>
-    </filter>
 </phpunit>

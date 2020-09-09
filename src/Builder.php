@@ -8,6 +8,7 @@ use JsonException;
 use Yiisoft\Composer\Config\Config\Config;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Util\Resolver;
+use Yiisoft\Files\FileHelper;
 
 use function dirname;
 
@@ -164,6 +165,10 @@ class Builder
      */
     public function buildAllConfigs(array $files): void
     {
+        if (is_dir($this->outputDir)) {
+            FileHelper::clearDirectory($this->outputDir);
+        }
+
         $this->buildUserConfigs($files);
         $this->buildSystemConfigs();
     }
