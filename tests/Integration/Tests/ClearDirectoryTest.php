@@ -10,7 +10,6 @@ use Yiisoft\Files\FileHelper;
 
 class ClearDirectoryTest extends TestCase
 {
-
     public function testClearDirectory(): void
     {
         $baseDir = dirname(__DIR__) . '/ClearDirectoryTestEnvironment';
