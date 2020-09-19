@@ -13,7 +13,11 @@ class Envs extends Config
 {
     protected function writeFile(string $path, array $data): void
     {
-        $envs = Helper::exportVar($data);
+        if($data) {
+            $envs = '[]'; //Helper::exportVar($data);
+        } else {
+            $envs = '[]';
+        }
 
         $content = <<<PHP
 <?php

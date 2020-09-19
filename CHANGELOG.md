@@ -13,7 +13,6 @@
 - Enh #70: Removed generation of aliases.php (xepozz)
 - Enh #85: Rebuild now works regardless of composer dump-autoload (yiiliveext, samdark)
 - Enh #113: Add `Builder::require('my-config')` that can be used for sub-configs (samdark)
-- Enh #121: Clear output directory before build configuration (vjik)
 
 ## [0.4.0] - 2020-03-08
 

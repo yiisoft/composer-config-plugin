@@ -139,14 +139,21 @@ class Config
     {
         $depth = $this->findDepth();
         $baseDir = $depth > 0 ? "dirname(__DIR__, $depth)" : '__DIR__';
-
         $envs = $this->envsRequired() ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '';
         $constants = $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '';
         $params = $this->paramsRequired() ? "\$params = (array) require __DIR__ . '/params.php';" : '';
-        $variables = Helper::exportVar($data);
+        $uses = '';
+        if($data) {
+            $variables = $this->buildPhpPartials($data);
+            $uses = implode("\n", $this->builder->uses);
+        } else {
+            $variables = '[]';
+        }
 
         $content = <<<PHP
 <?php
+
+{$uses}
 
 \$baseDir = {$baseDir};
 
@@ -160,6 +167,50 @@ return {$variables};
 PHP;
 
         $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
+    }
+
+    /**
+     * Build PHP partials
+     * @param $data
+     *
+     * @return string
+     */
+    protected function buildPhpPartials($data)
+    {
+        $output = '';
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $output .= "'" . $key . "' => " . $this->buildPhpPartials($value) . ",\n";
+            } elseif(is_string($value)) {
+                if(isset($this->builder->closures["'{$value}'"])) {
+                    $value = $this->builder->closures["'{$value}'"];
+                } else {
+                    $value = "'{$value}'";
+                }
+                $output .= "'" . $key . "' => {$value},\n";
+            } else {
+                if(is_bool($value)) {
+                    $value = $value? 'true': 'false';
+                    $output .= "'" . $key . "' => {$value},\n";
+                } elseif(is_null($value)){
+                    $output .= "'" . $key . "' => null,\n";
+                } else {
+                    $output .= "'" . $key . "' => {$value},\n";
+                }
+            }
+        }
+
+        if($output) {
+            while (preg_match('~\'__(\w+)__\'~', $output, $m)) {
+                foreach ($this->builder->closures as $closureKey => $closure) {
+                    if (strpos($output, $closureKey) !== false) {
+                        $output = str_replace($closureKey, $closure, $output);
+                    }
+                }
+            }
+        }
+
+        return "[$output]";
     }
 
     protected function envsRequired(): bool

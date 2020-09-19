@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Util;
 
+/**
+ * Class PathHelper
+ * @package Yiisoft\Composer\Config\Util
+ */
 final class PathHelper
 {
     /**
