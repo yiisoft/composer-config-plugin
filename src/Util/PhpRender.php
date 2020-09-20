@@ -33,9 +33,15 @@ class PhpRender extends PrettyPrinterAbstract
     }
 
     protected function pArg(Node\Arg $node) {
-        return ($node->name ? $node->name->toString() . ': ' : '')
-             . ($node->byRef ? '&' : '') . ($node->unpack ? '...' : '')
-             . $this->p($node->value);
+        $code = ($node->name ? $node->name->toString() . ': ' : '')
+            . ($node->byRef ? '&' : '') . ($node->unpack ? '...' : '')
+            . $this->p($node->value);
+        if($node->value instanceof MagicConst\Dir){
+            $token = '\'__' . md5($code) . '__\'';
+            $this->options['builder']->closures[$token] = $code;
+            return $token;
+        }
+        return $code;
     }
 
     protected function pConst(Node\Const_ $node) {
