@@ -584,10 +584,17 @@ class PhpRender extends PrettyPrinterAbstract
     }
 
     protected function pExpr_ArrayItem(Expr\ArrayItem $node) {
+        $code = ($node->byRef ? '&' : '')
+            . ($node->unpack ? '...' : '')
+            . $this->p($node->value);
+
+        if(isset($node->value) && $node->value instanceof BinaryOp\Concat){
+            $token = '\'__' . md5($code) . '__\'';
+            $this->options['builder']->closures[$token] = $code;
+            $code = $token;
+        }
         return (null !== $node->key ? $this->p($node->key) . ' => ' : '')
-             . ($node->byRef ? '&' : '')
-             . ($node->unpack ? '...' : '')
-             . $this->p($node->value);
+             . $code;
     }
 
     protected function pExpr_ArrayDimFetch(Expr\ArrayDimFetch $node) {
@@ -1082,32 +1089,5 @@ class PhpRender extends PrettyPrinterAbstract
         } else {
             return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
         }
-    }
-
-    /**
-     * Pretty prints an array of nodes and implodes the printed values.
-     *
-     * @param Node[] $nodes Array of Nodes to be printed
-     * @param string $glue  Character to implode with
-     *
-     * @return string Imploded pretty printed nodes
-     */
-    protected function pImplode(array $nodes, string $glue = '') : string {
-        $pNodes = [];
-        foreach ($nodes as $node) {
-            if (null === $node) {
-                $pNodes[] = '';
-            } else {
-                $code = $this->p($node);
-                if(isset($node->value) && $node->value instanceof BinaryOp\Concat){
-                    $token = '\'__' . md5($code) . '__\'';
-                    $this->options['builder']->closures[$token] = $code;
-                    $code = $token;
-                }
-                $pNodes[] = $code;
-            }
-        }
-
-        return implode($glue, $pNodes);
     }
 }
