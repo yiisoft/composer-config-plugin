@@ -513,15 +513,23 @@ class PhpRender extends PrettyPrinterAbstract
     }
 
     protected function pExpr_StaticCall(Expr\StaticCall $node) {
-        $code = $this->pDereferenceLhs($node->class) . '::'
+        $className = $this->pDereferenceLhs($node->class);
+        $code = $className . '::'
             . ($node->name instanceof Expr
                 ? ($node->name instanceof Expr\Variable
                     ? $this->p($node->name)
                     : '{' . $this->p($node->name) . '}')
-                : $node->name)
-            . '(' . $this->pMaybeMultiline($node->args) . ')';
-        $token = '\'__' . md5($code) . '__\'';
-        $this->options['builder']->closures[$token] = $code;
+                : $node->name);
+        switch ($className){
+            case 'Buildtime':
+                $token = $this->pMaybeMultiline($node->args);
+                break;
+            default:
+                $code .= '(' . $this->pMaybeMultiline($node->args) . ')';
+                $token = '\'__' . md5($code) . '__\'';
+                $this->options['builder']->closures[$token] = $code;
+                break;
+        }
         return $token;
     }
 
@@ -588,11 +596,12 @@ class PhpRender extends PrettyPrinterAbstract
             . ($node->unpack ? '...' : '')
             . $this->p($node->value);
 
-        if(isset($node->value) && $node->value instanceof BinaryOp\Concat){
+        if(isset($node->value) && $node->value instanceof Expr\FuncCall){
             $token = '\'__' . md5($code) . '__\'';
             $this->options['builder']->closures[$token] = $code;
             $code = $token;
         }
+
         return (null !== $node->key ? $this->p($node->key) . ' => ' : '')
              . $code;
     }

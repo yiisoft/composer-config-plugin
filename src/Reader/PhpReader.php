@@ -51,13 +51,11 @@ class PhpReader extends AbstractReader
                 $outputPathFile = $builder->getOutputPath(basename($fileName) . '.' .md5($newCode) . '.ast');
                 file_put_contents($outputPathFile, $newCode);
                 $output = require $outputPathFile;
-                //@unlink($outputPathFile);
+                @unlink($outputPathFile);
                 return $output;
 
             } catch (Error $e) {
                 throw $e;
-                //echo "Parse error: {$error->getMessage()}\n";
-                //return;
             }
         };
 
