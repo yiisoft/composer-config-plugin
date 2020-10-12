@@ -1,0 +1,13 @@
+{
+    "name": "test-yiisoft/composer-config-plugin2",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4"
+    },
+    "extra": {
+        "config-plugin-output-dir": "../build",
+        "config-plugin": {
+            "config2": "config/config2.php"
+        }
+    }
+}
