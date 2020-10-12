@@ -145,6 +145,7 @@ class Config
         $uses = '';
         if($data) {
             $variables = $this->buildPhpPartials($data);
+            $variables = str_replace('/runtime/build', '', $variables);
             $uses = implode("\n", $this->builder->uses);
         } else {
             $variables = '[]';
