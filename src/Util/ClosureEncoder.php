@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Util;
 
 use Closure;
-use Opis\Closure\ReflectionClosure;
 use Riimu\Kit\PHPEncoder\Encoder\Encoder;
+use Yiisoft\VarDumper\VarDumper;
 
 /**
  * Closure encoder for Riimu Kit-PHPEncoder.
@@ -25,6 +25,6 @@ class ClosureEncoder implements Encoder
 
     public function encode($value, $depth, array $options, callable $encode)
     {
-        return (new ReflectionClosure($value))->getCode();
+        return VarDumper::create($value)->asPhpString();
     }
 }
