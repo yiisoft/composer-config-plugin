@@ -18,10 +18,9 @@ class PhpReader extends AbstractReader
     {
         $ast = $this->parsePhp($path);
         $this->extractUses($ast);
-        $newCode = $this->printPhp($ast);
+        $newCode = $this->printPhp($ast, $path);
 
-        //$newFile = $this->builder->getOutputPath(basename($path) . '.' .md5($newCode) . '.ast');
-        $newFile = $path . '.new.php';
+        $newFile = $this->builder->getOutputPath(strtr($path, '/', '.'));
         file_put_contents($newFile, $newCode);
         $output = $this->requireWithParams($newFile);
         @unlink($newFile);
@@ -64,11 +63,13 @@ class PhpReader extends AbstractReader
         }
     }
 
-    protected function printPhp(array $ast): string
+    protected function printPhp(array $ast, string $path): string
     {
         $printer = new PhpPrinter([
             //'builder' => $this->builder,
             //'context' => $path,
+            'THE_DIR' => dirname($path),
+            'THE_FILE' => $path,
         ]);
 
         return $printer->prettyPrintFile($ast);

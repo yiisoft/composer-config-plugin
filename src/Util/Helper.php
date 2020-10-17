@@ -41,9 +41,7 @@ class Helper
             'object.format' => 'serialize',
         ]);
         $encoder->addEncoder(new ClosureEncoder(), true);
-        //$encoder->addEncoder(new EnvEncoder(), true);
         $encoder->addEncoder(new ObjectEncoder(), true);
-        //$encoder->addEncoder(new BuilderRequireEncoder(), true);
 
         return $encoder;
     }

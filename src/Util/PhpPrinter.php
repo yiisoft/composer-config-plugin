@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Util;
 
 use PhpParser\Node\Expr;
+use PhpParser\Node\Scalar\MagicConst;
 use PhpParser\Node\Stmt;
 use PhpParser\PrettyPrinter\Standard;
 
@@ -98,6 +99,14 @@ class PhpPrinter extends Standard
     protected function pStmt_Function(Stmt\Function_ $node)
     {
         return $this->tokenize(parent::pStmt_Function($node));
+    }
+
+    protected function pScalar_MagicConst_Dir(MagicConst\Dir $node) {
+        return "'{$this->options['THE_DIR']}'";
+    }
+
+    protected function pScalar_MagicConst_File(MagicConst\File $node) {
+        return "'{$this->options['THE_FILE']}'";
     }
 
     private static array $tokens = [];
