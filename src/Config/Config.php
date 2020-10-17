@@ -10,6 +10,7 @@ use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
 use Yiisoft\Composer\Config\Util\Helper;
 use Yiisoft\Composer\Config\Util\PathHelper;
+use Yiisoft\Composer\Config\Util\PhpPrinter;
 
 /**
  * Config class represents output configuration file.
@@ -142,14 +143,8 @@ class Config
         $envs = $this->envsRequired() ? "\$_ENV = array_merge((array) require __DIR__ . '/envs.php', \$_ENV);" : '';
         $constants = $this->constantsRequired() ? $this->builder->getConfig('constants')->buildRequires() : '';
         $params = $this->paramsRequired() ? "\$params = (array) require __DIR__ . '/params.php';" : '';
-        $uses = '';
-        if($data) {
-            $variables = $this->buildPhpPartials($data);
-            $variables = str_replace('/runtime/build', '', $variables);
-            $uses = implode("\n", $this->builder->uses);
-        } else {
-            $variables = '[]';
-        }
+        $variables = $this->buildVariables($data);
+        $uses = implode("\n", $this->builder->uses);
 
         $content = <<<PHP
 <?php
@@ -170,48 +165,15 @@ PHP;
         $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
     }
 
-    /**
-     * Build PHP partials
-     * @param $data
-     *
-     * @return string
-     */
-    protected function buildPhpPartials($data)
+    protected function buildVariables(array $data): string
     {
-        $output = '';
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $output .= "'" . $key . "' => " . $this->buildPhpPartials($value) . ",\n";
-            } elseif(is_string($value)) {
-                if(isset($this->builder->closures["'{$value}'"])) {
-                    $value = $this->builder->closures["'{$value}'"];
-                } else {
-                    $value = "'{$value}'";
-                }
-                $output .= "'" . $key . "' => {$value},\n";
-            } else {
-                if(is_bool($value)) {
-                    $value = $value? 'true': 'false';
-                    $output .= "'" . $key . "' => {$value},\n";
-                } elseif(is_null($value)){
-                    $output .= "'" . $key . "' => null,\n";
-                } else {
-                    $output .= "'" . $key . "' => {$value},\n";
-                }
-            }
+        if (empty($data)) {
+            return '[]';
         }
 
-        if($output) {
-            while (preg_match('~\'__(\w+)__\'~', $output, $m)) {
-                foreach ($this->builder->closures as $closureKey => $closure) {
-                    if (strpos($output, $closureKey) !== false) {
-                        $output = str_replace($closureKey, $closure, $output);
-                    }
-                }
-            }
-        }
+        $output = Helper::exportVar($data);
 
-        return "[$output]";
+        return PhpPrinter::resolveTokens($output);
     }
 
     protected function envsRequired(): bool

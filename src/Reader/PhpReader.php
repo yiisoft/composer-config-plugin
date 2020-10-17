@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Reader;
 
-use PhpParser\Error;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Use_;
 use PhpParser\ParserFactory;
-use Yiisoft\Composer\Config\Builder;
-use Yiisoft\Composer\Config\Util\PhpRender;
+use Yiisoft\Composer\Config\Util\PhpPrinter;
 
 /**
  * PhpReader - reads PHP files.
@@ -18,47 +16,61 @@ class PhpReader extends AbstractReader
 {
     protected function readRaw(string $path)
     {
+        $ast = $this->parsePhp($path);
+        $this->extractUses($ast);
+        $newCode = $this->printPhp($ast);
+
+        //$newFile = $this->builder->getOutputPath(basename($path) . '.' .md5($newCode) . '.ast');
+        $newFile = $path . '.new.php';
+        file_put_contents($newFile, $newCode);
+        $output = $this->requireWithParams($newFile);
+        @unlink($newFile);
+
+        return $output;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function requireWithParams(string $path)
+    {
         $params = $this->builder->getVars()['params'] ?? [];
 
-        $builder = $this->builder;
-
-        /** @var Builder $result */
-        $result = static function (array $params) use ($builder) {
-            $fileName = func_get_arg(1);
-
-            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
-            try {
-
-                $code = file_get_contents($fileName);
-                $ast = $parser->parse($code);
-
-                /** @var Stmt $node */
-                foreach ($ast as $node){
-                    if(isset($node->type) && $node->type == Use_::TYPE_NORMAL and !empty($node->uses)){
-                        foreach ($node->uses as $use) {
-                            $className = end($use->name->parts);
-                            $builder->uses[ $className ] = 'use ' . implode('\\', $use->name->parts) . ';';
-                        }
-                    }
-                }
-
-                /**
-                 * Everything is not evaluated at compile time by default except Buildtime::* calls.
-                 * @see https://gist.github.com/samdark/86f2b9ff01a96892efbbf254eca8482d
-                 */
-                $prettyPrinter = new PhpRender(['builder' => $builder, 'context' => $fileName]);
-                $newCode = $prettyPrinter->prettyPrintFile($ast);
-                $outputPathFile = $builder->getOutputPath(basename($fileName) . '.' .md5($newCode) . '.ast');
-                file_put_contents($outputPathFile, $newCode);
-                $output = require $outputPathFile;
-                @unlink($outputPathFile);
-                return $output;
-
-            } catch (Error $e) {
-                throw $e;
-            }
+        $result = static function (array $params) {
+            return require func_get_arg(1);
         };
+                                  
+        return $result($params, $path);                                  
+    }
 
-        return $result($params, $path);
+
+    protected function parsePhp(string $path): array
+    {
+        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+
+        return $parser->parse(file_get_contents($path));
+    }
+
+    protected function extractUses($ast)
+    {
+        /** @var Stmt $node */
+        foreach ($ast as $node){
+            if (isset($node->type) && $node->type == Use_::TYPE_NORMAL and !empty($node->uses)) {
+                foreach ($node->uses as $use) {
+                    $className = end($use->name->parts);
+                    $this->builder->uses[$className] = 'use ' . implode('\\', $use->name->parts) . ';';
+                }
+            }
+        }
+    }
+
+    protected function printPhp(array $ast): string
+    {
+        $printer = new PhpPrinter([
+            //'builder' => $this->builder,
+            //'context' => $path,
+        ]);
+
+        return $printer->prettyPrintFile($ast);
     }
 }
