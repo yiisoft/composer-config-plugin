@@ -125,16 +125,9 @@ class PhpPrinter extends Standard
 
     public static function resolveTokens(string $output): string
     {
-        $limit = 10;
-        while (preg_match('~\'__(\w+)__\'~', $output)) {
-            // TODO will be fixed soon
-            if (--$limit<1) {
-                throw new \Exception('too much');
-            }
-            $output = strtr($output, static::$tokens);
-        }
+        $result = strtr($output, static::$tokens);
 
-        return $output;
+        return $result === $output ? $output : static::resolveTokens($result);
     }
 
     /**
