@@ -49,10 +49,6 @@
         {
             "type": "path",
             "url": "../Packages/second-dev-vendor/second-package"
-        },
-        {
-            "type": "path",
-            "url": "../Packages/yiisoft/composer-config-plugin"
         }
     ],
     "autoload": {
@@ -82,10 +78,8 @@
         "config-plugin-alternatives": "config/alternatives.json"
     },
     "scripts": {
-        "symlink-package": [
-            "@composer dump"
-        ],
-        "post-install-cmd": "@symlink-package",
-        "post-update-cmd": "@symlink-package"
+        "pre-autoload-dump": [
+            "rm -rf vendor/yiisoft/composer-config-plugin && ln -s ../../../../.. vendor/yiisoft/composer-config-plugin"
+        ]
     }
 }
