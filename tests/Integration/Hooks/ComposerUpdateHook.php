@@ -11,15 +11,36 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        $dir = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
-
-        if (is_dir("$dir/vendor")) {
-            $command = 'dump';
-        } else {
-            $command = 'update --ignore-platform-reqs --prefer-dist';
+        $dir = $this->getWorkingDir();
+        if (!is_dir("$dir/vendor")) {
+            $this->execComposer('update --no-plugins --ignore-platform-reqs --prefer-dist');
         }
 
+        $prj = PathHelper::realpath(dirname(__DIR__, 3));
+        $dst = "$dir/vendor/yiisoft/composer-config-plugin";
+        exec("rm -rf $dst");
+        symlink($prj, $dst);
+
+        $this->execComposer('dump');
+    }
+
+    private function execComposer(string $command): void
+    {
+        $dir = $this->getWorkingDir();
         $this->exec("composer $command -d $dir --no-interaction " . $this->suppressLogs());
+    }
+
+    private function exec(string $command): void
+    {
+        $res = exec($command, $_, $returnCode);
+        if ((int) $returnCode !== 0) {
+            throw new \RuntimeException("$command return code was $returnCode. $res");
+        }
+    }
+
+    private function getWorkingDir(): string
+    {
+        return PathHelper::realpath(dirname(__DIR__)) . '/Environment';
     }
 
     private function suppressLogs(): string
@@ -30,13 +51,5 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         $tempDir = sys_get_temp_dir();
 
         return !$isDebug ? "2>{$tempDir}/yiisoft-hook" : '';
-    }
-
-    private function exec(string $command): void
-    {
-        $res = exec($command, $_, $returnCode);
-        if ((int) $returnCode !== 0) {
-            throw new \RuntimeException("$command return code was $returnCode. $res");
-        }
     }
 }

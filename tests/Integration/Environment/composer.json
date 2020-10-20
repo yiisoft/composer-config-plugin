@@ -76,10 +76,5 @@
             "required": "config/required.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
-    },
-    "scripts": {
-        "pre-autoload-dump": [
-            "rm -rf vendor/yiisoft/composer-config-plugin && ln -s ../../../../.. vendor/yiisoft/composer-config-plugin"
-        ]
     }
 }
