@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Tests\Integration\Tests\Config;
 
+use ArrayIterator;
 use stdClass;
 use Yiisoft\Composer\Config\Tests\Integration\Tests\Helper\LiterallyCallback;
 
@@ -11,15 +12,16 @@ final class ParamsConfigTest extends ConfigTest
 {
     public function configProvider(): array
     {
-        $objectWithClosures = new stdClass();
-        $objectWithClosures->closure = function () {
-            return 1;
-        };
-        $objectWithClosures->staticClosure = static function () {
-            return 2;
-        };
-        $objectWithClosures->shortClosure = fn () => 3;
-        $objectWithClosures->staticShortClosure = static fn () => 4;
+        $objectWithClosures = new ArrayIterator([
+            'closure' => function () {
+                return 1;
+            },
+            'staticClosure' => static function () {
+                return 2;
+            },
+            'shortClosure' => fn () => 3,
+            'staticShortClosure' => static fn () => 4,
+        ]);
 
         return [
             ['boolean parameter', true],

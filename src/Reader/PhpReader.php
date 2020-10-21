@@ -23,7 +23,7 @@ class PhpReader extends AbstractReader
         $newFile = $this->builder->getOutputPath(strtr($path, '/', '.'));
         file_put_contents($newFile, $newCode);
         $output = $this->requireWithParams($newFile);
-        @unlink($newFile);
+        #@unlink($newFile);
 
         return $output;
     }
@@ -38,8 +38,8 @@ class PhpReader extends AbstractReader
         $result = static function (array $params) {
             return require func_get_arg(1);
         };
-                                  
-        return $result($params, $path);                                  
+
+        return $result($params, $path);
     }
 
 

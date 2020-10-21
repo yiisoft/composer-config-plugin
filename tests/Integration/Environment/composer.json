@@ -12,6 +12,7 @@
         "vlucas/phpdotenv": "*"
     },
     "require-dev": {
+        "nikic/php-parser": "^4.10",
         "first-dev-vendor/first-package": "*",
         "first-dev-vendor/second-package": "*",
         "second-dev-vendor/first-package": "*",

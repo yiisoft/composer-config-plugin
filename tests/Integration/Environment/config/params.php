@@ -6,17 +6,6 @@ use Yiisoft\Arrays\Modifier\RemoveKeys;
 use Yiisoft\Arrays\Modifier\ReplaceValue;
 use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
 use Yiisoft\Arrays\Modifier\UnsetValue;
-use Yiisoft\Composer\Config\Env;
-
-$objectWithClosures = new stdClass();
-$objectWithClosures->closure = function () {
-    return 1;
-};
-$objectWithClosures->staticClosure = static function () {
-    return 2;
-};
-$objectWithClosures->shortClosure = fn () => 3;
-$objectWithClosures->staticShortClosure = static fn () => 4;
 
 return [
     'boolean parameter' => true,
@@ -31,16 +20,16 @@ return [
         [[[[[]]]]]
     ],
     'array parameter with UnsetArrayValue' => [
-        'first-vendor/first-package' => new UnsetValue(),
+        'first-vendor/first-package' => Buildtime::run(new UnsetValue()),
     ],
-    'array parameter with ReplaceArrayValue' => new ReplaceValue(['replace']),
+    'array parameter with ReplaceArrayValue' => Buildtime::run(new ReplaceValue(['replace'])),
     'array parameter with RemoveArrayKeys' => [
         'root key' => 'root value',
-        new RemoveKeys(),
+        Buildtime::run(new RemoveKeys()),
     ],
     'array parameter with ReverseValues' => [
         'root package' => 'root value',
-        new ReverseBlockMerge(),
+        Buildtime::run(new ReverseBlockMerge()),
     ],
     'callable parameter' => function () {
         return 'I am callable';
@@ -50,17 +39,16 @@ return [
     },
 
     'short callable parameter' => fn () => 'I am callable',
-
-    'object parameter' => new stdClass(),
+'object parameter' => new stdClass(),
 
     'env_parameter' => 'default',
     'constant_based_parameter' => TEST_CONSTANT,
 
-    'env.raw' => Env::get('ENV_STRING'),
-    'env.raw.default_null' => Env::get('NOT_FOUND', null),
-    'env.raw.default_string' => Env::get('NOT_FOUND', 'default value'),
-    'env.raw.default_integer' => Env::get('NOT_FOUND', 123),
-    'env.raw.default_object' => Env::get('NOT_FOUND', new stdClass()),
+    'env.raw' => $_ENV['ENV_STRING'],
+    'env.raw.default_null' => $_ENV['NOT_FOUND'] ?? null,
+    'env.raw.default_string' => $_ENV['NOT_FOUND'] ?? 'default value',
+    'env.raw.default_integer' => $_ENV['NOT_FOUND'] ?? 123,
+    'env.raw.default_object' => $_ENV['NOT_FOUND'] ?? new stdClass(),
     'env.string' => 'old value',
     'env.number' => 'old value',
     'env.text' => 'old value',
@@ -86,7 +74,16 @@ return [
         'ENV_TEXT' => ENV_TEXT,
     ],
 
-    'objectWithClosures' => $objectWithClosures,
+    'objectWithClosures' => new \ArrayIterator([
+        'closure' => function () {
+            return 1;
+        },
+        'staticClosure' => static function () {
+            return 2;
+        },
+        'shortClosure' => fn () => 3,
+        'staticShortClosure' => static fn () => 4,
+    ]),
 
     __DIR__ . '/relative/path' => __DIR__ . '/relative/path',
 ];

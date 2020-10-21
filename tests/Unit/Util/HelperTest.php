@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Composer\Config\Env;
 use Yiisoft\Composer\Config\Util\Helper;
 
 final class HelperTest extends TestCase
@@ -28,32 +27,28 @@ final class HelperTest extends TestCase
 
         return [
             [
-                Env::get('value'),
-                "\$_ENV['value']",
-            ],
-            [
-                Env::get('value', null),
-                "\$_ENV['value'] ?? null",
-            ],
-            [
-                Env::get('value', 'string'),
-                "\$_ENV['value'] ?? 'string'",
-            ],
-            [
-                Env::get('value', 123),
-                "\$_ENV['value'] ?? 123",
-            ],
-            [
-                Env::get('value', new \stdClass()),
-                "\$_ENV['value'] ?? \Opis\Closure\unserialize('O:8:\"stdClass\":0:{}')",
-            ],
-            [
                 $_ENV['value'],
                 "1",
             ],
             [
                 fn () => $_ENV[$key],
                 'fn () => $_ENV[$key]',
+            ],
+            [
+                fn () => $_ENV['value'] ?? null,
+                "fn () => \$_ENV['value'] ?? null",
+            ],
+            [
+                fn () => $_ENV['value'] ?? 123,
+                "fn () => \$_ENV['value'] ?? 123",
+            ],
+            [
+                fn () => $_ENV['value'] ?? 'string',
+                "fn () => \$_ENV['value'] ?? 'string'",
+            ],
+            [
+                fn () => $_ENV['value'] ?? new \stdClass(),
+                "fn () => \$_ENV['value'] ?? new \stdClass()",
             ],
             [
                 fn () => $params['test'],

@@ -11,5 +11,5 @@ use Yiisoft\Composer\Config\Builder;
 return [
     \Environment\Serializer\SerializerInterface::class => \Environment\Serializer\PhpSerializer::class,
     'params' => $params,
-    'required' => Builder::require('required')
+    'required' => require __DIR__ . '/required.php',
 ];
