@@ -6,6 +6,7 @@ use Yiisoft\Arrays\Modifier\RemoveKeys;
 use Yiisoft\Arrays\Modifier\ReplaceValue;
 use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
 use Yiisoft\Arrays\Modifier\UnsetValue;
+use Yiisoft\Composer\Config\Buildtime;
 
 return [
     'boolean parameter' => true,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\Util;
+namespace Yiisoft\Composer\Config;
 
 /**
  * Buildtime marker class. Used as marker only.

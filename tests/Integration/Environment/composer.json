@@ -12,6 +12,7 @@
         "vlucas/phpdotenv": "*"
     },
     "require-dev": {
+        "yiisoft/var-dumper": "*",
         "nikic/php-parser": "^4.10",
         "first-dev-vendor/first-package": "*",
         "first-dev-vendor/second-package": "*",

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Config;
 
-use Yiisoft\Composer\Config\Util\Helper;
+use Yiisoft\Composer\Config\Util\Exporter;
 
 /**
  * DotEnv class represents output configuration file with ENV values.
@@ -13,7 +13,7 @@ class Envs extends Config
 {
     protected function writeFile(string $path, array $data): void
     {
-        $envs = Helper::exportVar($data);
+        $envs = Exporter::exportVar($data);
 
         $content = <<<PHP
 <?php

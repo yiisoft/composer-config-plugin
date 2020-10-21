@@ -8,7 +8,7 @@ use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
-use Yiisoft\Composer\Config\Util\Helper;
+use Yiisoft\Composer\Config\Util\Exporter;
 use Yiisoft\Composer\Config\Util\PathHelper;
 use Yiisoft\Composer\Config\Util\PhpPrinter;
 
@@ -171,7 +171,7 @@ PHP;
             return '[]';
         }
 
-        $output = Helper::exportVar($data);
+        $output = Exporter::exportVar($data);
 
         return PhpPrinter::resolveTokens($output);
     }
