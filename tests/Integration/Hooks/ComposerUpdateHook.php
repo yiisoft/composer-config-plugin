@@ -5,46 +5,29 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Tests\Integration\Hooks;
 
 use PHPUnit\Runner\BeforeFirstTestHook;
-use Yiisoft\Composer\Config\Tests\Integration\Support\DirectoryManipulatorTrait;
 use Yiisoft\Composer\Config\Util\PathHelper;
 
 final class ComposerUpdateHook implements BeforeFirstTestHook
 {
-    use DirectoryManipulatorTrait;
-
     public function executeBeforeFirstTest(): void
     {
-        $originalDirectory = getcwd();
-        $newDirectory = PathHelper::realpath(dirname(__DIR__)) . '/Environment';
-
-        chdir($newDirectory);
-
-        if (is_dir("{$newDirectory}/vendor")) {
-            $pluginPath = "{$newDirectory}/vendor/yiisoft/composer-config-plugin";
-            if (is_link($pluginPath)) {
-                $this->unlink($pluginPath);
-            } elseif (is_dir($pluginPath)) {
-                $this->removeDirectoryRecursive($pluginPath);
-            }
-            symlink("{$newDirectory}/../../../", $pluginPath);
-            $command = 'composer dump';
-        } else {
-            $command = 'composer update -n --prefer-dist --no-progress --ignore-platform-reqs --no-plugins ' . $this->suppressLogs();
+        $dir = $this->getWorkingDir();
+        if (!is_dir("$dir/vendor")) {
+            $this->execComposer('update --no-plugins --ignore-platform-reqs --prefer-dist');
         }
 
-        $this->exec($command);
+        $prj = PathHelper::realpath(dirname(__DIR__, 3));
+        $dst = "$dir/vendor/yiisoft/composer-config-plugin";
+        exec("rm -rf $dst");
+        symlink($prj, $dst);
 
-        chdir($originalDirectory);
+        $this->execComposer('dump');
     }
 
-    private function suppressLogs(): string
+    private function execComposer(string $command): void
     {
-        $commandArguments = $_SERVER['argv'] ?? [];
-        $isDebug = in_array('--debug', $commandArguments, true);
-
-        $tempDir = sys_get_temp_dir();
-
-        return !$isDebug ? "2>{$tempDir}/yiisoft-hook" : '';
+        $dir = $this->getWorkingDir();
+        $this->exec("composer $command -d $dir --no-interaction " . $this->suppressLogs());
     }
 
     private function exec(string $command): void
@@ -55,18 +38,18 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
         }
     }
 
-    public function unlink(string $path): bool
+    private function getWorkingDir(): string
     {
-        $isWindows = DIRECTORY_SEPARATOR === '\\';
+        return PathHelper::realpath(dirname(__DIR__)) . '/Environment';
+    }
 
-        if (!$isWindows) {
-            return unlink($path);
-        }
+    private function suppressLogs(): string
+    {
+        $commandArguments = $_SERVER['argv'] ?? [];
+        $isDebug = in_array('--debug', $commandArguments, true);
 
-        if (is_link($path) && is_dir($path)) {
-            return rmdir($path);
-        }
+        $tempDir = sys_get_temp_dir();
 
-        return unlink($path);
+        return !$isDebug ? "2>{$tempDir}/yiisoft-hook" : '';
     }
 }
