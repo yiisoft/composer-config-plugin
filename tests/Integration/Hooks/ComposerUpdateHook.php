@@ -12,13 +12,16 @@ final class ComposerUpdateHook implements BeforeFirstTestHook
     public function executeBeforeFirstTest(): void
     {
         $dir = $this->getWorkingDir();
+        $prj = PathHelper::realpath(dirname(__DIR__, 3));
+        $src = dirname($dir) . '/Packages/yiisoft/composer-config-plugin';
+        $dst = "$dir/vendor/yiisoft/composer-config-plugin";
+
         if (!is_dir("$dir/vendor")) {
+            copy("$prj/composer.json", "$src/composer.json");
             $this->execComposer('update --no-plugins --ignore-platform-reqs --prefer-dist');
         }
 
-        $prj = PathHelper::realpath(dirname(__DIR__, 3));
-        $dst = "$dir/vendor/yiisoft/composer-config-plugin";
-        exec("rm -rf $dst");
+        exec("rm -rf $dst $src/composer.json");
         symlink($prj, $dst);
 
         $this->execComposer('dump');
