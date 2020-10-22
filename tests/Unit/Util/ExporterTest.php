@@ -54,15 +54,15 @@ final class ExporterTest extends TestCase
                 fn () => $params['test'],
                 "fn () => \$params['test']",
             ],
-            //[
-            //    [fn () => $params['test']],
-            //    "[fn () => \$params['test']]",
-            //],
+            [
+                [fn () => $params['test']],
+                "[fn () => \$params['test']]",
+            ],
             [
                 static function () use ($params) {
                     return $params['test'];
                 },
-                "static function () use (\$params) {\n                    return \$params['test'];\n                }",
+                "static function () use (\$params) { return \$params['test']; }",
             ],
             [
                 [
@@ -70,13 +70,11 @@ final class ExporterTest extends TestCase
                         return $params['test'];
                     },
                 ],
-                <<<PHP
-[
-    'function' => static function () use (\$params) {
-                        return \$params['test'];
-                    },
-]
-PHP,
+                <<<TEXT
+['function' => static function () use (\$params) {
+    return \$params['test'];
+}]
+TEXT
             ],
         ];
     }
