@@ -15,7 +15,8 @@
         "first-dev-vendor/first-package": "*",
         "first-dev-vendor/second-package": "*",
         "second-dev-vendor/first-package": "*",
-        "second-dev-vendor/second-package": "*"
+        "second-dev-vendor/second-package": "*",
+        "yiisoft/composer-config-plugin": "*"
     },
     "repositories": [
         {
@@ -49,6 +50,10 @@
         {
             "type": "path",
             "url": "../Packages/second-dev-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../Packages/yiisoft/composer-config-plugin"
         }
     ],
     "autoload": {
