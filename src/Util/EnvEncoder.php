@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Util;
 
 use Closure;
-use Opis\Closure\ReflectionClosure;
 use Riimu\Kit\PHPEncoder\Encoder\Encoder;
 use Yiisoft\Composer\Config\Env;
+use Yiisoft\VarDumper\VarDumper;
 
 class EnvEncoder implements Encoder
 {
@@ -21,17 +21,20 @@ class EnvEncoder implements Encoder
         if (!$value instanceof Closure) {
             return false;
         }
-        $reflection = new ReflectionClosure($value);
+        $reflection = new \ReflectionFunction($value);
 
-        $closureReflection = $reflection->getClosureScopeClass();
-        $closureClassOwnerName = $closureReflection->getName();
+        $closureScopeClass = $reflection->getClosureScopeClass();
+        if ($closureScopeClass === null) {
+            return false;
+        }
+        $closureClassOwnerName = $closureScopeClass->getName();
 
         return is_a($closureClassOwnerName, Env::class, true);
     }
 
     public function encode($value, $depth, array $options, callable $encode)
     {
-        $reflection = new ReflectionClosure($value);
+        $reflection = new \ReflectionFunction($value);
         $variables = $reflection->getStaticVariables();
         $key = $variables['key'];
         $default = $variables['default'] ?? null;
@@ -40,7 +43,7 @@ class EnvEncoder implements Encoder
             ['$key', '$default'],
             ["'$key'", Helper::exportVar($default)],
             substr(
-                $reflection->getCode(),
+                VarDumper::create($value)->asPhpString(),
                 16
             ),
         );
