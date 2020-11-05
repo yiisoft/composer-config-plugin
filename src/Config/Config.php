@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Composer\Config\Config;
 
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Arrays\Collection\ArrayCollection;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
@@ -100,9 +101,9 @@ class Config
      * Reads config file.
      *
      * @param string $path
-     * @return array configuration read from file
+     * @return ArrayCollection configuration read from file
      */
-    protected function loadFile(string $path): array
+    protected function loadFile(string $path): ArrayCollection
     {
         $reader = ReaderFactory::get($this->builder, $path);
 

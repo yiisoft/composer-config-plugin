@@ -193,7 +193,7 @@ final class Plugin
         }
         $reader = ReaderFactory::get($this->builder, $path);
 
-        return $reader->read($path);
+        return $reader->read($path)->toArray();
     }
 
     private function loadDotEnv(Package $package): void

@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Config;
 
+use Yiisoft\Arrays\Collection\ArrayCollection;
+
 /**
  * Defines class represents output configuration file with constant definitions.
  */
 class Constants extends Config
 {
-    protected function loadFile(string $path): array
+    protected function loadFile(string $path): ArrayCollection
     {
         parent::loadFile($path);
         if (pathinfo($path, PATHINFO_EXTENSION) !== 'php') {
-            return [];
+            return new ArrayCollection();
         }
 
-        return [$path];
+        return new ArrayCollection([$path]);
     }
 
     public function buildRequires(): string

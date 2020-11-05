@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-use Yiisoft\Arrays\Modifier\RemoveKeys;
-use Yiisoft\Arrays\Modifier\ReplaceValue;
-use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
-use Yiisoft\Arrays\Modifier\UnsetValue;
+use Yiisoft\Arrays\Collection\ArrayCollection;
+use Yiisoft\Arrays\Collection\Modifier\MergeWithKeysAsReverseMerge;
+use Yiisoft\Arrays\Collection\Modifier\RemoveKeys;
+use Yiisoft\Arrays\Collection\Modifier\ReplaceValueWhole;
+use Yiisoft\Arrays\Collection\Modifier\UnsetValue;
 use Yiisoft\Composer\Config\Env;
 
 $objectWithClosures = new stdClass();
@@ -18,7 +19,7 @@ $objectWithClosures->staticClosure = static function () {
 $objectWithClosures->shortClosure = fn () => 3;
 $objectWithClosures->staticShortClosure = static fn () => 4;
 
-return [
+return new ArrayCollection([
     'boolean parameter' => true,
     'string parameter' => 'value of param 1',
     'NAN parameter' => NAN,
@@ -30,18 +31,17 @@ return [
         'changed value' => 'from root config',
         [[[[[]]]]]
     ],
-    'array parameter with UnsetArrayValue' => [
-        'first-vendor/first-package' => new UnsetValue(),
-    ],
-    'array parameter with ReplaceArrayValue' => new ReplaceValue(['replace']),
-    'array parameter with RemoveArrayKeys' => [
+    'array parameter with UnsetArrayValue' => new ArrayCollection(
+        [],
+        (new UnsetValue())->forKey('first-vendor/first-package')
+    ),
+    'array parameter with ReplaceArrayValue' => ['replace'],
+    'array parameter with RemoveArrayKeys' => new ArrayCollection([
         'root key' => 'root value',
-        new RemoveKeys(),
-    ],
-    'array parameter with ReverseValues' => [
+    ], new RemoveKeys()),
+    'array parameter with ReverseValues' => new ArrayCollection([
         'root package' => 'root value',
-        new ReverseBlockMerge(),
-    ],
+    ], new MergeWithKeysAsReverseMerge()),
     'callable parameter' => function () {
         return 'I am callable';
     },
@@ -89,4 +89,6 @@ return [
     'objectWithClosures' => $objectWithClosures,
 
     __DIR__ . '/relative/path' => __DIR__ . '/relative/path',
-];
+], [
+    new ReplaceValueWhole('array parameter with ReplaceArrayValue')
+]);

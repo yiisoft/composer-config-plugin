@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Reader;
 
+use Yiisoft\Arrays\Collection\ArrayCollection;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
 
@@ -19,8 +20,10 @@ abstract class AbstractReader implements ReaderInterface
         $this->builder = $builder;
     }
 
-    public function read($path): array
+    public function read($path): ArrayCollection
     {
+        $collection = new ArrayCollection();
+
         $skippable = 0 === strncmp($path, '?', 1);
         if ($skippable) {
             $path = substr($path, 1);
@@ -29,14 +32,16 @@ abstract class AbstractReader implements ReaderInterface
         if (is_readable($path)) {
             $res = $this->readRaw($path);
 
-            return is_array($res) ? $res : [];
+            return is_array($res) || $res instanceof ArrayCollection
+                ? $collection->mergeWith($res)
+                : $collection;
         }
 
         if (!$skippable) {
             throw new FailedReadException("Failed read file: $path");
         }
 
-        return [];
+        return $collection;
     }
 
     protected function getFileContents(string $path): string
