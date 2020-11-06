@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Yiisoft\Arrays\Collection\ArrayCollection;
-use Yiisoft\Arrays\Collection\Modifier\MergeWithKeysAsReverseMerge;
 use Yiisoft\Arrays\Collection\Modifier\RemoveKeys;
-use Yiisoft\Arrays\Collection\Modifier\ReplaceValueWhole;
+use Yiisoft\Arrays\Collection\Modifier\ReplaceValue;
+use Yiisoft\Arrays\Collection\Modifier\SaveOrder;
 use Yiisoft\Arrays\Collection\Modifier\UnsetValue;
 use Yiisoft\Composer\Config\Env;
 
@@ -33,7 +33,7 @@ return new ArrayCollection([
     ],
     'array parameter with UnsetArrayValue' => new ArrayCollection(
         [],
-        (new UnsetValue())->forKey('first-vendor/first-package')
+        new UnsetValue('first-vendor/first-package')
     ),
     'array parameter with ReplaceArrayValue' => ['replace'],
     'array parameter with RemoveArrayKeys' => new ArrayCollection([
@@ -41,7 +41,7 @@ return new ArrayCollection([
     ], new RemoveKeys()),
     'array parameter with ReverseValues' => new ArrayCollection([
         'root package' => 'root value',
-    ], new MergeWithKeysAsReverseMerge()),
+    ], new SaveOrder()),
     'callable parameter' => function () {
         return 'I am callable';
     },
@@ -90,5 +90,5 @@ return new ArrayCollection([
 
     __DIR__ . '/relative/path' => __DIR__ . '/relative/path',
 ], [
-    new ReplaceValueWhole('array parameter with ReplaceArrayValue')
+    new ReplaceValue('array parameter with ReplaceArrayValue')
 ]);
