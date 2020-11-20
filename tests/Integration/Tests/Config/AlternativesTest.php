@@ -12,28 +12,28 @@ final class AlternativesTest extends ConfigTest
             [
                 'env_parameter',
                 fn (string $param) => $this->assertSame('yiiframework.com', $param),
-                'yiiframework.com/params'
+                'yiiframework.com/params',
             ],
             [
                 'params',
                 fn (array $params) => $this->assertSame('yiiframework.com', $params['env_parameter']),
-                'yiiframework.com/web'
+                'yiiframework.com/web',
             ],
             [
                 'params',
                 fn (array $params) => $this->assertSame('beta.yiiframework.ru', $params['env_parameter']),
-                'yiiframework.ru/web'
+                'yiiframework.ru/web',
             ],
             [
                 'params',
                 fn (array $params) => $this->assertFalse($params['boolean parameter']),
-                'with-variable/web'
+                'with-variable/web',
             ],
             [
                 'params',
                 fn (array $params) => $this->assertFalse($params['boolean parameter']),
-                'with-variable/web2'
-            ]
+                'with-variable/web2',
+            ],
         ];
     }
 

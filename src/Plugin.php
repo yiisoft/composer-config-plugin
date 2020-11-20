@@ -6,12 +6,12 @@ namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Dotenv\Dotenv;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Exception\BadConfigurationException;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
-use Dotenv\Dotenv;
 
 final class Plugin
 {

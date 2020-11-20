@@ -160,6 +160,7 @@ class Package
      *
      * @param string $key key to look for in extra configuration
      * @param mixed $default default to return if there's no extra configuration value
+     *
      * @return mixed extra configuration value or default
      */
     private function getExtraValue(string $key, $default = null)
@@ -177,6 +178,7 @@ class Package
 
     /**
      * @param string $name option name
+     *
      * @return mixed raw value from composer.json if available
      */
     private function getRawValue(string $name)
@@ -185,8 +187,9 @@ class Package
     }
 
     /**
-     * @return array composer.json contents as array
      * @throws \JsonException
+     *
+     * @return array composer.json contents as array
      */
     private function readRawData(): array
     {
@@ -202,6 +205,7 @@ class Package
      * Builds path inside of a package.
      *
      * @param string $file
+     *
      * @return string absolute paths will stay untouched
      */
     public function preparePath(string $file): string

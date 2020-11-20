@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config;
 
+use function dirname;
 use JsonException;
 use Yiisoft\Composer\Config\Config\Config;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Util\Resolver;
-use Yiisoft\Files\FileHelper;
 
-use function dirname;
+use Yiisoft\Files\FileHelper;
 
 /**
  * Builder assembles config files.
@@ -49,7 +49,7 @@ class Builder
         $this->outputDir = self::findOutputDir($baseDir);
     }
 
-    public function createAlternative($name): Builder
+    public function createAlternative($name): self
     {
         $alt = new static($this->configFactory, $this->baseDir);
         $alt->setOutputDir($this->outputDir . DIRECTORY_SEPARATOR . $name);
@@ -83,8 +83,10 @@ class Builder
      * Returns default output dir.
      *
      * @param string|null $baseDir path to the root Composer package. When `null`,
-     * @return string
+     *
      * @throws JsonException
+     *
+     * @return string
      */
     private static function findOutputDir(string $baseDir = null): string
     {
@@ -106,7 +108,7 @@ class Builder
             // console
             getcwd(),
             // symlinked web
-            dirname(getcwd())
+            dirname(getcwd()),
         ];
 
         foreach ($candidates as $baseDir) {
@@ -122,6 +124,7 @@ class Builder
      * Returns default output dir.
      *
      * @param string $baseDir path to base directory
+     *
      * @return string
      */
     private static function defaultOutputDir(string $baseDir = null): string
@@ -140,8 +143,10 @@ class Builder
      *
      * @param string $filename name of config
      * @param string $baseDir path to base dir
-     * @return string absolute path
+     *
      * @throws JsonException
+     *
+     * @return string absolute path
      */
     public static function path(string $filename, string $baseDir = null): string
     {
@@ -161,7 +166,7 @@ class Builder
     /**
      * Builds all (user and system) configs by given files list.
      *
-     * @param null|array $files files to process: config name => list of files
+     * @param array|null $files files to process: config name => list of files
      */
     public function buildAllConfigs(array $files): void
     {
@@ -176,7 +181,8 @@ class Builder
     /**
      * Builds configs by given files list.
      *
-     * @param null|array $files files to process: config name => list of files
+     * @param array|null $files files to process: config name => list of files
+     *
      * @return array
      */
     private function buildUserConfigs(array $files): array
@@ -238,6 +244,7 @@ class Builder
      * It will result in "require 'my-config' in the assembled configuration file.
      *
      * @param string $config config name
+     *
      * @return callable
      */
     public static function require(string $config): callable

@@ -15,9 +15,12 @@ class Helper
      * Returns PHP-executable string representation of given value.
      * Uses Riimu/Kit-PHPEncoder based `var_export` alternative.
      * And Opis/Closure to dump closures as PHP code.
+     *
      * @param mixed $value
-     * @return string
+     *
      * @throws \ReflectionException
+     *
+     * @return string
      */
     public static function exportVar($value): string
     {
