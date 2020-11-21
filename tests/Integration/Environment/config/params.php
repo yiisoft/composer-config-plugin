@@ -28,7 +28,7 @@ return [
     'long int parameter' => 123_000,
     'array parameter' => [
         'changed value' => 'from root config',
-        [[[[[]]]]]
+        [[[[[]]]]],
     ],
     'array parameter with UnsetArrayValue' => [
         'first-vendor/first-package' => new UnsetValue(),

@@ -49,7 +49,7 @@ final class HelperTest extends TestCase
             ],
             [
                 $_ENV['value'],
-                "1",
+                '1',
             ],
             [
                 fn () => $_ENV[$key],

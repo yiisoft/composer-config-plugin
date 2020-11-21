@@ -17,6 +17,7 @@ abstract class ConfigTest extends PluginTestCase
 
     /**
      * @dataProvider configProvider()
+     *
      * @param string $name
      * @param $expectedValue
      * @param string|null $configName

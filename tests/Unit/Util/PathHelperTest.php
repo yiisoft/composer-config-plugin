@@ -11,6 +11,7 @@ final class PathHelperTest extends TestCase
 {
     /**
      * @dataProvider notExistsFilesProvider()
+     *
      * @param string $pathToCheck
      * @param string $expected
      */
@@ -47,6 +48,7 @@ final class PathHelperTest extends TestCase
 
     /**
      * @dataProvider nonNormalizedPathsProvider()
+     *
      * @param string $pathToCheck
      * @param string $expected
      */

@@ -11,6 +11,7 @@ final class PathHelper
      * This method prevents this behavior.
      *
      * @param string $path
+     *
      * @return string
      */
     public static function realpath(string $path): string
