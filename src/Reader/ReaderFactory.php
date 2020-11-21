@@ -12,6 +12,7 @@ use Yiisoft\Composer\Config\Exception\UnsupportedFileTypeException;
  */
 class ReaderFactory
 {
+    /** @psalm-var array<string, ReaderInterface> */
     private static array $loaders = [];
 
     private static array $knownReaders = [
@@ -28,9 +29,11 @@ class ReaderFactory
 
         $uniqid = $class . ':' . spl_object_hash($builder);
         if (empty(self::$loaders[$uniqid])) {
+            /** @psalm-var ReaderInterface */
             self::$loaders[$uniqid] = new $class($builder);
         }
 
+        /** @psalm-var ReaderInterface */
         return self::$loaders[$uniqid];
     }
 

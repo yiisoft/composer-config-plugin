@@ -147,18 +147,18 @@ class Config
         $variables = Helper::exportVar($data);
 
         $content = <<<PHP
-<?php
-
-\$baseDir = {$baseDir};
-
-{$envs}
-
-{$constants}
-
-{$params}
-
-return {$variables};
-PHP;
+        <?php
+        
+        \$baseDir = {$baseDir};
+        
+        {$envs}
+        
+        {$constants}
+        
+        {$params}
+        
+        return {$variables};
+        PHP;
 
         $this->contentWriter->write($path, $this->replaceMarkers($content) . "\n");
     }

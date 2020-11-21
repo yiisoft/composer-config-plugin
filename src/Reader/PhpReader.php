@@ -17,6 +17,7 @@ class PhpReader extends AbstractReader
             return require func_get_arg(1);
         };
 
+        /** @psalm-suppress TooManyArguments */
         return $result($params, $path);
     }
 }

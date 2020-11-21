@@ -123,7 +123,7 @@ class Builder
     /**
      * Returns default output dir.
      *
-     * @param string $baseDir path to base directory
+     * @param string|null $baseDir path to base directory
      *
      * @return string
      */
@@ -142,11 +142,10 @@ class Builder
      * Returns full path to assembled config file.
      *
      * @param string $filename name of config
-     * @param string $baseDir path to base dir
-     *
-     * @throws JsonException
+     * @param string|null $baseDir path to base dir
      *
      * @return string absolute path
+     * @throws JsonException
      */
     public static function path(string $filename, string $baseDir = null): string
     {
@@ -166,7 +165,7 @@ class Builder
     /**
      * Builds all (user and system) configs by given files list.
      *
-     * @param array|null $files files to process: config name => list of files
+     * @param array $files files to process: config name => list of files
      */
     public function buildAllConfigs(array $files): void
     {
@@ -181,7 +180,7 @@ class Builder
     /**
      * Builds configs by given files list.
      *
-     * @param array|null $files files to process: config name => list of files
+     * @param array $files files to process: config name => list of files
      *
      * @return array
      */

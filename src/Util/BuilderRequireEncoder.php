@@ -24,6 +24,11 @@ class BuilderRequireEncoder implements Encoder
         $reflection = new ReflectionClosure($value);
 
         $closureReflection = $reflection->getClosureScopeClass();
+
+        if (is_null($closureReflection)) {
+            return false;
+        }
+
         $closureClassOwnerName = $closureReflection->getName();
 
         return is_a($closureClassOwnerName, Builder::class, true);
