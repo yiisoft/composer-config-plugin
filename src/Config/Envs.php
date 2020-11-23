@@ -16,9 +16,9 @@ class Envs extends Config
         $envs = Helper::exportVar($data);
 
         $content = <<<PHP
-        <?php
-        return {$envs};
-        PHP;
+<?php
+return {$envs};
+PHP;
 
         $this->contentWriter->write($path, $content . PHP_EOL);
     }
