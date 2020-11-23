@@ -25,7 +25,7 @@ class BuilderRequireEncoder implements Encoder
 
         $closureReflection = $reflection->getClosureScopeClass();
 
-        if (is_null($closureReflection)) {
+        if (null === $closureReflection) {
             return false;
         }
 

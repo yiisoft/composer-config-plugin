@@ -144,8 +144,9 @@ class Builder
      * @param string $filename name of config
      * @param string|null $baseDir path to base dir
      *
-     * @return string absolute path
      * @throws JsonException
+     *
+     * @return string absolute path
      */
     public static function path(string $filename, string $baseDir = null): string
     {
