@@ -71,7 +71,10 @@ class Config
             case 0:
                 return [];
             case 1:
-                return [$this->loadFile(reset($paths))];
+                $path = reset($paths);
+                if ($this->containsWildcard($path) === false) {
+                    return [$this->loadFile(reset($paths))];
+                }
         }
 
         $configs = [];
@@ -89,11 +92,16 @@ class Config
 
     private function glob(string $path): array
     {
-        if (strpos($path, '*') === false) {
+        if ($this->containsWildcard($path) === false) {
             return [$path];
         }
 
         return glob($path);
+    }
+
+    private function containsWildcard(string $path): bool
+    {
+        return strpos($path, '*') !== false;
     }
 
     /**
