@@ -23,7 +23,7 @@
         "php": "^7.4|^8.0",
         "ext-json": "*",
         "composer-plugin-api": "^1.0|^2.0",
-        "composer/composer": "~1.0|~2.0@dev",
+        "composer/composer": "^2.0.7",
         "opis/closure": "3.6.x-dev@dev",
         "riimu/kit-phpencoder": "^2.4",
         "yiisoft/arrays": "3.0.x-dev",
