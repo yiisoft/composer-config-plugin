@@ -61,13 +61,13 @@ jobs:
         run: composer update --ignore-platform-reqs --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
       - name: Turn off rebuilding
-        run: echo "REBUILD=0 >> $GITHUB_ENV
+        run: echo "REBUILD=0" >> $GITHUB_ENV
 
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=coverage.clover --debug --colors=always
 
       - name: Turn on rebuilding
-        run: echo "REBUILD=1 >> $GITHUB_ENV
+        run: echo "REBUILD=1" >> $GITHUB_ENV
 
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=coverage.clover --debug --colors=always
