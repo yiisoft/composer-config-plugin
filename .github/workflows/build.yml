@@ -19,7 +19,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
 
-        php-version:
+        php:
           - "7.4"
           - "8.0"
 
