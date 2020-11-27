@@ -88,6 +88,7 @@ final class Plugin
             $this->files = $saveFiles;
             $_ENV = $saveEnv;
             $builder = $this->builder->createAlternative($name);
+            /** @psalm-suppress PossiblyNullArgument */
             $this->addFiles($this->rootPackage, $files);
             $this->reorderFiles();
             $builder->buildAllConfigs($this->files);

@@ -30,7 +30,8 @@
         "yiisoft/files": "^3.0@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.3",
+        "vimeo/psalm": "^4.2"
     },
     "suggest": {
         "vlucas/phpdotenv": "^2.0 for `.env` files support",

@@ -32,6 +32,7 @@ class EnvReader extends AbstractReader
      */
     private function loadEnvs(string $dir, string $file): void
     {
+        /** @psalm-suppress UndefinedClass */
         if (method_exists(Dotenv::class, 'createMutable')) {
             Dotenv::createMutable($dir, $file)->load();
         } elseif (method_exists(Dotenv::class, 'create')) {
