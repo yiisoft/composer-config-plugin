@@ -33,13 +33,15 @@ class BuilderRequireEncoder implements Encoder
     {
         $reflection = new ReflectionClosure($value);
         $variables = $reflection->getStaticVariables();
-        $config = strrpos($variables['config'], '.php') === false
-            ? $variables['config'] . '.php'
-            : $variables['config'];
+        $config = $variables['config'];
+
+        if (pathinfo($config, PATHINFO_EXTENSION) === '') {
+            $config = $config . '.php';
+        }
 
         return str_replace(
             ['$config'],
-            ["'$config'"],
+            ["'$config.php'"],
             substr(
                 $reflection->getCode(),
                 16
