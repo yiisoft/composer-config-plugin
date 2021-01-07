@@ -7,6 +7,7 @@ namespace Yiisoft\Composer\Config\Config;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
+use Yiisoft\Composer\Config\Exception\ConfigBuildException;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
 use Yiisoft\Composer\Config\Util\Helper;
 use Yiisoft\Composer\Config\Util\PathHelper;
@@ -115,7 +116,11 @@ class Config
     {
         $reader = ReaderFactory::get($this->builder, $path);
 
-        return $reader->read($path);
+        try {
+            return $reader->read($path);
+        } catch (\Throwable $e) {
+            throw new ConfigBuildException($path, $e);
+        }
     }
 
     /**
