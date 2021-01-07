@@ -7,7 +7,7 @@ use Throwable;
 
 final class ConfigBuildException extends Exception
 {
-    public function __construct($path, Throwable $previous = null)
+    public function __construct(string $path, Throwable $previous)
     {
         $message = sprintf(
             <<<TEXT
