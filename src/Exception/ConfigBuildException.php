@@ -8,20 +8,21 @@ use Throwable;
 
 final class ConfigBuildException extends Exception
 {
-    public function __construct(string $path, Throwable $previous)
+    public function __construct(Throwable $previous)
     {
         $message = sprintf(
             <<<TEXT
                 An error occured during configuration build.
-                The file being processed: "%s".
+                The file being processed: "%s:%d".
                 Error text:
                     %s
                 Please, take care of fixing errors in this file before you continue.
                 TEXT,
-            $path,
+            $previous->getFile(),
+            $previous->getLine(),
             $previous->getMessage()
         );
 
-        parent::__construct($message);
+        parent::__construct($message, $previous->getCode());
     }
 }

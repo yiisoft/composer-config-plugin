@@ -119,7 +119,7 @@ class Config
         try {
             return $reader->read($path);
         } catch (\Throwable $e) {
-            throw new ConfigBuildException($path, $e);
+            throw new ConfigBuildException($e);
         }
     }
 
