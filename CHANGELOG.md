@@ -1,5 +1,9 @@
 # Composer config plugin changelog
 
+## 0.6.0 under development
+
+- Enh #147: Add context to errors (xepozz)
+
 ## 0.5.0 December 24, 2020
 
 - Chg: Changed namespace to `Yiisoft/Composer/Config` ([@samdark])
