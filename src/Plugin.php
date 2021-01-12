@@ -9,6 +9,7 @@ use Composer\IO\IOInterface;
 use Dotenv\Dotenv;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Exception\BadConfigurationException;
+use Yiisoft\Composer\Config\Exception\ConfigBuildException;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
@@ -194,7 +195,11 @@ final class Plugin
         }
         $reader = ReaderFactory::get($this->builder, $path);
 
-        return $reader->read($path);
+        try {
+            return $reader->read($path);
+        } catch (\Throwable $e) {
+            throw new ConfigBuildException($e);
+        }
     }
 
     private function loadDotEnv(Package $package): void
