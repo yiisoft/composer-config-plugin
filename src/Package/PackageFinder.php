@@ -57,6 +57,7 @@ final class PackageFinder
 
         $result = [];
         foreach (array_keys($this->orderedList) as $name) {
+            /** @psalm-var array-key $name */
             $result[] = $this->plainList[$name];
         }
 

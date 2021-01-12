@@ -12,7 +12,7 @@ final class ConfigBuildException extends Exception
     {
         $message = sprintf(
             <<<TEXT
-                An error occured during configuration build.
+                An error occurred during configuration build.
                 The file being processed: "%s:%d".
                 Error text:
                     %s
@@ -23,6 +23,6 @@ final class ConfigBuildException extends Exception
             $previous->getMessage()
         );
 
-        parent::__construct($message, $previous->getCode());
+        parent::__construct($message, (int)$previous->getCode());
     }
 }
