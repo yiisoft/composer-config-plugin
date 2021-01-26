@@ -6,8 +6,8 @@ namespace Yiisoft\Composer\Config;
 
 use function dirname;
 use JsonException;
-use Yiisoft\Composer\Config\Config\Config;
-use Yiisoft\Composer\Config\Config\ConfigFactory;
+use Yiisoft\Composer\Config\Config\ConfigOutput;
+use Yiisoft\Composer\Config\Config\ConfigOutputFactory;
 use Yiisoft\Composer\Config\Util\Resolver;
 
 use Yiisoft\Files\FileHelper;
@@ -30,19 +30,19 @@ class Builder
     private string $outputDir;
 
     /**
-     * @var Config[] configurations
+     * @var ConfigOutput[] configurations
      */
     private array $configs = [];
 
-    private ConfigFactory $configFactory;
+    private ConfigOutputFactory $configFactory;
 
     /**
      * Builder constructor.
      *
-     * @param ConfigFactory $configFactory
+     * @param ConfigOutputFactory $configFactory
      * @param string $baseDir path to the Composer project root
      */
-    public function __construct(ConfigFactory $configFactory, string $baseDir)
+    public function __construct(ConfigOutputFactory $configFactory, string $baseDir)
     {
         $this->configFactory = $configFactory;
         $this->baseDir = $baseDir;

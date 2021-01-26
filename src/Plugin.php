@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Dotenv\Dotenv;
-use Yiisoft\Composer\Config\Config\ConfigFactory;
+use Yiisoft\Composer\Config\Config\ConfigOutputFactory;
 use Yiisoft\Composer\Config\Exception\BadConfigurationException;
 use Yiisoft\Composer\Config\Exception\ConfigBuildException;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
@@ -57,7 +57,7 @@ final class Plugin
     public function __construct(Composer $composer, IOInterface $io)
     {
         $baseDir = dirname($composer->getConfig()->get('vendor-dir')) . DIRECTORY_SEPARATOR;
-        $this->builder = new Builder(new ConfigFactory(), realpath($baseDir));
+        $this->builder = new Builder(new ConfigOutputFactory(), realpath($baseDir));
         $this->io = $io;
         $this->collectPackages($composer);
     }

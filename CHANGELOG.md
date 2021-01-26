@@ -3,6 +3,7 @@
 ## 0.6.0 under development
 
 - Enh #147: Add context to errors (xepozz)
+- Chg #34: Better name for output config classes (samdark) 
 
 ## 0.5.0 December 24, 2020
 
