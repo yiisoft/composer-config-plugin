@@ -9,7 +9,7 @@ use Yiisoft\Composer\Config\Util\Helper;
 /**
  * DotEnv class represents output configuration file with ENV values.
  */
-class Envs extends Config
+class Envs extends ConfigOutput
 {
     protected function writeFile(string $path, array $data): void
     {

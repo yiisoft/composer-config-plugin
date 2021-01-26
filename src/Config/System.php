@@ -8,7 +8,7 @@ namespace Yiisoft\Composer\Config\Config;
  * System class represents system configuration files:
  * __files, packages.
  */
-class System extends Config
+class System extends ConfigOutput
 {
     public function setValue(string $name, $value): self
     {
