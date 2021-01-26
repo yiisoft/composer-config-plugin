@@ -32,7 +32,8 @@
         "phpunit/phpunit": "^9.4",
         "roave/infection-static-analysis-plugin": "^1.6",
         "spatie/phpunit-watcher": "^1.23",
-        "vimeo/psalm": "^4.3"
+        "vimeo/psalm": "^4.3",
+        "composer/composer": "^1.0|^2.0"
     },
     "suggest": {
         "vlucas/phpdotenv": "^2.0 for `.env` files support",
