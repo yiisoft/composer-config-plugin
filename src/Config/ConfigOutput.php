@@ -16,7 +16,7 @@ use Yiisoft\Composer\Config\Util\PathHelper;
 /**
  * Config class represents output configuration file.
  */
-class Config
+class ConfigOutput
 {
     private const BASE_DIR_MARKER = '<<<base-dir>>>';
 
@@ -127,7 +127,7 @@ class Config
     /**
      * Merges given configs and writes at given name.
      *
-     * @return Config
+     * @return ConfigOutput
      */
     public function build(): self
     {

@@ -9,7 +9,7 @@ use Yiisoft\Arrays\Collection\ArrayCollection;
 /**
  * Defines class represents output configuration file with constant definitions.
  */
-class Constants extends Config
+class Constants extends ConfigOutput
 {
     protected function loadFile(string $path): ArrayCollection
     {

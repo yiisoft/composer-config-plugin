@@ -7,7 +7,7 @@ namespace Yiisoft\Composer\Config\Config;
 /**
  * Params class represents output configuration file with params definitions.
  */
-class Params extends Config
+class Params extends ConfigOutput
 {
     protected function calcValues(array $sources): array
     {
