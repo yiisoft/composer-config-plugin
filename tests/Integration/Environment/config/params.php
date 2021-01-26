@@ -30,11 +30,11 @@ return new ArrayCollection(
         'long int parameter' => 123_000,
         'array parameter' => [
             'changed value' => 'from root config',
-            [[[[[]]]]]
+            [[[[[]]]]],
         ],
         'array parameter with UnsetArrayValue' => new ArrayCollection(
             [],
-            new UnsetValue('first-vendor/first-package')
+            new UnsetValue('first-vendor/first-package'),
         ),
         'array parameter with ReplaceArrayValue' => ['replace'],
         'array parameter with RemoveArrayKeys' => new ArrayCollection([

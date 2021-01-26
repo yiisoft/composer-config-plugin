@@ -6,12 +6,13 @@ namespace Yiisoft\Composer\Config;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Dotenv\Dotenv;
 use Yiisoft\Composer\Config\Config\ConfigFactory;
 use Yiisoft\Composer\Config\Exception\BadConfigurationException;
+use Yiisoft\Composer\Config\Exception\ConfigBuildException;
 use Yiisoft\Composer\Config\Exception\FailedReadException;
 use Yiisoft\Composer\Config\Package\PackageFinder;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
-use Dotenv\Dotenv;
 
 final class Plugin
 {
@@ -88,6 +89,7 @@ final class Plugin
             $this->files = $saveFiles;
             $_ENV = $saveEnv;
             $builder = $this->builder->createAlternative($name);
+            /** @psalm-suppress PossiblyNullArgument */
             $this->addFiles($this->rootPackage, $files);
             $this->reorderFiles();
             $builder->buildAllConfigs($this->files);
@@ -193,7 +195,13 @@ final class Plugin
         }
         $reader = ReaderFactory::get($this->builder, $path);
 
-        return $reader->read($path)->toArray();
+        try {
+            $collection = $reader->read($path);
+        } catch (\Throwable $e) {
+            throw new ConfigBuildException($e);
+        }
+
+        return $collection->toArray();
     }
 
     private function loadDotEnv(Package $package): void
@@ -215,7 +223,7 @@ final class Plugin
     private function addFiles(Package $package, array $files): void
     {
         foreach ($files as $name => $paths) {
-            $paths = (array) $paths;
+            $paths = (array)$paths;
             if ('constants' === $name) {
                 $paths = array_reverse($paths);
             }

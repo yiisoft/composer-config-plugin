@@ -129,7 +129,7 @@ final class ParamsConfigTest extends ConfigTest
                 dirname(__DIR__, 2) .
                 DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'config/relative/path',
                 dirname(__DIR__, 2) .
-                DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'config/relative/path'
+                DIRECTORY_SEPARATOR . 'Environment' . DIRECTORY_SEPARATOR . 'config/relative/path',
             ],
         ];
     }

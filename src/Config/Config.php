@@ -8,6 +8,7 @@ use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Arrays\Collection\ArrayCollection;
 use Yiisoft\Composer\Config\Builder;
 use Yiisoft\Composer\Config\ContentWriter;
+use Yiisoft\Composer\Config\Exception\ConfigBuildException;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
 use Yiisoft\Composer\Config\Util\Helper;
 use Yiisoft\Composer\Config\Util\PathHelper;
@@ -47,7 +48,7 @@ class Config
 
     public function clone(Builder $builder): self
     {
-        $config = new Config($builder, $this->name);
+        $config = new self($builder, $this->name);
         $config->sources = $this->sources;
         $config->values = $this->values;
 
@@ -72,7 +73,10 @@ class Config
             case 0:
                 return [];
             case 1:
-                return [$this->loadFile(reset($paths))];
+                $path = reset($paths);
+                if ($this->containsWildcard($path) === false) {
+                    return [$this->loadFile(reset($paths))];
+                }
         }
 
         $configs = [];
@@ -90,24 +94,34 @@ class Config
 
     private function glob(string $path): array
     {
-        if (strpos($path, '*') === false) {
+        if ($this->containsWildcard($path) === false) {
             return [$path];
         }
 
         return glob($path);
     }
 
+    private function containsWildcard(string $path): bool
+    {
+        return strpos($path, '*') !== false;
+    }
+
     /**
      * Reads config file.
      *
      * @param string $path
+     *
      * @return ArrayCollection configuration read from file
      */
     protected function loadFile(string $path): ArrayCollection
     {
         $reader = ReaderFactory::get($this->builder, $path);
 
-        return $reader->read($path);
+        try {
+            return $reader->read($path);
+        } catch (\Throwable $e) {
+            throw new ConfigBuildException($e);
+        }
     }
 
     /**
@@ -199,6 +213,7 @@ PHP;
      * Substitute output paths in given data array recursively with marker.
      *
      * @param array $data
+     *
      * @return array
      */
     protected function substituteOutputDirs(array $data): array
@@ -213,6 +228,7 @@ PHP;
      *
      * @param array $data
      * @param string $dir
+     *
      * @return array
      */
     private function substitutePaths($data, $dir): array
@@ -230,6 +246,7 @@ PHP;
      *
      * @param mixed $value
      * @param string $dir
+     *
      * @return mixed
      */
     private function substitutePath($value, $dir)
@@ -249,6 +266,7 @@ PHP;
      *
      * @param string $path
      * @param string $dir
+     *
      * @return string
      */
     private function substitutePathInString($path, $dir): string
