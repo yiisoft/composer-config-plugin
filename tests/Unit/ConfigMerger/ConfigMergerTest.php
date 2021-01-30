@@ -13,7 +13,7 @@ use Yiisoft\Composer\Config\Merger\Modifier\ReverseBlockMerge;
 use Yiisoft\Composer\Config\Merger\Modifier\ReverseValues;
 use Yiisoft\Composer\Config\Merger\Modifier\UnsetValue;
 
-final class MergerTest extends TestCase
+final class ConfigMergerTest extends TestCase
 {
     public function testEmptyMerge(): void
     {
