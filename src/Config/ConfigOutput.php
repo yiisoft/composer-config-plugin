@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Composer\Config\Config;
 
-use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Composer\Config\Builder;
+use Yiisoft\Composer\Config\Merger\Merger;
 use Yiisoft\Composer\Config\ContentWriter;
 use Yiisoft\Composer\Config\Exception\ConfigBuildException;
 use Yiisoft\Composer\Config\Reader\ReaderFactory;
@@ -144,7 +144,7 @@ class ConfigOutput
 
     protected function calcValues(array $sources): array
     {
-        $values = ArrayHelper::merge(...$sources);
+        $values = Merger::merge(...$sources);
 
         return $this->substituteOutputDirs($values);
     }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Yiisoft\Arrays\Modifier\RemoveKeys;
-use Yiisoft\Arrays\Modifier\ReplaceValue;
-use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
-use Yiisoft\Arrays\Modifier\UnsetValue;
+use Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys;
+use Yiisoft\Composer\Config\Merger\Modifier\ReplaceValue;
+use Yiisoft\Composer\Config\Merger\Modifier\ReverseBlockMerge;
+use Yiisoft\Composer\Config\Merger\Modifier\UnsetValue;
 use Yiisoft\Composer\Config\Env;
 
 $objectWithClosures = new stdClass();
