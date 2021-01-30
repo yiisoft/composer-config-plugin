@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
+namespace Yiisoft\Composer\Config\Merger\Modifier;
 
 /**
- * Object that represents the removal of array value while performing {@see ConfigMerger::merge()}.
+ * Object that represents the removal of array value while performing {@see Merger::merge()}.
  *
  * Usage example:
  *
@@ -24,10 +24,10 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  *     'ids' => [
  *         2,
  *     ],
- *     'validDomains' => new \Yiisoft\Composer\Config\ConfigMerger\Modifier\UnsetValue(),
+ *     'validDomains' => new \Yiisoft\Composer\Config\Merger\Modifier\UnsetValue(),
  * ];
  *
- * $result = ConfigMerger::merge($array1, $array2);
+ * $result = Merger::merge($array1, $array2);
  * ```
  *
  * The result will be

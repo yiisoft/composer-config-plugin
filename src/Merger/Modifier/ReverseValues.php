@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
+namespace Yiisoft\Composer\Config\Merger\Modifier;
 
 /**
  * Class ReverseValues
@@ -19,7 +19,7 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  *
  * ```php
  *
- * use Yiisoft\Composer\Config\ConfigMerger\ReverseValues;
+ * use Yiisoft\Composer\Config\Merger\ReverseValues;
  *
  * $array1 = [
  *     'paths' => [
@@ -34,7 +34,7 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  *     ],
  * ];
  *
- * $result = ConfigMerger::merge($array1, $array2);
+ * $result = Merger::merge($array1, $array2);
  * ```
  *
  * The result will be

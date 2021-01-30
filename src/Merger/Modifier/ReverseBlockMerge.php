@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
+namespace Yiisoft\Composer\Config\Merger\Modifier;
 
 /**
  * Result will be ordered by source the opposite to actual merge.
@@ -48,7 +48,7 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  *     ReverseBlockMerge::class => new ReverseBlockMerge(),
  * ];
  *
- * $result = ConfigMerger::merge($one, $two, $three);
+ * $result = Merger::merge($one, $two, $three);
  * ```
  *
  * Will result in:
@@ -70,7 +70,7 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  * ]
  * ```
  *
- * @see ConfigMerger::performReverseBlockMerge()
+ * @see Merger::performReverseBlockMerge()
  */
 final class ReverseBlockMerge implements ModifierInterface
 {

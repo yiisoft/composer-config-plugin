@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace ConfigMerger;
+namespace Merger;
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Composer\Config\ConfigMerger\ConfigMerger;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\InsertValueBeforeKey;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\RemoveKeys;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\ReplaceValue;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\ReverseBlockMerge;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\ReverseValues;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\UnsetValue;
+use Yiisoft\Composer\Config\Merger\Merger;
+use Yiisoft\Composer\Config\Merger\Modifier\InsertValueBeforeKey;
+use Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys;
+use Yiisoft\Composer\Config\Merger\Modifier\ReplaceValue;
+use Yiisoft\Composer\Config\Merger\Modifier\ReverseBlockMerge;
+use Yiisoft\Composer\Config\Merger\Modifier\ReverseValues;
+use Yiisoft\Composer\Config\Merger\Modifier\UnsetValue;
 
-final class ConfigMergerTest extends TestCase
+final class MergerTest extends TestCase
 {
     public function testEmptyMerge(): void
     {
-        $this->assertEquals([], ConfigMerger::merge(...[]));
+        $this->assertEquals([], Merger::merge(...[]));
     }
 
     public function testMerge(): void
@@ -53,7 +53,7 @@ final class ConfigMergerTest extends TestCase
             'foo',
         ];
 
-        $result = ConfigMerger::merge($a, $b, $c);
+        $result = Merger::merge($a, $b, $c);
         $expected = [
             'name' => 'Yii',
             'version' => '2.0',
@@ -93,7 +93,7 @@ final class ConfigMergerTest extends TestCase
             ],
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'name' => 'Yii',
             'version' => '1.1',
@@ -131,7 +131,7 @@ final class ConfigMergerTest extends TestCase
             ),
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'name' => 'Yii',
             'version' => '1.1',
@@ -159,7 +159,7 @@ final class ConfigMergerTest extends TestCase
             new RemoveKeys(),
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'Yii',
             '1.1',
@@ -189,7 +189,7 @@ final class ConfigMergerTest extends TestCase
             ReverseBlockMerge::class => new ReverseBlockMerge(),
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'version' => '1.1',
             'options' => [
@@ -216,7 +216,7 @@ final class ConfigMergerTest extends TestCase
             ReverseBlockMerge::class => new ReverseBlockMerge(),
         ];
 
-        $this->assertSame(['C', 'B', 'A'], ConfigMerger::merge($a, $b));
+        $this->assertSame(['C', 'B', 'A'], Merger::merge($a, $b));
     }
 
     public function testMergeWithAlmostReverseBlock(): void
@@ -234,7 +234,7 @@ final class ConfigMergerTest extends TestCase
             'name' => 'Yii',
             'version' => '1.1',
             ReverseBlockMerge::class => 'hello',
-        ], ConfigMerger::merge($a, $b));
+        ], Merger::merge($a, $b));
     }
 
     public function testMergeWithReverseValues(): void
@@ -249,7 +249,7 @@ final class ConfigMergerTest extends TestCase
             ReverseValues::class => new ReverseValues(),
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'options' => [],
             'version' => '1.1',
@@ -270,7 +270,7 @@ final class ConfigMergerTest extends TestCase
             'thirdValue',
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'firstValue',
             null,
@@ -287,7 +287,7 @@ final class ConfigMergerTest extends TestCase
         $b = ['2019-01-25'];
         $c = ['2019-01-25'];
 
-        $result = ConfigMerger::merge($a, $b, $c);
+        $result = Merger::merge($a, $b, $c);
         $expected = ['2019-01-25'];
 
         $this->assertEquals($expected, $result);
@@ -305,7 +305,7 @@ final class ConfigMergerTest extends TestCase
             'vendor' => new InsertValueBeforeKey('Yiisoft', 'name'),
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'vendor' => 'Yiisoft',
             'name' => 'Yii',
@@ -328,7 +328,7 @@ final class ConfigMergerTest extends TestCase
             ReverseBlockMerge::class => new ReverseBlockMerge(),
         ];
 
-        $result = ConfigMerger::merge($a, $b);
+        $result = Merger::merge($a, $b);
         $expected = [
             'C',
             'D',

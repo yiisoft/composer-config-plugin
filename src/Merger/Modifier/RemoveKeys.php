@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
+namespace Yiisoft\Composer\Config\Merger\Modifier;
 
 /**
- * Removes array keys from the merge result while performing {@see ConfigMerger::merge()}.
+ * Removes array keys from the merge result while performing {@see Merger::merge()}.
  *
  * The modifier should be specified as
  *
@@ -25,7 +25,7 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  *    RemoveKeys::class => new RemoveKeys(),
  * ];
  *
- * $result = ConfigMerger::merge($a, $b);
+ * $result = Merger::merge($a, $b);
  * ```
  *
  * Will result in:

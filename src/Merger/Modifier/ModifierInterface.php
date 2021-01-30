@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
+namespace Yiisoft\Composer\Config\Merger\Modifier;
 
 /**
  * Interface ModifierInterface

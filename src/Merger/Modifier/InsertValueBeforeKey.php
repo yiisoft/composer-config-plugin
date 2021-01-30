@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
+namespace Yiisoft\Composer\Config\Merger\Modifier;
 
 /**
- * Inserts given value before specified key while performing {@see ConfigMerger::merge()}.
+ * Inserts given value before specified key while performing {@see Merger::merge()}.
  *
  * The modifier should be specified as
  *
@@ -25,7 +25,7 @@ namespace Yiisoft\Composer\Config\ConfigMerger\Modifier;
  *    'vendor' => new InsertValueBeforeKey('Yiisoft', 'name'),
  * ];
  *
- * $result = ConfigMerger::merge($a, $b);
+ * $result = Merger::merge($a, $b);
  * ```
  *
  * Will result in:

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Composer\Config\ConfigMerger;
+namespace Yiisoft\Composer\Config\Merger;
 
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\ModifierInterface;
-use Yiisoft\Composer\Config\ConfigMerger\Modifier\ReverseBlockMerge;
+use Yiisoft\Composer\Config\Merger\Modifier\ModifierInterface;
+use Yiisoft\Composer\Config\Merger\Modifier\ReverseBlockMerge;
 
-final class ConfigMerger
+final class Merger
 {
     /**
      * Merges two or more arrays into one recursively.
@@ -17,7 +17,7 @@ final class ConfigMerger
      * type and are having the same key.
      * For integer-keyed elements, the elements from the latter array will
      * be appended to the former array.
-     * You can use modifiers {@see ConfigMerger::applyModifiers()} to change merging result.
+     * You can use modifiers {@see Merger::applyModifiers()} to change merging result.
      *
      * @param array ...$args arrays to be merged
      *
@@ -91,8 +91,8 @@ final class ConfigMerger
     /**
      * Apply modifiers (classes that implement {@link ModifierInterface}) in array.
      *
-     * For example, {@link \Yiisoft\Composer\Config\ConfigMerger\Modifier\UnsetValue} to unset value from previous
-     * array or {@link \Yiisoft\Composer\Config\ConfigMerger\Modifier\ReplaceArrayValue} to force replace former
+     * For example, {@link \Yiisoft\Composer\Config\Merger\Modifier\UnsetValue} to unset value from previous
+     * array or {@link \Yiisoft\Composer\Config\Merger\Modifier\ReplaceArrayValue} to force replace former
      * value instead of recursive merging.
      *
      * @param array $data
