@@ -18,6 +18,7 @@ class Package
     public const EXTRA_DEV_FILES_OPTION_NAME = 'config-plugin-dev';
     public const EXTRA_OUTPUT_DIR_OPTION_NAME = 'config-plugin-output-dir';
     public const EXTRA_ALTERNATIVES_OPTION_NAME = 'config-plugin-alternatives';
+    public const EXTRA_OPTIONS_MAP_NAME = 'config-plugin-options';
 
     private PackageInterface $package;
 
@@ -155,6 +156,15 @@ class Package
         return $this->getExtraValue(self::EXTRA_ALTERNATIVES_OPTION_NAME);
     }
 
+    private function getConfigSourceDirectory(): ?string
+    {
+        $sourceDirPrefix = $this->getExtraValue(self::EXTRA_OPTIONS_MAP_NAME)['source-directory'] ?? '';
+
+        $sourceDir = $this->getPackageDirectory() . '/' . $sourceDirPrefix;
+
+        return $this->filesystem->normalizePath($sourceDir);
+    }
+
     /**
      * Get extra configuration value or default
      *
@@ -210,6 +220,15 @@ class Package
      */
     public function preparePath(string $file): string
     {
+        if (!$this->filesystem->isAbsolutePath($file)) {
+            $file = $this->getPackageDirectory() . '/' . $file;
+        }
+
+        return $this->filesystem->normalizePath($file);
+    }
+
+    public function prepareConfigFilePath(string $file): string
+    {
         if (0 === strncmp($file, '$', 1)) {
             return $file;
         }
@@ -220,10 +239,7 @@ class Package
         }
 
         if (!$this->filesystem->isAbsolutePath($file)) {
-            $prefix = $this->isRoot()
-                ? $this->baseDir
-                : $this->vendorDir . '/' . $this->getPrettyName();
-            $file = $prefix . '/' . $file;
+            $file = $this->getConfigSourceDirectory() . '/' . $file;
         }
 
         return $skippable . $this->filesystem->normalizePath($file);
@@ -237,5 +253,12 @@ class Package
     public function getBaseDir(): string
     {
         return $this->baseDir;
+    }
+
+    private function getPackageDirectory(): string
+    {
+        return $this->isRoot()
+            ? $this->baseDir
+            : $this->vendorDir . '/' . $this->getPrettyName();
     }
 }

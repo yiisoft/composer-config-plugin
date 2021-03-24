@@ -187,9 +187,9 @@ final class Plugin
         ]));
     }
 
-    private function readConfig($package, $file): array
+    private function readConfig(Package $package, string $file): array
     {
-        $path = $package->preparePath($file);
+        $path = $package->prepareConfigFilePath($file);
         if (!file_exists($path)) {
             throw new FailedReadException("failed read file: $file");
         }
@@ -235,7 +235,7 @@ final class Plugin
 
     private function addFile(Package $package, string $name, string $path): void
     {
-        $path = $package->preparePath($path);
+        $path = $package->prepareConfigFilePath($path);
         if (!array_key_exists($name, $this->files)) {
             $this->files[$name] = [];
         }

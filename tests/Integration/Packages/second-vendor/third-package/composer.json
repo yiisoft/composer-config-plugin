@@ -1,0 +1,19 @@
+{
+    "name": "second-vendor/third-package",
+    "autoload": {
+        "psr-4": {
+            "SecondVendor\\ThirdPackage\\": "src"
+        }
+    },
+    "extra": {
+        "config-plugin-options": {
+            "source-directory": "app-configs"
+        },
+        "config-plugin": {
+            "params": [
+                "params.php",
+                "subdir/*.php"
+            ]
+        }
+    }
+}
