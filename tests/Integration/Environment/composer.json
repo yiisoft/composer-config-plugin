@@ -8,6 +8,7 @@
         "first-vendor/second-package": "*",
         "second-vendor/first-package": "*",
         "second-vendor/second-package": "*",
+        "second-vendor/third-package": "*",
         "yiisoft/composer-config-plugin": "*",
         "vlucas/phpdotenv": "*"
     },
@@ -34,6 +35,10 @@
         {
             "type": "path",
             "url": "../Packages/second-vendor/second-package"
+        },
+        {
+            "type": "path",
+            "url": "../Packages/second-vendor/third-package"
         },
         {
             "type": "path",

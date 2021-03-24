@@ -81,6 +81,8 @@ final class ParamsConfigTest extends ConfigTest
             ['second-vendor/second-package', true],
             ['second-dev-vendor/first-package', true],
             ['second-dev-vendor/second-package', true],
+            ['second-vendor/third-package', true],
+            ['second-vendor/third-package/subdir/a', true],
             ['constant_based_parameter', 'a constant value defined in config/constants.php'],
             ['constant_from_vendor', 'a constant value defined in first-dev-vendor/second-package'],
             ['env.raw', 'string'],
