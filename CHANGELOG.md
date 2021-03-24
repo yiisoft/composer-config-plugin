@@ -3,7 +3,8 @@
 ## 0.6.0 under development
 
 - Enh #147: Add context to errors (xepozz)
-- Chg #34: Better name for output config classes (samdark) 
+- Chg #34: Better name for output config classes (samdark)
+- Enh #157: Backport "config-plugin-options" -> "source-directory" support from `yiisoft/config` (SilverFire)
 
 ## 0.5.0 December 24, 2020
 
