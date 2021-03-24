@@ -1,6 +1,8 @@
 # Composer config plugin changelog
 
-## 0.6.0 under development
+## 0.6.1 under development
+
+## 0.6.0 March 24, 2021
 
 - Enh #147: Add context to errors (xepozz)
 - Chg #34: Better name for output config classes (samdark)
