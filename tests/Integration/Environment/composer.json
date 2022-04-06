@@ -86,5 +86,10 @@
             "required": "config/required.php"
         },
         "config-plugin-alternatives": "config/alternatives.json"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/composer-config-plugin": true
+        }
     }
 }
