@@ -69,7 +69,7 @@ final class Plugin
         $input = new \Symfony\Component\Console\Input\ArgvInput([]);
         $helperSet = new \Symfony\Component\Console\Helper\HelperSet();
         $io = new \Composer\IO\ConsoleIO($input, $output, $helperSet);
-        $composer = $factory->createComposer($io, $projectRootPath . '/composer.json', true, $projectRootPath, false);
+        $composer = $factory->createComposer($io, $projectRootPath . '/composer.json', true, $projectRootPath);
         $plugin = new self($composer, $io);
         $plugin->build();
     }
